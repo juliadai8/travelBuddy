@@ -12,16 +12,14 @@ interface DestinationInterface {
 const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL}) => {
     return (
         <div className='box'>
-            <div className='inner-div image-container'>
-                <img src={imgURL} alt="Error loading image" />
-            </div>
+            <img src={imgURL} alt="Error loading image" className='inner-div' />
             <div className='inner-div info-div'>
                 <h1>{country}</h1>
                 <h2>{city}</h2>
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                    {rating}
+                    <p>{rating}</p>
                 </div>
                 <div className="button-container">
                     <button>Read More</button>

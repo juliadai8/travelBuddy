@@ -12,10 +12,9 @@
     height: 100%;
 }
 
-.image-container {
+img {
     width: 40%;
     border-radius: 10px;
-    background-color: blue;
 }
 
 .info-div {
@@ -29,6 +28,7 @@
 h1 {
     color: #3A3A3A;
     padding-left: 10px;
+    font-size: 40px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -36,6 +36,7 @@ h2 {
     color: #3A3A3A;
     opacity: 0.72;
     padding-left: 10px;
+    font-size: 30px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -43,8 +44,12 @@ h2 {
     width: 100%;
     height: 50%;
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
+}
+
+p {
+    margin-right: 67px;
 }
 
 .button-container {
