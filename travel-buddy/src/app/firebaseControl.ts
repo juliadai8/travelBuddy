@@ -20,3 +20,16 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+class firebaseControl {
+
+  async getDestinastions(){
+    const destinationsCol = collection(db, "destinations");
+    const destinationsSnapshot = await getDocs(destinationsCol);
+    const destinationsList = destinationsSnapshot.docs.map(doc => doc.data());
+    return destinationsList;
+  }
+
+};
+
+export default firebaseControl;
