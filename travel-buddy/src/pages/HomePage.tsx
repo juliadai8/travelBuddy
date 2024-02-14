@@ -5,9 +5,12 @@ import DestinationBox from '../components/DestinationBox';
 import { useEffect, useState } from 'react';
 import firebaseControl from '../app/firebaseControl';
 import '../styles/HomePage.css';
+import NewDestination from '@/pages/NewDestination';
+import { useRouter } from 'next/navigation';
 
 const HomePage = () => {
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl;
@@ -43,6 +46,7 @@ const HomePage = () => {
     return (
         <div id='container'>
             {cities()}
+            <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button> 
         </div>
     );
 };
