@@ -62,8 +62,8 @@ const NewDestination = () => {
                         Image url: <input name='imgURL' onChange={e => setImage(e.target.value)}/>
                     </label>
                     <h4>Apply tags</h4>
-                    <select onChange={e => setContinent(e.target.value)}>
-                        <option value='' disabled selected>Continent</option>
+                    <select defaultValue='' onChange={e => setContinent(e.target.value)}>
+                        <option value='' disabled>continent</option>
                         <option value='africa'>Africa</option>
                         <option value='asia'>Asia</option>
                         <option value='europe'>Europe</option>
@@ -82,7 +82,7 @@ const NewDestination = () => {
                     </label>
                 </form>
                 <h4>Description:</h4>
-                <textarea rows={12} cols={60}/>
+                <textarea rows={12} cols={60} style={{ resize: "none" }}/>
                 <button id='addButton' onClick={handleSubmit}> Add new destination </button>
             </div>
         </>
