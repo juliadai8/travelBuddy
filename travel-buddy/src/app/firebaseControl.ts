@@ -31,13 +31,14 @@ class firebaseControl {
     return destinationsList;
   }
 
-  async addDestination(addCity: string, addCountry: string, addImgURL?: string, addCategory?: string[]) {
+  async addDestination(addCity: string, addCountry: string, addImgURL?: string, addCategory?: string[], addDescription?: string) {
     const docRef = collection(db, "destinations");
     await addDoc(docRef, {
       city: addCity,
       country: addCountry,
       imgUrl: addImgURL,
-      category: addCategory
+      category: addCategory,
+      description: addDescription || ""
     });
   }
 };

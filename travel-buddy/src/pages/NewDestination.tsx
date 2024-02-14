@@ -14,6 +14,7 @@ const NewDestination = () => {
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
     const [imgUrl, setImage] = useState('');
+    const [description, setDescription] = useState('');
     const [mountain, checkMountain] = useState<boolean>(false);
     const [beach, checkBeach] = useState(false);
     const [cityShopping, checkCity] = useState(false);
@@ -36,7 +37,8 @@ const NewDestination = () => {
                 city,
                 country,
                 imgUrl,
-                categoriesList
+                categoriesList,
+                description
             )
             router.push("/");
         }
@@ -82,7 +84,7 @@ const NewDestination = () => {
                     </label>
                 </form>
                 <h4>Description:</h4>
-                <textarea rows={12} cols={60} style={{ resize: "none" }}/>
+                <textarea rows={12} cols={60} style={{ resize: "none" }} onChange={e => setDescription(e.target.value)}/>
                 <button id='addButton' onClick={handleSubmit}> Add new destination </button>
             </div>
         </>
