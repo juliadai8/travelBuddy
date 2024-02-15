@@ -3,11 +3,32 @@ import { DocumentData } from 'firebase/firestore';
 import React from 'react';
 import DestinationBox from '../components/DestinationBox';
 import { useEffect, useState } from 'react';
-import firebaseControl from '../app/firebaseControl';
+import firebaseControl, { auth } from '../app/firebaseControl';
 import '../styles/HomePage.css';
+import { User, onAuthStateChanged } from 'firebase/auth';
+import { Route, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import Login from './LoginPage';
 
 const HomePage = () => {
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
+    //const navigate = useNavigate();
+    const [user, setUser] = useState<User>();
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+        if (user) {
+            setUser(user);
+            //navigate("/admin/event/create");
+        } else {
+            //navigate("/login")
+        }
+        });
+    }, [])
+    async function signOut() {
+        setUser(undefined);
+        await auth.signOut();
+    }
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl;
