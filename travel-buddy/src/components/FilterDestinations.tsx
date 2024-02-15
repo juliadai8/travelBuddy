@@ -7,8 +7,8 @@ interface Destination {
     Category: string[];
 }
 /**
- *
- * @param val Helper function to check whether the input parameter is empty
+ * Helper function to check whether the input parameter is empty
+ * @param val Value to check
  * @returns true if val is null, false otherwise
  */
 function isEmpty(val: string | any[] | null | undefined){
