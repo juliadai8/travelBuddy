@@ -4,8 +4,12 @@
     width: 70%;
     border-radius: 10px;
     box-shadow: 0 0 10px 5px #3A3A3A;
-    position: absolute;
+    position: relative;
     z-index: 2;
+}
+
+.not_blur {
+
 }
 
 #x-button {

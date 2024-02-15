@@ -9,7 +9,9 @@ import DestinationModal from '@/components/DestinationModal';
 
 const HomePage = () => {
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
-    const [openModal, setOpenModal] = useState(false);
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [destIndex, setDestIndex] = useState<number>(0);
+    const [scrollMem, setScrollMem] = useState<number>(0);
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl;
@@ -20,37 +22,42 @@ const HomePage = () => {
         });
 
       }, [])
-    
-    const listAllDestinations: string[][] = [];
-    for (const destination of destinationList){
-        let listDestination: string[] = [];
-        listDestination.push(destination.city);
-        listDestination.push(destination.country);
-        listDestination.push(destination.rating);
-        listDestination.push(destination.imgUrl);
-        listAllDestinations.push(listDestination);
+
+    const readMore = (index: number) => {
+        setDestIndex(index);
+        setOpenModal(true);
+        setScrollMem(window.scrollY);
+        window.scrollTo(0, 0);
     }
 
     const cities = () => {
         return (
             <>
-            {listAllDestinations.map((destin) => (
-                <DestinationBox city={destin[0]} country={destin[1]} rating={destin[2]} imgURL={destin[3]} onReadMore={() => setOpenModal(true)}/>
+            {destinationList.map((destin, i) => (
+                <DestinationBox city={destin.city} country={destin.country} rating={destin.rating} imgURL={destin.imgUrl} onReadMore={() => readMore(i)}/>
             ))}
             </>
         );
     }
 
-
-    /* return (
-        <div id='container'>
-            {cities()}
-        </div>
-    ); */
+    const closeModal = () => {
+        setDestIndex(0);
+        setOpenModal(false);
+        window.scrollTo(0, scrollMem);
+        setScrollMem(0);
+    }
 
     return (
-        <div id='container'>
-            {openModal && <DestinationModal onClose={() => setOpenModal(false)}/>}
+        <div id='container' className={openModal ? 'blur-background' : undefined}>
+            {openModal && <div className="overlay"></div>}
+            {openModal && 
+                <DestinationModal 
+                city={destinationList[destIndex].city} 
+                country={destinationList[destIndex].country}
+                rating={destinationList[destIndex].rating}
+                tags={destinationList[destIndex].tags}
+                imgURL={destinationList[destIndex].imgUrl}
+                onClose={() => closeModal()}/>}
             {cities()}
         </div>
     );

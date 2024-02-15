@@ -16,8 +16,8 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
         <div className='box'>
             <img src={imgURL} alt="Error loading image" className='inner-div' />
             <div className='inner-div info-div'>
-                <h1>{country}</h1>
-                <h2>{city}</h2>
+                <h1>{city}</h1>
+                <h2>{country}</h2>
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
