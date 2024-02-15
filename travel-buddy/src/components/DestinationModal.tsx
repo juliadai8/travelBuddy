@@ -6,14 +6,15 @@ interface DestinationInterface {
     city?: string;
     rating?: string;
     imgURL?: string;
+    onClose?: () => void;
 }
 
 // Note: The button must be alignes with the rating-stars when they are added
-const DestinationModal: React.FC<DestinationInterface> = ({country, city, rating, imgURL}) => {
+const DestinationModal: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onClose}) => {
 
     return (
         <div id='modal-container'>
-            <button id='x-button'>X</button>
+            <button id='x-button' onClick={onClose}>X</button>
             <img src="https://static.independent.co.uk/2022/04/26/11/iStock-535455441.jpg" alt="Error" />
             <div id='info-container'>
                 <div id='title-container'>

@@ -5,9 +5,11 @@ import DestinationBox from '../components/DestinationBox';
 import { useEffect, useState } from 'react';
 import firebaseControl from '../app/firebaseControl';
 import '../styles/HomePage.css';
+import DestinationModal from '@/components/DestinationModal';
 
 const HomePage = () => {
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl;
@@ -33,15 +35,22 @@ const HomePage = () => {
         return (
             <>
             {listAllDestinations.map((destin) => (
-                <DestinationBox city={destin[0]} country={destin[1]} rating={destin[2]} imgURL={destin[3]}/>
+                <DestinationBox city={destin[0]} country={destin[1]} rating={destin[2]} imgURL={destin[3]} onReadMore={() => setOpenModal(true)}/>
             ))}
             </>
         );
     }
 
 
+    /* return (
+        <div id='container'>
+            {cities()}
+        </div>
+    ); */
+
     return (
         <div id='container'>
+            {openModal && <DestinationModal onClose={() => setOpenModal(false)}/>}
             {cities()}
         </div>
     );
