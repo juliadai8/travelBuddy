@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import '../styles/DestinationModal.css';
 
 interface DestinationInterface {
-    country?: string;
-    city?: string;
-    rating?: string;
-    tags?: string[];
-    imgURL?: string;
+    country: string;
+    city: string;
+    rating: string;
+    tags: string[];
+    imgURL: string;
     onClose?: () => void;
 }
 
@@ -22,10 +22,10 @@ const DestinationModal: React.FC<DestinationInterface> = ({country, city, rating
                     <h1 className='not-blur'>{city}, {country}</h1>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
-                    {rating}
+                    {rating ? 'Rating: ' + rating : 'This destination does not have a rating yet'}
                 </div>
                 <div id='tag-container' className='addPadding not-blur'>
-                    {tags?.join(", ")}
+                    {tags.length ? 'Tags: ' + tags?.join(", ") : 'There are no tags for this destination'}
                 </div>
                 <div id="description-container" className='addPadding not-blur'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras volutpat vulputate mauris vitae eleifend. Praesent viverra diam at libero consectetur gravida. Aenean facilisis enim mi, et efficitur diam ornare pharetra. Aliquam malesuada erat tortor, sed cursus purus facilisis ut. Etiam convallis laoreet auctor. Ut accumsan nisl lorem, ut maximus erat laoreet sit amet. Nam semper bibendum dictum. In venenatis sapien vitae orci condimentum faucibus. Nunc in lorem erat.

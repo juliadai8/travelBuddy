@@ -55,7 +55,7 @@ const HomePage = () => {
                 city={destinationList[destIndex].city} 
                 country={destinationList[destIndex].country}
                 rating={destinationList[destIndex].rating}
-                tags={destinationList[destIndex].tags}
+                tags={destinationList[destIndex].category}
                 imgURL={destinationList[destIndex].imgUrl}
                 onClose={() => closeModal()}/>}
             {cities()}
