@@ -1,6 +1,5 @@
 .container {
     text-align: right;
-    margin-right: 20px;
   }
   
   .button {
@@ -10,4 +9,27 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+
+  .div {
+    background-color: rgb(45, 177, 221);
+
+    
+  }
+
+  .leftButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 20px;
+    margin-left: 50px;
+  }
+
+  button:hoover {
+    background-color: darkgreen;
   }

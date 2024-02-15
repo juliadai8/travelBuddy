@@ -6,6 +6,8 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import {useNavigate} from "react-router-dom";
 import FirebaseError = firebase.FirebaseError;
+import HomePage from './HomePage';
+import '../styles/LoginButton.css';
 
 
 export default function Login() {
@@ -23,15 +25,14 @@ export default function Login() {
     })
   }
   return (
-      <div className={"flex h-full items-center justify-center"}>
-        <div className={"flex flex-col w-[300px] gap-4"}>
-          <input type="text" placeholder="E-post" className="input input-bordered w-full max-w-xs"
+      <div className='container div'>
+          <input type="text" placeholder="E-post" 
                  onChange={(e) => setEmail(e.target.value)}/>
-          <input type="password" placeholder="Passord" className="input input-bordered w-full max-w-xs"
+          <input type="password" placeholder="Passord"
                  onChange={(e) => setPassowrd(e.target.value)}/>
           <p className={"text-error"}>{error}</p>
-          <button className={"btn btn-primary w-full"} onClick={login}>Logg inn</button>
-        </div>
+          <button className='button' onClick={login}>Logg inn</button>
+          <button className='leftButton'>Logg ut</button>
       </div>
   );
 };
