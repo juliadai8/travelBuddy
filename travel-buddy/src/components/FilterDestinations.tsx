@@ -33,6 +33,7 @@ function filterDestinationsByType(destinations: Destination[], categories ?: str
         return lowercaseCategories.every(cat => lowercaseDestinationCategories.includes(cat));
     })
 }
+/*
 // Example usage:
 const destinations: Destination[] = [
     { Continent: "Europe", Country: "France", City: "Paris", Category: ["City Break", "Culture"] },
@@ -45,3 +46,4 @@ const destinations: Destination[] = [
 // const filteredDestinations = filterDestinationsByType(destinations, ["City Break", "Historical"]);
 const filteredDestinations = filterDestinationsByType(destinations, ["City Break", "Historical"]);
 console.log(filteredDestinations);
+*/
