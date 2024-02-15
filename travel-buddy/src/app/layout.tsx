@@ -1,3 +1,5 @@
+
+import Navbar from "@/components/NavBar";
 import HomePage from "@/pages/HomePage";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -18,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Navbar/>
         <HomePage />
       </body>
     </html>
