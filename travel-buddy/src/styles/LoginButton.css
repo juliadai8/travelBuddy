@@ -1,25 +1,9 @@
 .container {
-    text-align: right;
-  }
-  
-  .button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 20px;
-    margin-left: 20px;
+    background-color: lightblue;
+    text-align: center;
   }
 
-  .div {
-    background-color: rgb(45, 177, 221);
-
-    
-  }
-
-  .leftButton {
+  .LoginButton {
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
@@ -30,6 +14,25 @@
     margin-left: 50px;
   }
 
-  button:hoover {
+  .RightButton:hover{
     background-color: darkgreen;
+  }
+
+
+  input {
+    width: 50%;
+    padding: 12px 10px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    margin-left: 30px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
   }

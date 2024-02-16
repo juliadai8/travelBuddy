@@ -8,7 +8,7 @@ import '../styles/HomePage.css';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { Route, useNavigate } from 'react-router-dom';
 import Link from 'next/link';
-import Login from './LoginPage';
+import Login from '../components/LoginComponent';
 
 const HomePage = () => {
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);

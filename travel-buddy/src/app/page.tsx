@@ -1,14 +1,15 @@
 "use client";
-import React from 'react';
+import React, {useState} from 'react';
 import HomePage from '../pages/HomePage';
 import firebaseControl from './firebaseControl';
 import { useEffect } from 'react';
 import { getDocs } from 'firebase/firestore';
 import { DocumentData } from 'firebase/firestore';
-import Login from '../pages/LoginPage';
+import Login from '../components/LoginComponent';
 
 export default function Home() {
     const firebasecontroller = new firebaseControl;
+    const [loginButtonPopup, setLoginButtonPopup] = useState(true);
 
     /* useEffect(() => {
         //fetch destinastions and store in localstorage
@@ -21,8 +22,10 @@ export default function Home() {
 
     return(
         <div>
-            <Login/>
+            <Login Trigger = {loginButtonPopup} setTrigger={setLoginButtonPopup}>
+            </Login>
             <HomePage/>
+            
         </div>
     )
 
