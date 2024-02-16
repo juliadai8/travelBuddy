@@ -13,7 +13,7 @@ const HomePage = () => {
     const router = useRouter();
 
     useEffect(() => {
-        const firebasecontroller = new firebaseControl;
+        const firebasecontroller = new firebaseControl();
 
         let destinastions: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
@@ -21,25 +21,23 @@ const HomePage = () => {
         });
 
       }, [])
-    
-    const listAllDestinations: string[][] = [];
-    for (const destination of destinationList){
-        let listDestination: string[] = [];
-        listDestination.push(destination.city);
-        listDestination.push(destination.country);
-        listDestination.push(destination.rating);
-        listDestination.push(destination.imgUrl);
-        listAllDestinations.push(listDestination);
-    }
+
 
     const cities = () => {
         return (
             <>
-            {listAllDestinations.map((destin) => (
-                <DestinationBox city={destin[0]} country={destin[1]} rating={destin[2]} imgURL={destin[3]}/>
-            ))}
+                {destinationList.map((destination, index) => (
+                    <DestinationBox
+                        key={index}
+                        city={destination.city}
+                        country={destination.country}
+                        rating={destination.rating}
+                        imgURL={destination.imgUrl}
+                    />
+                ))
+                }
             </>
-        );
+        )
     }
 
 
