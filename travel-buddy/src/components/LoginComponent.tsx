@@ -1,7 +1,7 @@
-import {signInWithEmailAndPassword} from 'firebase/auth';
+import {signInWithEmailAndPassword, Auth, signOut} from 'firebase/auth';
 import React, {useState} from 'react';
 import firebaseControl, {auth} from "../app/firebaseControl";
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 import {useNavigate} from "react-router-dom";
 import FirebaseError = firebase.FirebaseError;
@@ -18,12 +18,23 @@ export default function Login(props:any) {
 
   function login() {
     setError("");
+
     signInWithEmailAndPassword(auth, email, password).then(() => {
       //navigate("")
       console.log("Du er logget inn")
     }).catch((e: FirebaseError) => {
       setError(e.message)
     })
+  }
+
+  function logout() {
+    signOut(auth)
+      .then(() => {
+        console.log('Sign out successful');
+      })
+      .catch((error) => {
+        console.error('Error signing out', error);
+      });
   }
 
   return (props.Trigger) ?(
@@ -36,7 +47,7 @@ export default function Login(props:any) {
                  onChange={(e) => setPassowrd(e.target.value)}/>
           <p className={"text-error"}>{error}</p>
           <button className='LoginButton' onClick={login}>Logg inn</button>
-          <button className='LoginButton' onClick={() => props.setTrigger(false)}>Logg ut</button>
+          <button className='LoginButton' onClick={logout}>Logg ut</button>
           {props.children}
       </div>
   ):"";
