@@ -41,10 +41,9 @@ class firebaseControl {
         category: addCategory,
         description: addDescription || ""
       });
-      console.log("test")
     }
     catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 };

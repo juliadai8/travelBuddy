@@ -33,7 +33,7 @@ const NewDestination = () => {
                 categoriesList.push("city");
             }
     
-            firebaseController.addDestination(
+            await firebaseController.addDestination(
                 city,
                 country,
                 imgUrl,
