@@ -72,10 +72,15 @@ button:active {
     height: 5ch;
     display: flex;
     align-items: center;
+    margin-top: 5px;
 }
 
 #description-container {
     margin-top: 5px;
     margin-bottom: 10px;
+    min-height: 5ch;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
 }
 
