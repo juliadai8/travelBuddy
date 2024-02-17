@@ -20,7 +20,7 @@ const NewDestination = () => {
     const [cityShopping, checkCity] = useState(false);
     const [status, setStatus] = useState('')
     
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const categoriesList: string[] = [];
         if (city !== '' && country !== '' && imgUrl !== ''){
             if(beach) {
