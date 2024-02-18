@@ -23,33 +23,29 @@ const FilterPanel: React.FC<FilterProps> = ({categories, onFilterChange}) => {
 
     return (
         <div id="filter-container">
-            {
-                Object.entries(categories).map(([category, tags]) => (
-                    <div id="menu-container" key={category}>
-                    <h4>{category}</h4>
-                    <div id="checkbox-container">
-                        {
-                            tags.map(tag => (
-                                // do we need a div for each checkbox?
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        value={tag}
-                                        checked={selectedTags.includes(tag)}
-                                        onChange={() => handleTagClick(tag)}
-                                    />
-                                    {tag}
-                                </label>
-                            ))
-                        }
-                    </div>
-                    </div>
-                ))
-            }
+            {Object.entries(categories).map(([category, tags]) => (
+                <div id="menu-container" key={category}>
+                <h4>{category}</h4>
+                <div id="checkbox-container">
+                    {
+                        tags.map(tag => (
+                            // do we need a div for each checkbox?
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    value={tag}
+                                    checked={selectedTags.includes(tag)}
+                                    onChange={() => handleTagClick(tag)}
+                                />
+                                {tag}
+                            </label>
+                        ))
+                    }
+                </div>
+                </div>
+                ))}
         </div>
     )
-
-
 };
 
 export default FilterPanel
