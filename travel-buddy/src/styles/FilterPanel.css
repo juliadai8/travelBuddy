@@ -1,5 +1,5 @@
-#filter-container {
-    width: 20%;
+#filterPanel-container {
+    width: 100%;
     border-radius: 10px;
     margin: 10px;
     padding: 10px;

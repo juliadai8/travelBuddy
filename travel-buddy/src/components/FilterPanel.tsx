@@ -11,18 +11,15 @@ const FilterPanel: React.FC<FilterProps> = ({categories, onFilterChange}) => {
 
     const handleTagClick = (tag: string) => {
         const isSelected = selectedTags.includes(tag);
-
-        if (isSelected) {
-            setSelectedTags(selectedTags.filter(t => t !== tag));
-        }
-        else {
-            setSelectedTags(selectedTags.concat([tag]));
-        }
-        onFilterChange(selectedTags);  // onFilterChange must be defined on homepage
-    }
+        const newSelectedTags = isSelected
+            ? selectedTags.filter(t => t !== tag)
+            : [...selectedTags, tag];
+        setSelectedTags(newSelectedTags);
+        onFilterChange(newSelectedTags);
+    };
 
     return (
-        <div id="filter-container">
+        <div id="filterPanel-container">
             {Object.entries(categories).map(([category, tags]) => (
                 <div id="menu-container" key={category}>
                 <h4>{category}</h4>
@@ -35,6 +32,7 @@ const FilterPanel: React.FC<FilterProps> = ({categories, onFilterChange}) => {
                                     type="checkbox"
                                     value={tag}
                                     checked={selectedTags.includes(tag)}
+                                    // onClick={() => handleTagClick(tag)}
                                     onChange={() => handleTagClick(tag)}
                                 />
                                 {tag}
