@@ -2,7 +2,8 @@
 import { initializeApp } from "firebase/app";
 import {
   getFirestore, collection, getDocs,
-  addDoc
+  addDoc,
+  doc
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -30,6 +31,21 @@ class firebaseControl {
     return destinationsList;
   }
 
+  async addDestination(addCity: string, addCountry: string, addImgURL?: string, addCategory?: string[], addDescription?: string) {
+    const docRef = collection(db, "destinations");
+    try {
+      await addDoc(docRef, {
+        city: addCity,
+        country: addCountry,
+        imgUrl: addImgURL,
+        category: addCategory,
+        description: addDescription || ""
+      });
+    }
+    catch (e) {
+      console.error(e)
+    }
+  }
 };
 
 export default firebaseControl;
