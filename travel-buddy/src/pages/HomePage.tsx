@@ -6,6 +6,8 @@ import FilterPanel from '../components/FilterPanel';
 import { useEffect, useState } from 'react';
 import firebaseControl from '../app/firebaseControl';
 import '../styles/HomePage.css';
+import { useRouter } from 'next/navigation';
+import NewDestination from '@/pages/NewDestination';
 import DestinationModal from '@/components/DestinationModal';
 // import filter from '../components/FilterDestinations';
 
@@ -14,9 +16,10 @@ const HomePage = () => {
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [destIndex, setDestIndex] = useState<number>(0);
     const [scrollMem, setScrollMem] = useState<number>(0);
+    const router = useRouter();
 
     useEffect(() => {
-        const firebasecontroller = new firebaseControl;
+        const firebasecontroller = new firebaseControl();
 
         let destinastions: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
@@ -36,7 +39,14 @@ const HomePage = () => {
         return (
             <>
             {destinationList.map((destin, i) => (
-                <DestinationBox city={destin.city} country={destin.country} rating={destin.rating} imgURL={destin.imgUrl} onReadMore={() => readMore(i)}/>
+                <DestinationBox
+                    key={i}
+                    city={destin.city}
+                    country={destin.country}
+                    rating={destin.rating}
+                    imgURL={destin.imgUrl}
+                    onReadMore={() => readMore(i)}
+                />
             ))}
             </>
         );
@@ -71,6 +81,7 @@ const HomePage = () => {
                 throw new Error('Function not implemented.');
             } }/>
             {cities()}
+            <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button> 
         </div>
     );
 };
