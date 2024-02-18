@@ -5,6 +5,7 @@ import DestinationBox from '../components/DestinationBox';
 import { useEffect, useState } from 'react';
 import firebaseControl from '../app/firebaseControl';
 import '../styles/HomePage.css';
+// import filter from '../components/FilterDestinations';
 
 const HomePage = () => {
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);

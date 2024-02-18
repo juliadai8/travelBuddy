@@ -1,10 +1,13 @@
-import React from 'react';
+// import React from 'react';
+import React, { useState } from 'react';
+import FilterMenu from './FilterMenu';
+
 
 interface Destination {
-    Continent: string;
-    Country: string;
-    City: string;
-    Category: string[];
+    continent: string;
+    country: string;
+    city: string;
+    category: string[];
 }
 /**
  * Helper function to check whether the input parameter is empty
@@ -28,22 +31,82 @@ function filterDestinationsByType(destinations: Destination[], categories ?: str
     const lowercaseCategories = categories!.map(cat => cat.toLowerCase())
     return destinations.filter(destination => {
         // Convert all destination category strings to lower case for comparison
-        const lowercaseDestinationCategories = destination.Category.map(cat => cat.toLowerCase());
+        const lowercaseDestinationCategories = destination.category.map(cat => cat.toLowerCase());
         // Check if all lowercase categories in lowercaseCategories are included in lowercaseDestinationCategories
         return lowercaseCategories.every(cat => lowercaseDestinationCategories.includes(cat));
     })
 }
-/*
-// Example usage:
-const destinations: Destination[] = [
-    { Continent: "Europe", Country: "France", City: "Paris", Category: ["City Break", "Culture"] },
-    { Continent: "Asia", Country: "Japan", City: "Tokyo", Category: ["City Break", "Culture"] },
-    { Continent: "North America", Country: "USA", City: "New York", Category: ["City Break", "Culture"] },
-    { Continent: "Europe", Country: "Italy", City: "Rome", Category: ["City Break", "Culture"] },
-    { Continent: "Africa", Country: "Kenya", City: "Nairobi", Category: ["City Break", "Safari"] },
-    { Continent: "South America", Country: "Peru", City: "Machu Picchu", Category: ["City Break", "Historical"] }
-];
+
+// // Example usage:
+// const destinations: Destination[] = [
+//     { continent: "Europe", country: "France", city: "Paris", category: ["City Break", "Culture"] },
+//     { continent: "Asia", country: "Japan", city: "Tokyo", category: ["City Break", "Culture"] },
+//     { continent: "North America", country: "USA", city: "New York", category: ["City Break", "Culture"] },
+//     { continent: "Europe", country: "Italy", city: "Rome", category: ["City Break", "Culture"] },
+//     { continent: "Africa", country: "Kenya", city: "Nairobi", category: ["City Break", "Safari"] },
+//     { continent: "South America", country: "Peru", city: "Machu Picchu", category: ["City Break", "Historical"] }
+// ];
+// // const filteredDestinations = filterDestinationsByType(destinations, ["City Break", "Historical"]);
 // const filteredDestinations = filterDestinationsByType(destinations, ["City Break", "Historical"]);
-const filteredDestinations = filterDestinationsByType(destinations, ["City Break", "Historical"]);
-console.log(filteredDestinations);
-*/
+// console.log(filteredDestinations);
+
+
+
+
+
+// const filter = () => {
+//     return (
+//         <>
+        
+  
+//         </>
+//     )
+// }
+
+// export default filter
+
+// interface FilterProps {
+//     categories: string[];
+//     onFilterChange: (selectedCategories: string[]) => void;
+// }
+
+// const FilterMenu: React.FC<FilterProps> = ({ categories, onFilterChange }) => {
+//     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+//     const handleCategoryChange = (category: string) => {
+//         const index = selectedCategories.indexOf(category);
+//         if (index === -1) {
+//             setSelectedCategories([...selectedCategories, category]);
+//         } else {
+//             setSelectedCategories(selectedCategories.filter(cat => cat !== category));
+//         }
+//     };
+
+//     const handleApplyFilters = () => {
+//         onFilterChange(selectedCategories);
+//     };
+
+//     return (
+//         <div className="filter-menu">
+//             <h3>Filter by Category</h3>
+//             <ul>
+//                 {categories.map(category => (
+//                     <li key={category}>
+//                         <label>
+//                             <input
+//                                 type="checkbox"
+//                                 value={category}
+//                                 checked={selectedCategories.includes(category)}
+//                                 onChange={() => handleCategoryChange(category)}
+//                             />
+//                             {category}
+//                         </label>
+//                     </li>
+//                 ))}
+//             </ul>
+//             <button onClick={handleApplyFilters}>Apply Filters</button>
+//         </div>
+//     );
+// };
+
+// export default FilterMenu;
