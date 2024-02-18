@@ -1,6 +1,6 @@
 #container {
     width: 100vw;
-    background-color: lightblue;
+    background-color: #ECF7FF;
     display: flex;
     flex-direction: column;
     align-items: center;

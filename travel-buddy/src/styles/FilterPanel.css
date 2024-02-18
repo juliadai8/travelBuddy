@@ -1,0 +1,39 @@
+#filter-container {
+    width: 20%;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#menu-container {
+    width: 100%;
+    border-radius: 10px;
+    margin: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#menu-container h4 {
+    background-color: #9aa0a5;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+    margin: 0px;
+}
+
+#checkbox-container {
+    background-color: #FAFCFE;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 10px;
+
+}
+
+#checkbox-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+

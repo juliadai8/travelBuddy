@@ -51,6 +51,7 @@ const FilterMenu: React.FC<FilterProps> = ({ categoryTypes, onFilterChange }) =>
                                 data-toggle="collapse"
                                 href={`#collapse${categoryType.replace(/\s/g, '')}`}
                                 aria-expanded={selectedCategoryType === categoryType ? 'true' : 'false'}
+                                // aria-expanded={'true'}
                                 onClick={() => handleCategoryTypeChange(categoryType)}
                             >
                                 {categoryType}

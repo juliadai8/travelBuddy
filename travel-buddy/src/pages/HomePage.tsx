@@ -2,6 +2,7 @@
 import { DocumentData } from 'firebase/firestore';
 import React from 'react';
 import DestinationBox from '../components/DestinationBox';
+import FilterPanel from '../components/FilterPanel';
 import { useEffect, useState } from 'react';
 import firebaseControl from '../app/firebaseControl';
 import '../styles/HomePage.css';
@@ -40,9 +41,17 @@ const HomePage = () => {
         );
     }
 
+    const categories_dict = {
+        "Activities": ["Hiking", "Skiing", "Sightseeing"], 
+        "Climate": ["Tropical", "Dry", "Continental", "Polar", "Temperate"],
+        "Destination type": ["City", "Beach", "Culture", "Safari", "Historical", "Active"]
+    }
 
     return (
         <div id='container'>
+            <FilterPanel categories={categories_dict} onFilterChange={function (selectedTags: string[]): void {
+                throw new Error('Function not implemented.');
+            } }/>
             {cities()}
         </div>
     );

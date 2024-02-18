@@ -21,13 +21,13 @@ export default function Home() {
 
     return(
         <>
-        <FilterMenu categoryTypes={{
+        {/* <FilterMenu categoryTypes={{
             "Activities": ["Hiking", "Skiing", "Sightseeing"], 
             "Climate": ["Tropical", "Dry", "Continental", "Polar", "Temperate"],
             "Destination type": ["City", "Beach", "Culture", "Safari", "Historical", "Active"]
         }} onFilterChange={function (selectedCategories: { [key: string]: string[]; }): void {
                 throw new Error('Function not implemented.');
-            } }/>
+            } }/> */}
         <HomePage/>
         </>
     )
