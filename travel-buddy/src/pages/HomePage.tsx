@@ -6,15 +6,16 @@ import { useEffect, useState } from 'react';
 import firebaseControl from '../app/firebaseControl';
 import '../styles/HomePage.css';
 import { useRouter } from 'next/navigation';
-import NewDestination from '@/pages/NewDestination';
 import DestinationModal from '@/components/DestinationModal';
+import AddDestination from '@/components/AddDestination';
+import { OperationType } from 'firebase/auth';
 
 const HomePage = () => {
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [destIndex, setDestIndex] = useState<number>(0);
     const [scrollMem, setScrollMem] = useState<number>(0);
-    const router = useRouter();
+    const [openAddDestination, setOpenAddDestination] = useState<boolean>(false);
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
@@ -57,21 +58,31 @@ const HomePage = () => {
         setScrollMem(0);
     }
 
+    const closeAddDestination = () => {
+        setOpenAddDestination(false);
+        window.scrollTo(0, scrollMem);
+    }
+
     return (
-        <div id='container' className={openModal ? 'blur-background' : undefined}>
-            {openModal && <div className="overlay"></div>}
-            {openModal && 
-                <DestinationModal 
-                city={destinationList[destIndex].city} 
-                country={destinationList[destIndex].country}
-                rating={destinationList[destIndex].rating}
-                tags={destinationList[destIndex].category}
-                description={destinationList[destIndex].description}
-                imgURL={destinationList[destIndex].imgUrl}
-                onClose={() => closeModal()}/>}
-            {cities()}
-            <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button> 
-        </div>
+        <>
+            <div id='container' className={openModal || openAddDestination ? 'blur-background' : undefined}>
+                <button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
+                    Add new travel destination
+                </button> 
+                {(openModal || openAddDestination) && <div className="overlay"></div>}
+                {openModal && 
+                    <DestinationModal 
+                    city={destinationList[destIndex].city} 
+                    country={destinationList[destIndex].country}
+                    rating={destinationList[destIndex].rating}
+                    tags={destinationList[destIndex].category}
+                    description={destinationList[destIndex].description}
+                    imgURL={destinationList[destIndex].imgUrl}
+                    onClose={() => closeModal()}/>}
+                {cities()}
+                {openAddDestination && <AddDestination onClose={() => closeAddDestination()}/>}
+            </div>
+        </>
     );
 };
 
