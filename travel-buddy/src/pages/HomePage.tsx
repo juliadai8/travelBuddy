@@ -16,6 +16,7 @@ const HomePage = () => {
     const [destIndex, setDestIndex] = useState<number>(0);
     const [scrollMem, setScrollMem] = useState<number>(0);
     const [openAddDestination, setOpenAddDestination] = useState<boolean>(false);
+    const [destinationsChanged, setDestinationsChanged] = useState<boolean>(false);
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
@@ -23,9 +24,10 @@ const HomePage = () => {
         let destinastions: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+            setDestinationsChanged(false);
         });
 
-      }, [])
+      }, [destinationsChanged])
 
     const readMore = (index: number) => {
         setDestIndex(index);
@@ -39,7 +41,7 @@ const HomePage = () => {
             <>
             {destinationList.map((destin, i) => (
                 <DestinationBox
-                    key={i}
+                    key={destin.getID}
                     city={destin.city}
                     country={destin.country}
                     rating={destin.rating}
@@ -60,6 +62,7 @@ const HomePage = () => {
 
     const closeAddDestination = () => {
         setOpenAddDestination(false);
+        setDestinationsChanged(true);
         window.scrollTo(0, scrollMem);
     }
 
@@ -80,7 +83,7 @@ const HomePage = () => {
                     imgURL={destinationList[destIndex].imgUrl}
                     onClose={() => closeModal()}/>}
                 {cities()}
-                {openAddDestination && <AddDestination onClose={() => closeAddDestination()}/>}
+                {openAddDestination && (<AddDestination onClose={() => closeAddDestination()}/>)}
             </div>
         </>
     );
