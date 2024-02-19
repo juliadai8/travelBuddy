@@ -59,7 +59,7 @@ export default function Login(props:any) {
           <input type="password" placeholder="Passord"
                  onChange={(e) => setPassowrd(e.target.value)}/>
           <p className={"text-error"}>{error}</p>
-          <button className='LoginButton' onClick={login}>Logg inn</button>
+          <button className='LoginButton' onClick={login}>Logg in</button>
           <button className='LoginButton' onClick={logout}>Logg ut</button>
           <button className='LoginButton' onClick={register}>Register</button>
           {props.children}
