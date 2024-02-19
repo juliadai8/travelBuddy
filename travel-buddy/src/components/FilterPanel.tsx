@@ -25,9 +25,9 @@ const FilterPanel: React.FC<FilterProps> = ({categories, onFilterChange}) => {
                 <h4>{category}</h4>
                 <div id="checkbox-container">
                     {
-                        tags.map(tag => (
+                        tags.map((tag, i) => (
                             // do we need a div for each checkbox?
-                            <label>
+                            <label key={i}>
                                 <input
                                     type="checkbox"
                                     value={tag}
