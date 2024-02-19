@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import FirebaseError = firebase.FirebaseError;
 import HomePage from '../pages/HomePage';
 import '../styles/LoginButton.css';
-
+import '../components/Header'
 
 export default function Login(props:any) {
   //const navigate = useNavigate();
@@ -61,8 +61,10 @@ export default function Login(props:any) {
           <p className={"text-error"}>{error}</p>
           <button className='LoginButton' onClick={login}>Logg in</button>
           <button className='LoginButton' onClick={logout}>Logg ut</button>
-          <button className='LoginButton' onClick={register}>Register</button>
+          <button className='LoginButton' onClick={() => props.setTrigger(false)}>Register</button>
           {props.children}
       </div>
-  ):"";
+  ):<div className='container' >
+    <button className='openLogin' onClick={() => props.setTrigger(true)}>åpne</button>
+  </div>;
 };

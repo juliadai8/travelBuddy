@@ -7,10 +7,11 @@ import { getDocs } from 'firebase/firestore';
 import { DocumentData } from 'firebase/firestore';
 import FilterMenu from '../components/FilterMenu';
 import Login from '../components/LoginComponent';
+import '../components/Header'
 
 export default function Home() {
     const firebasecontroller = new firebaseControl;
-    const [loginButtonPopup, setLoginButtonPopup] = useState(true);
+    const [loginButtonPopup, setLoginButtonPopup] = useState(false);
 
     /* useEffect(() => {
         //fetch destinastions and store in localstorage
@@ -20,6 +21,7 @@ export default function Home() {
             localStorage.setItem("destinations", JSON.stringify(destinastions));
         });
     }, []); */
+
 
     return(
         <div>
@@ -31,3 +33,4 @@ export default function Home() {
     )
 
 }
+
