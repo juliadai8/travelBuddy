@@ -119,7 +119,8 @@ const HomePage = () => {
     const categories_dict = {
         "Activities": ["Hiking", "Skiing", "Sightseeing"], 
         "Climate": ["Tropical", "Dry", "Continental", "Polar", "Temperate"],
-        "Destination type": ["City", "Beach", "Culture", "Safari", "Historical", "Active"]
+        "Destination type": ["City", "Beach", "Culture", "Safari", "Historical", "Active"],
+        "Continent": ["Europe", "Asia", "Africa", "North America", "South America", "Oceania"],
     }
 
     const handleSearchChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
