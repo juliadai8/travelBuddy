@@ -66,14 +66,16 @@ const AddDestination: React.FC<AddDestinationInterface> = ({onClose}) => {
         return (
             <>
                 {Object.entries(categories_dict).map(([category, tags]) => (
-                    <div id='category-checkbox-container' className='not-blur' key={category}>
+                    <div className='not-blur' key={category}>
                         <h4 className='not-blur'>{category}</h4>
-                        {tags.map(tag => (
-                            <label className='not-blur' key={tag}>
-                                <input type='checkbox' className='not-blur' value={tag} onChange={handleCheckboxChange}/>
-                                {tag}
-                            </label>
-                        ))}
+                        <div className='not-blur' id='category-checkbox-container'>
+                            {tags.map(tag => (
+                                <label className='not-blur' key={tag}>
+                                    <input type='checkbox' className='not-blur' value={tag} onChange={handleCheckboxChange}/>
+                                    {tag}
+                                </label>
+                            ))}
+                        </div>
                     </div>
                 ))}
             </>

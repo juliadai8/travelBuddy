@@ -78,7 +78,10 @@
 }
 
 #category-checkbox-container {
+    display: flex;
+    flex-direction: row;
     border-radius: 5px;
     margin: 10px;
+    width: 900px;
 }
 
