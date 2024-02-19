@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import firebaseControl from "@/app/firebaseControl";
 import '../styles/AddDestination.css'
