@@ -61,7 +61,8 @@ export default function Login(props:any) {
           <p className={"text-error"}>{error}</p>
           <button className='LoginButton' onClick={login}>Logg in</button>
           <button className='LoginButton' onClick={logout}>Logg ut</button>
-          <button className='LoginButton' onClick={() => props.setTrigger(false)}>Register</button>
+          <button className='LoginButton' onClick={register}>Register</button>
+          <button onClick={()=>props.setTrigger(false)}>close</button>
           {props.children}
       </div>
   ):<div className='container' >
