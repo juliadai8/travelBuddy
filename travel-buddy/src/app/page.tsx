@@ -5,6 +5,7 @@ import firebaseControl from './firebaseControl';
 import { useEffect } from 'react';
 import { getDocs } from 'firebase/firestore';
 import { DocumentData } from 'firebase/firestore';
+import FilterMenu from '../components/FilterMenu';
 
 export default function Home() {
     const firebasecontroller = new firebaseControl;
@@ -19,7 +20,9 @@ export default function Home() {
     }, []); */
 
     return(
-      <HomePage/>
+        <>
+        <HomePage/>
+        </>
     )
 
 }
