@@ -5,6 +5,7 @@ import firebaseControl from './firebaseControl';
 import { useEffect } from 'react';
 import { getDocs } from 'firebase/firestore';
 import { DocumentData } from 'firebase/firestore';
+import FilterMenu from '../components/FilterMenu';
 import Login from '../components/LoginComponent';
 
 export default function Home() {
