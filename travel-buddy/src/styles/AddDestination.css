@@ -1,7 +1,7 @@
 #addDestination {
-    margin: 50px;
-    background-color: #d0eafc;
-    height: 90vh;
+    margin: 30px;
+    background-color: #f9fcff;
+    height: 110vh;
     width: 65%;
     border-radius: 10px;
     box-shadow: 0 0 10px 5px #3A3A3A;
@@ -27,12 +27,15 @@
     padding-left: 10px;
     padding-right: 10px;
     justify-content: center;
+
 }
+
 
 #addDestination form {
     justify-content: center;
     align-items: center;
-    padding-bottom: 30px;
+    margin-top: 30px;
+
 }
 
 #addButton {
@@ -44,9 +47,9 @@
     cursor: pointer;
     border-radius: 8px;
     background-color: #565656;
-    border: 0px;
     border-radius: 5px;
     color: white;
+    align-items: center;
 }
 
 #addButton:hover {
@@ -60,4 +63,22 @@
     color: rgb(214, 93, 93);
     font-weight: 700;
     font-size: 20px;
+    position: absolute;
+    padding-top: 60px;
 }
+
+#checkbox-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 700px;
+}
+
+#checkbox-container h4{
+    background-color: #e2f1fc;
+}
+
+#category-checkbox-container {
+    border-radius: 5px;
+    margin: 10px;
+}
+
