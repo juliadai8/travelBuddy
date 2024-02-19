@@ -4,9 +4,10 @@ import FilterPanel from '../components/FilterPanel';
 import firebaseControl from '../app/firebaseControl';
 import '../styles/HomePage.css';
 import { useRouter } from 'next/navigation';
-import DestinationModal from '@/components/DestinationModal';
+import NewDestination from '@/pages/NewDestination';
+import DestinationModal from '../components/DestinationModal';
+import filterDestinationsByType from '../components/FilterDestinations';
 import { DocumentData } from 'firebase/firestore';
-
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
