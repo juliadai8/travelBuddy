@@ -1,26 +1,25 @@
-"use client";
-import { DocumentData } from 'firebase/firestore';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DestinationBox from '../components/DestinationBox';
 import FilterPanel from '../components/FilterPanel';
-import { useEffect, useState } from 'react';
 import firebaseControl, { auth } from '../app/firebaseControl';
 import '../styles/HomePage.css';
 import { useRouter } from 'next/navigation';
 import NewDestination from '@/pages/NewDestination';
-import DestinationModal from '@/components/DestinationModal';
+import DestinationModal from '../components/DestinationModal';
 import filterDestinationsByType from '../components/FilterDestinations';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { Route, useNavigate } from 'react-router-dom';
 import Link from 'next/link';
 import Login from '../components/LoginComponent';
+import { DocumentData } from 'firebase/firestore';
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
-    const [openModal, setOpenModal] = useState<boolean>(false);
-    const [destIndex, setDestIndex] = useState<number>(0);
-    const [scrollMem, setScrollMem] = useState<number>(0);
+    const [openModal, setOpenModal] = useState(false);
+    const [destIndex, setDestIndex] = useState(0);
+    const [scrollMem, setScrollMem] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
     //const navigate = useNavigate();
     const [user, setUser] = useState<User>();
@@ -43,16 +42,13 @@ const HomePage = () => {
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
 
-        let destinations: DocumentData[] = [];
+        // let destinations: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
         });
 
-      }, [])
+    }, [])
 
-    // useEffect(() => {
-        
-    // }, [tags])
 
     const readMore = (index: number) => {
         setDestIndex(index);
@@ -89,22 +85,46 @@ const HomePage = () => {
         })
     }
 
+    
+
+    const filteredDestinationsSearch = (destinations: DocumentData[], searchQuery: string): DocumentData[] => {
+        return destinations.filter(destin => {
+            const searchQueryLowerCase = searchQuery.toLowerCase();
+            const cityName = destin.city.toLowerCase();
+            const countryName = destin.country.toLowerCase();
+            const category = Array.isArray(destin.category) ? destin.category.map(c => c.toLowerCase()) : [];
+            // If searchQuery is empty, return true for all destinations
+            if (!searchQueryLowerCase) {
+                return true;
+            }
+            // If searchQuery is not empty, only return true for destinations that include the searchQuery in their category
+            return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase) || category.some(c => c.includes(searchQueryLowerCase));
+        });
+}
+    
+
     const cities = () => {
-        const filteredDestinations = filterDestinationsByType(destinationList, tags);
-        return (
-            <>
-            {filteredDestinations.map((destin, i) => (
-                <DestinationBox
-                    key={i}
-                    city={destin.city}
-                    country={destin.country}
-                    rating={destin.rating}
-                    imgURL={destin.imgUrl}
-                    onReadMore={() => readMore(i)}
-                />
-            ))}
-            </>
-        );
+        const filteredAndSearchedDestinations = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)
+        if (filteredAndSearchedDestinations.length === 0) {
+            return <h1>No destinations found</h1>;
+        }
+        else {
+            return (
+                <>
+                {filteredAndSearchedDestinations.map((destin, i) => (
+                    <DestinationBox
+                        key={i}
+                        city={destin.city}
+                        country={destin.country}
+                        rating={destin.rating}
+                        imgURL={destin.imgUrl}
+                        onReadMore={() => readMore(i)}
+                    />
+                ))}
+                </>
+            );
+        }
+        
     }
 
     const closeModal = () => {
@@ -115,18 +135,18 @@ const HomePage = () => {
     }
 
     const onFilterChange = (t: string[] = []) => {
-        setTags(t);
-        // const filteredDestinations = filterDestinationsByType(destinationList, tags);
-        // console.log(filteredDestinations)
-        // return filteredDestinations
-        
-        
+        setTags(t);        
     }
 
     const categories_dict = {
         "Activities": ["Hiking", "Skiing", "Sightseeing"], 
         "Climate": ["Tropical", "Dry", "Continental", "Polar", "Temperate"],
-        "Destination type": ["City", "Beach", "Culture", "Safari", "Historical", "Active"]
+        "Destination type": ["City", "Beach", "Culture", "Safari", "Historical", "Active"],
+        "Continent": ["Europe", "Asia", "Africa", "North America", "South America", "Oceania"],
+    }
+
+    const handleSearchChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+        setSearchQuery(event.target.value);
     }
 
     return (
@@ -135,18 +155,19 @@ const HomePage = () => {
         {openModal && <div className="overlay"></div>}
             {openModal && 
                 <DestinationModal 
-                city={destinationList[destIndex].city} 
-                country={destinationList[destIndex].country}
-                rating={destinationList[destIndex].rating}
-                tags={destinationList[destIndex].category}
-                description={destinationList[destIndex].description}
-                imgURL={destinationList[destIndex].imgUrl}
+                city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city} 
+                country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
+                rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
+                tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
+                description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
+                imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
                 onClose={() => closeModal()}/>}
 
         <div id='filter-container'>
             <FilterPanel categories={categories_dict} onFilterChange={onFilterChange}/>
         </div>
         <div id='feed-container'>
+            <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
             {cities()}
             <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button> 
         </div>
