@@ -7,7 +7,7 @@ import DestinationModal from '@/components/DestinationModal';
 import { DocumentData } from 'firebase/firestore';
 
 const HomePage = () => {
-    const [destinationList, setDestinationList] = useState([]);
+    const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const [destIndex, setDestIndex] = useState(0);
     const [scrollMem, setScrollMem] = useState(0);
