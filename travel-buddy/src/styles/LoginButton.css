@@ -1,6 +1,9 @@
 .container {
-    background-color: lightblue;
+    background-color: rgb(18, 171, 222);
     text-align: center;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
   }
 
   .LoginButton {
