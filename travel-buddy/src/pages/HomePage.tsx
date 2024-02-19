@@ -1,30 +1,27 @@
-"use client";
-import { DocumentData } from 'firebase/firestore';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DestinationBox from '../components/DestinationBox';
-import { useEffect, useState } from 'react';
 import firebaseControl from '../app/firebaseControl';
 import '../styles/HomePage.css';
 import { useRouter } from 'next/navigation';
-import NewDestination from '@/pages/NewDestination';
 import DestinationModal from '@/components/DestinationModal';
+import { DocumentData } from 'firebase/firestore';
 
 const HomePage = () => {
-    const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
-    const [openModal, setOpenModal] = useState<boolean>(false);
-    const [destIndex, setDestIndex] = useState<number>(0);
-    const [scrollMem, setScrollMem] = useState<number>(0);
+    const [destinationList, setDestinationList] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
+    const [destIndex, setDestIndex] = useState(0);
+    const [scrollMem, setScrollMem] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
 
-        let destinastions: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
         });
 
-      }, [])
+    }, [])
 
     const readMore = (index: number) => {
         setDestIndex(index);
@@ -34,9 +31,22 @@ const HomePage = () => {
     }
 
     const cities = () => {
+        const filteredDestinations = destinationList.filter(destin => {
+            const searchQueryLowerCase = searchQuery.toLowerCase();
+            const cityName = destin.city.toLowerCase();
+            const countryName = destin.country.toLowerCase();
+            const category = Array.isArray(destin.category) ? destin.category.map(c => c.toLowerCase()) : [];
+            // If searchQuery is empty, return true for all destinations
+            if (!searchQueryLowerCase) {
+                return true;
+            }
+            // If searchQuery is not empty, only return true for destinations that include the searchQuery in their category
+            return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase) || category.some(c => c.includes(searchQueryLowerCase));
+        });
+
         return (
             <>
-            {destinationList.map((destin, i) => (
+            {filteredDestinations.map((destin, i) => (
                 <DestinationBox
                     key={i}
                     city={destin.city}
@@ -57,6 +67,10 @@ const HomePage = () => {
         setScrollMem(0);
     }
 
+    const handleSearchChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+        setSearchQuery(event.target.value);
+    }
+
     return (
         <div id='container' className={openModal ? 'blur-background' : undefined}>
             {openModal && <div className="overlay"></div>}
@@ -69,6 +83,7 @@ const HomePage = () => {
                 description={destinationList[destIndex].description}
                 imgURL={destinationList[destIndex].imgUrl}
                 onClose={() => closeModal()}/>}
+            <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
             {cities()}
             <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button> 
         </div>
