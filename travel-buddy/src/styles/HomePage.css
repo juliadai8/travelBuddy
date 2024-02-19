@@ -1,7 +1,39 @@
 #container {
     width: 100vw;
-    background-color: lightblue;
+    background-color: #ECF7FF;
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
+
+#feed-container {
+    width: 100vw;
+    max-width: 1500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;    
+} 
+
+#filter-container {
+    position: absolute;
+    left: 0; /* Preserve left alignment */
+    width: 22%;
+    display: flex;
+    z-index: 1;
+
+} 
+
+.blur-background :not(.not-blur) {
+    filter: blur(2px);
+}
+
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 1;
+}
+
