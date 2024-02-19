@@ -2,10 +2,10 @@ import React from 'react';
 import '../styles/DestinationBox.css';
 
 interface DestinationInterface {
-    country?: string;
-    city?: string;
-    rating?: string;
-    imgURL?: string;
+    country: string;
+    city: string;
+    rating: string;
+    imgURL: string;
     onReadMore?: () => void;
 }
 
