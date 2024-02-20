@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { useState } from 'react';
-import firebaseControl from "@/app/firebaseControl";
+import firebaseControl from "../app/firebaseControl";
 import '../styles/AddDestination.css'
 
 
@@ -18,12 +18,9 @@ const AddDestination: React.FC<AddDestinationInterface> = ({onClose}) => {
     const [country, setCountry] = useState('');
     const [imgUrl, setImage] = useState('');
     const [description, setDescription] = useState('');
-    const [mountain, checkMountain] = useState<boolean>(false);
-
     const [status, setStatus] = useState('');
     const [categories, setCategories] = useState<string[]>([]);
 
-    const allCategories: string[] = ['hiking', 'skiing','sightseeing', 'city', 'beach', 'culture', 'safari', 'historical', 'active']
     const categories_dict = {
         "Activities": ["Hiking", "Skiing", "Sightseeing"], 
         "Destination type": ["City", "Beach", "Culture", "Safari", "Historical", "Active"]
