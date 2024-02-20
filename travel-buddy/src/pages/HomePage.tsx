@@ -146,9 +146,12 @@ const HomePage = () => {
             <FilterPanel categories={categories_dict} onFilterChange={onFilterChange}/>
         </div>
         <div id='feed-container'>
-            <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
+            <div id="search-and-add">
+                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
+                <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button> 
+            </div>
             {cities()}
-            <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button> 
+            
         </div>
     </div>
     );
