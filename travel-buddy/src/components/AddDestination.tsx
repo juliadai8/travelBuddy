@@ -49,7 +49,7 @@ const AddDestination: React.FC<AddDestinationInterface> = ({onClose}) => {
 
     const categoryCheckbox = () => {
             const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                const category = e.target.name;
+                const category = e.target.value;
                 const checked = e.target.checked;
                 if (checked) {
                     setCategories(prev => [...prev, category])
