@@ -22,7 +22,8 @@ export const metadata: Metadata = {
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        {children}</body>
+        <div className="content">{children}</div>
+        </body>
     </html>
   );
   }

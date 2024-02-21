@@ -1,5 +1,17 @@
 .link {
-    color: #FFFFFF; 
-    text-decoration: none;
-  }
-  
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  z-index: 3;
+}
+
+.content {
+  padding-top: 60px;
+}
