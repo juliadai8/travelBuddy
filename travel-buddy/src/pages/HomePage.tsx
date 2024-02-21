@@ -37,19 +37,24 @@ const HomePage = () => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
         });
         
-        onAuthStateChanged(auth, (user) => {
+        /* onAuthStateChanged(auth, (user) => {
         if (user) {
             setUser(user);
             //navigate("/admin/event/create");
         } else {
             //navigate("/login")
         }
+        }); */
+        const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+            if (userAuth) {
+                setUser(userAuth);
+            } else {
+                setUser(undefined);
+            }
         });
-
         
         //setUserEmail(localStorage.getItem('user')?.replace(/'/g,'') ?? '');
-
-        if (userEmail === 'theamariabruno@gmail.com') {
+        if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com' ) {
             setAdmin(true);
         } else {
             setAdmin(false);
@@ -61,17 +66,6 @@ const HomePage = () => {
         setUser(undefined);
         await auth.signOut();
     }
-
-    /* useEffect(() => {
-        const firebasecontroller = new firebaseControl();
-
-        // let destinations: DocumentData[] = [];
-        firebasecontroller.getDestinastions().then((destinationsFirebase) => {
-            setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
-        });
-
-    }, [])
- */
 
     const readMore = (index: number) => {
         setDestIndex(index);
