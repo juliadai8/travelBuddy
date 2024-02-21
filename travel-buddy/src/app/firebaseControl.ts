@@ -24,10 +24,16 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export const auth = getAuth(app)
 
-class firebaseControl {
+/* class firebaseControl {
   static getAuth(): import("@firebase/auth").Auth {
-    throw new Error('Method not implemented.');
-  }
+    //throw new Error('Method not implemented.');
+    return auth;
+  } */
+
+  class firebaseControl {
+    static getAuth() {
+      return auth;
+    }
 
   async getDestinastions(){
     const destinationsCol = collection(db, "destinations");
@@ -54,6 +60,8 @@ class firebaseControl {
   getAuthInstance() {
     return auth;
   }
+
+  
 
 };
 

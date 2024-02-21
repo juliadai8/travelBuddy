@@ -10,8 +10,9 @@ import filterDestinationsByType from '../components/FilterDestinations';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { Route, useNavigate } from 'react-router-dom';
 import Link from 'next/link';
-import Login from '../components/LoginComponent';
+//import Login from '../components/LoginComponent';
 import { DocumentData } from 'firebase/firestore';
+//import GoogleLoginButton from '@/components/GoogleLoginButton';
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
@@ -23,21 +24,10 @@ const HomePage = () => {
     const router = useRouter();
     //const navigate = useNavigate();
     const [user, setUser] = useState<User>();
-
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-        if (user) {
-            setUser(user);
-            //navigate("/admin/event/create");
-        } else {
-            //navigate("/login")
-        }
-        });
-    }, [])
-    async function signOut() {
-        setUser(undefined);
-        await auth.signOut();
-    }
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setAdmin] = useState(false);
+    //const [userEmail, setUserEmail] = useState('');
+    const userEmail = localStorage.getItem("user")?.replace(/"/g, "");
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
@@ -46,9 +36,42 @@ const HomePage = () => {
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
         });
+        
+        onAuthStateChanged(auth, (user) => {
+        if (user) {
+            setUser(user);
+            //navigate("/admin/event/create");
+        } else {
+            //navigate("/login")
+        }
+        });
+
+        
+        //setUserEmail(localStorage.getItem('user')?.replace(/'/g,'') ?? '');
+
+        if (userEmail === 'theamariabruno@gmail.com') {
+            setAdmin(true);
+        } else {
+            setAdmin(false);
+        }
+        
+    }, [userEmail, isLoggedIn])
+
+    async function signOut() {
+        setUser(undefined);
+        await auth.signOut();
+    }
+
+    /* useEffect(() => {
+        const firebasecontroller = new firebaseControl();
+
+        // let destinations: DocumentData[] = [];
+        firebasecontroller.getDestinastions().then((destinationsFirebase) => {
+            setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+        });
 
     }, [])
-
+ */
 
     const readMore = (index: number) => {
         setDestIndex(index);
@@ -119,6 +142,7 @@ const HomePage = () => {
                         rating={destin.rating}
                         imgURL={destin.imgUrl}
                         onReadMore={() => readMore(i)}
+                        isLoggedIn={!!user}
                     />
                 ))}
                 </>
@@ -149,8 +173,16 @@ const HomePage = () => {
         setSearchQuery(event.target.value);
     }
 
+    const handleLoginChange = (loggedIn: boolean) => {
+        setIsLoggedIn(loggedIn);
+      };
+
+      
+
     return (
         <div id='container' className={openModal ? 'blur-background' : undefined}>
+        {/* <GoogleLoginButton onLoginChange={handleLoginChange} />
+        <DestinationBox isLoggedIn={isLoggedIn} /> */}
         
         {openModal && <div className="overlay"></div>}
             {openModal && 
@@ -169,7 +201,7 @@ const HomePage = () => {
         <div id='feed-container'>
             <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
             {cities()}
-            <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button> 
+            {isAdmin && <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button>}
         </div>
     </div>
     );

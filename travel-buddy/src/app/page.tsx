@@ -6,12 +6,12 @@ import { useEffect } from 'react';
 import { getDocs } from 'firebase/firestore';
 import { DocumentData } from 'firebase/firestore';
 import FilterMenu from '../components/FilterMenu';
-import Login from '../components/LoginComponent';
+//import Login from '../components/LoginComponent';
 import '../components/Header'
 
 export default function Home() {
     const firebasecontroller = new firebaseControl;
-    const [loginButtonPopup, setLoginButtonPopup] = useState(false);
+    //const [loginButtonPopup, setLoginButtonPopup] = useState(false);
 
     /* useEffect(() => {
         //fetch destinastions and store in localstorage
@@ -25,12 +25,10 @@ export default function Home() {
 
     return(
         <div>
-            <Login Trigger = {loginButtonPopup} setTrigger={setLoginButtonPopup}>
-            </Login>
             <HomePage/>
-            
         </div>
     )
 
-}
 
+}
+ 

@@ -1,4 +1,4 @@
-import {signInWithEmailAndPassword, Auth, signOut, createUserWithEmailAndPassword} from 'firebase/auth';
+/* import {signInWithEmailAndPassword, Auth, signOut, createUserWithEmailAndPassword} from 'firebase/auth';
 import React, {useState} from 'react';
 import firebaseControl, {auth} from "../app/firebaseControl";
 import firebase from 'firebase/app';
@@ -69,3 +69,4 @@ export default function Login(props:any) {
     <button className='openLogin' onClick={() => props.setTrigger(true)}>åpne</button>
   </div>;
 };
+ */

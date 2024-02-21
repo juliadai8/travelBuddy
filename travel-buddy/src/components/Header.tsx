@@ -2,6 +2,36 @@
 import React from 'react';
 import Link from 'next/link';
 import '../styles/Header.css';  
+import GoogleLoginButton from './GoogleLoginButton';
+
+export const Header: React.FC = () => {
+    return (
+        <header className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#3498db', color: '#ffffff', padding: '10px' }}>
+
+            <Link href="/" className="link"> 
+                <div className="navbar-start" style={{ fontFamily: 'Arial', fontSize: '18px' }}>Home</div>
+            </Link>
+
+            <div className="navbar-end" style={{ display: 'flex' }}>
+                <GoogleLoginButton/>
+                
+                <div style={{ marginRight: '10px', fontFamily: 'Arial', fontSize: '18px' }}>About</div>
+                <div style={{ marginRight: '10px', fontFamily: 'Arial', fontSize: '18px'}}>Trips</div>
+                <div style={{ marginRight: '10px', fontFamily: 'Arial', fontSize: '18px'}}>Profile</div>
+                
+            </div>
+        </header>
+    );
+}
+
+export default Header;
+     
+
+
+/* "use client";
+import React from 'react';
+import Link from 'next/link';
+import '../styles/Header.css';  
 import '../components/LoginComponent'
 import '../app/page'
 import HomePage from '../pages/HomePage';
@@ -16,10 +46,10 @@ export const Header: React.FC = (props:any) => {
             </Link>
 
             <div className="navbar-end" style={{ display: 'flex' }}>
-                <button style={{ marginRight: '10px',fontFamily: 'Arial', fontSize: '18px' }}>Login</button>
+                /GoogleLoginButton
 
                 
-                    <div style={{ marginRight: '10px', fontFamily: 'Arial', fontSize: '18px' }}>About</div>
+                <div style={{ marginRight: '10px', fontFamily: 'Arial', fontSize: '18px' }}>About</div>
                
 
                 <div style={{ marginRight: '10px', fontFamily: 'Arial', fontSize: '18px'}}>Profile</div>
@@ -50,3 +80,4 @@ export const Header: React.FC = (props:any) => {
 export default Header;
      
 
+ */
