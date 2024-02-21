@@ -4,7 +4,6 @@ import FilterPanel from '../components/FilterPanel';
 import firebaseControl, { auth } from '../app/firebaseControl';
 import '../styles/HomePage.css';
 import { useRouter } from 'next/navigation';
-import NewDestination from '@/pages/NewDestination';
 import DestinationModal from '../components/DestinationModal';
 import filterDestinationsByType from '../components/FilterDestinations';
 import { User, onAuthStateChanged } from 'firebase/auth';
@@ -12,7 +11,7 @@ import { Route, useNavigate } from 'react-router-dom';
 import Link from 'next/link';
 //import Login from '../components/LoginComponent';
 import { DocumentData } from 'firebase/firestore';
-//import GoogleLoginButton from '@/components/GoogleLoginButton';
+import AddDestination from '../components/AddDestination';
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
@@ -21,6 +20,8 @@ const HomePage = () => {
     const [destIndex, setDestIndex] = useState(0);
     const [scrollMem, setScrollMem] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
+    const [openAddDestination, setOpenAddDestination] = useState<boolean>(false);
+    const [destinationsChanged, setDestinationsChanged] = useState<boolean>(false);
     const router = useRouter();
     //const navigate = useNavigate();
     const [user, setUser] = useState<User>();
@@ -35,6 +36,7 @@ const HomePage = () => {
         // let destinations: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+            setDestinationsChanged(false);
         });
         
         /* onAuthStateChanged(auth, (user) => {
@@ -60,7 +62,7 @@ const HomePage = () => {
             setAdmin(false);
         }
         
-    }, [userEmail, isLoggedIn])
+    }, [destinationsChanged, isLoggedIn, userEmail])
 
     async function signOut() {
         setUser(undefined);
@@ -167,6 +169,12 @@ const HomePage = () => {
         setSearchQuery(event.target.value);
     }
 
+    const closeAddDestination = () => {
+        setOpenAddDestination(false);
+        setDestinationsChanged(true);
+        window.scrollTo(0, scrollMem);
+    }
+
     const handleLoginChange = (loggedIn: boolean) => {
         setIsLoggedIn(loggedIn);
       };
@@ -174,30 +182,30 @@ const HomePage = () => {
       
 
     return (
-        <div id='container' className={openModal ? 'blur-background' : undefined}>
-        {/* <GoogleLoginButton onLoginChange={handleLoginChange} />
-        <DestinationBox isLoggedIn={isLoggedIn} /> */}
-        
-        {openModal && <div className="overlay"></div>}
-            {openModal && 
-                <DestinationModal 
-                city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city} 
-                country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
-                tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
-                onClose={() => closeModal()}/>}
-
-        <div id='filter-container'>
-            <FilterPanel categories={categories_dict} onFilterChange={onFilterChange}/>
+        <div id='container' className={openModal || openAddDestination ? 'blur-background' : undefined}>
+            {isAdmin && (<button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
+                Add new travel destination
+            </button>)} 
+            {(openModal || openAddDestination) && <div className="overlay"></div>}
+            {openModal &&
+                <DestinationModal
+                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
+                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
+                    rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
+                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
+                    description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
+                    imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    onClose={() => closeModal()} />}
+            <div id='filter-container'>
+                <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
+            </div>
+            <div id='feed-container'>
+                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations" />
+                {cities()}
+            </div>
+            {openAddDestination && (<AddDestination onClose={() => closeAddDestination()} />)}
         </div>
-        <div id='feed-container'>
-            <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
-            {cities()}
-            {isAdmin && <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button>}
-        </div>
-    </div>
+    
     );
 };
 
