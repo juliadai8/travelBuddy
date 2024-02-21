@@ -127,8 +127,10 @@ const HomePage = () => {
     const handleSearchChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setSearchQuery(event.target.value);
     }
+    
 
     return (
+        
         <div id='container' className={openModal ? 'blur-background' : undefined}>
         
         {openModal && <div className="overlay"></div>}
@@ -142,17 +144,20 @@ const HomePage = () => {
                 imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
                 onClose={() => closeModal()}/>}
 
-        <div id='filter-container'>
-            <FilterPanel categories={categories_dict} onFilterChange={onFilterChange}/>
+             
+        <div id='search-container'>
+            <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
+            <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button>
         </div>
-        <div id='feed-container'>
-            <div id="search-and-add">
-                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
-                <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button> 
+        
+            <div id='filter-container'>
+                <FilterPanel categories={categories_dict} onFilterChange={onFilterChange}/>
             </div>
-            {cities()}
+
+            <div id='feed-container'>
+                {cities()}
             
-        </div>
+            </div>
     </div>
     );
 };
