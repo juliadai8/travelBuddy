@@ -39,14 +39,6 @@ const HomePage = () => {
             setDestinationsChanged(false);
         });
         
-        /* onAuthStateChanged(auth, (user) => {
-        if (user) {
-            setUser(user);
-            //navigate("/admin/event/create");
-        } else {
-            //navigate("/login")
-        }
-        }); */
         const unsubscribe = auth.onAuthStateChanged((userAuth) => {
             if (userAuth) {
                 setUser(userAuth);
