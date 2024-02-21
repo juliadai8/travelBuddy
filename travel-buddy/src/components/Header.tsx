@@ -14,10 +14,7 @@ export const Header: React.FC = () => {
 
             <div className="navbar-end" style={{ display: 'flex' }}>
                 <GoogleLoginButton/>
-                
-                <div style={{ marginRight: '10px', fontFamily: 'Arial', fontSize: '18px' }}>About</div>
-                <div style={{ marginRight: '10px', fontFamily: 'Arial', fontSize: '18px'}}>Trips</div>
-                <div style={{ marginRight: '10px', fontFamily: 'Arial', fontSize: '18px'}}>Profile</div>
+        
                 
             </div>
         </header>
