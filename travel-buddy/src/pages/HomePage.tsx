@@ -198,11 +198,15 @@ const HomePage = () => {
                     description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
                     imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
                     onClose={() => closeModal()} />}
+            <div id='search-container'>
+                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
+                
+            </div>
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
             <div id='feed-container'>
-                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations" />
+                
                 {cities()}
             </div>
             {openAddDestination && (<AddDestination onClose={() => closeAddDestination()} />)}
