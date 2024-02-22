@@ -64,7 +64,7 @@ const HomePage = () => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
             setDestinationsChanged(false);
         });
-    }, [])
+    }, [destinationsChanged])
 
     async function signOut() {
         setUser(undefined);
