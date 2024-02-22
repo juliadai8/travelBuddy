@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import DestinationBox from '../components/DestinationBox';
-import FilterPanel from '../components/FilterPanel';
 import firebaseControl from '../app/firebaseControl';
 import '../styles/HomePage.css';
 import { useRouter } from 'next/navigation';
-import NewDestination from '@/pages/NewDestination';
 import DestinationModal from '../components/DestinationModal';
-import filterDestinationsByType from '../components/FilterDestinations';
 import { DocumentData } from 'firebase/firestore';
+import AddDestination from '../components/AddDestination';
+import FilterPanel from '../components/FilterPanel';
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
@@ -16,7 +15,8 @@ const HomePage = () => {
     const [destIndex, setDestIndex] = useState(0);
     const [scrollMem, setScrollMem] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
-    const router = useRouter();
+    const [openAddDestination, setOpenAddDestination] = useState<boolean>(false);
+    const [destinationsChanged, setDestinationsChanged] = useState<boolean>(false);
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
@@ -24,9 +24,10 @@ const HomePage = () => {
         // let destinations: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+            setDestinationsChanged(false);
         });
 
-    }, [])
+      }, [destinationsChanged])
 
 
     const readMore = (index: number) => {
@@ -127,38 +128,38 @@ const HomePage = () => {
     const handleSearchChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setSearchQuery(event.target.value);
     }
-    
+
+    const closeAddDestination = () => {
+        setOpenAddDestination(false);
+        setDestinationsChanged(true);
+        window.scrollTo(0, scrollMem);
+    }
 
     return (
-        
-        <div id='container' className={openModal ? 'blur-background' : undefined}>
-        
-        {openModal && <div className="overlay"></div>}
-            {openModal && 
-                <DestinationModal 
-                city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city} 
-                country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
-                tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
-                onClose={() => closeModal()}/>}
-
-             
-        <div id='search-container'>
-            <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
-            <button onClick={() => router.push('/NewDestination')}>Add new travel destination</button>
-        </div>
-        
+        <div id='container' className={openModal || openAddDestination ? 'blur-background' : undefined}>
+            <button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
+                Add new travel destination
+            </button> 
+            {(openModal || openAddDestination) && <div className="overlay"></div>}
+            {openModal &&
+                <DestinationModal
+                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
+                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
+                    rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
+                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
+                    description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
+                    imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    onClose={() => closeModal()} />}
             <div id='filter-container'>
-                <FilterPanel categories={categories_dict} onFilterChange={onFilterChange}/>
+                <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
-
             <div id='feed-container'>
+                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations" />
                 {cities()}
-            
             </div>
-    </div>
+            {openAddDestination && (<AddDestination onClose={() => closeAddDestination()} />)}
+        </div>
+    
     );
 };
 
