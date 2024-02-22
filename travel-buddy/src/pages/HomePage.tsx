@@ -31,14 +31,14 @@ const HomePage = () => {
     const userEmail = localStorage.getItem("user")?.replace(/"/g, "");
 
     useEffect(() => {
-        const firebasecontroller = new firebaseControl();
-
+        
+/* 
         // let destinations: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
             setDestinationsChanged(false);
         });
-        
+         */
         const unsubscribe = auth.onAuthStateChanged((userAuth) => {
             if (userAuth) {
                 setUser(userAuth);
@@ -57,6 +57,14 @@ const HomePage = () => {
         }
         
     }, [destinationsChanged, isLoggedIn, userEmail])
+
+    useEffect(() => {
+        const firebasecontroller = new firebaseControl();
+        firebasecontroller.getDestinastions().then((destinationsFirebase) => {
+            setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+            setDestinationsChanged(false);
+        });
+    }, [])
 
     async function signOut() {
         setUser(undefined);
