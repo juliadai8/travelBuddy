@@ -119,7 +119,7 @@ const HomePage = () => {
                 return true;
             }
             // If searchQuery is not empty, only return true for destinations that include the searchQuery in their category
-            return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase) || category.some(c => c.includes(searchQueryLowerCase));
+            return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase); //|| category.some(c => c.includes(searchQueryLowerCase));
         });
 }
     
@@ -185,9 +185,7 @@ const HomePage = () => {
 
     return (
         <div id='container' className={openModal || openAddDestination ? 'blur-background' : undefined}>
-            {isAdmin && (<button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
-                Add new travel destination
-            </button>)} 
+            
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             {openModal &&
                 <DestinationModal
@@ -201,8 +199,13 @@ const HomePage = () => {
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
-            <div id='feed-container'>
-                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations" />
+            <div id='search-container'>
+                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
+                <button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
+                Add new travel destination
+            </button> 
+            </div>
+            <div id='feed-container'>   
                 {cities()}
             </div>
             {openAddDestination && (<AddDestination onClose={() => closeAddDestination()} />)}
