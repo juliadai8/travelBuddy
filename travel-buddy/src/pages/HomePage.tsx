@@ -44,8 +44,8 @@ const HomePage = () => {
                 setUser(userAuth);
             } else {
                 setUser(undefined);
-                closeModal();
-                closeAddDestination();
+                setOpenModal(false);
+                setOpenAddDestination(false);
             }
         });
         
