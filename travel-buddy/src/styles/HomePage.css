@@ -46,3 +46,23 @@
     z-index: 3;
     border-radius: 10px;
 }
+
+#search-container {
+    width: 50%;
+    display: flex;
+    direction: row;
+    justify-content: space-between;
+    left: auto;
+    height: 50px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#search-container input { 
+    flex-grow: 1;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding-left: 10px;
+    padding-right: 10px;     
+}
