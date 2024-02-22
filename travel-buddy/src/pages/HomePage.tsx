@@ -185,7 +185,9 @@ const HomePage = () => {
 
     return (
         <div id='container' className={openModal || openAddDestination ? 'blur-background' : undefined}>
-            
+            {isAdmin && (<button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
+                Add new travel destination
+            </button>)} 
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             {openModal &&
                 <DestinationModal
@@ -198,9 +200,7 @@ const HomePage = () => {
                     onClose={() => closeModal()} />}
             <div id='search-container'>
                 <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
-                {isAdmin && (<button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
-                Add new travel destination
-            </button>)} 
+                
                 
             </div>
             <div id='filter-container'>
