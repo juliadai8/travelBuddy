@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import DestinationBox from '../components/DestinationBox';
-import firebaseControl from '../app/firebaseControl';
+import FilterPanel from '../components/FilterPanel';
+import firebaseControl, { auth } from '../app/firebaseControl';
 import '../styles/HomePage.css';
 import { useRouter } from 'next/navigation';
 import DestinationModal from '../components/DestinationModal';
+import filterDestinationsByType from '../components/FilterDestinations';
+import { User, onAuthStateChanged } from 'firebase/auth';
+import { Route, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+//import Login from '../components/LoginComponent';
 import { DocumentData } from 'firebase/firestore';
 import AddDestination from '../components/AddDestination';
-import FilterPanel from '../components/FilterPanel';
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
@@ -17,18 +22,54 @@ const HomePage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [openAddDestination, setOpenAddDestination] = useState<boolean>(false);
     const [destinationsChanged, setDestinationsChanged] = useState<boolean>(false);
+    const router = useRouter();
+    //const navigate = useNavigate();
+    const [user, setUser] = useState<User>();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setAdmin] = useState(false);
+    //const [userEmail, setUserEmail] = useState('');
+    const userEmail = localStorage.getItem("user")?.replace(/"/g, "");
 
     useEffect(() => {
-        const firebasecontroller = new firebaseControl();
-
+        
+/* 
         // let destinations: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
             setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
             setDestinationsChanged(false);
         });
+         */
+        const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+            if (userAuth) {
+                setUser(userAuth);
+            } else {
+                setUser(undefined);
+                setOpenModal(false);
+                setOpenAddDestination(false);
+            }
+        });
+        
+        //setUserEmail(localStorage.getItem('user')?.replace(/'/g,'') ?? '');
+        if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com' ) {
+            setAdmin(true);
+        } else {
+            setAdmin(false);
+        }
+        
+    }, [destinationsChanged, isLoggedIn, userEmail])
 
-      }, [destinationsChanged])
+    useEffect(() => {
+        const firebasecontroller = new firebaseControl();
+        firebasecontroller.getDestinastions().then((destinationsFirebase) => {
+            setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+            setDestinationsChanged(false);
+        });
+    }, [destinationsChanged])
 
+    async function signOut() {
+        setUser(undefined);
+        await auth.signOut();
+    }
 
     const readMore = (index: number) => {
         setDestIndex(index);
@@ -99,6 +140,7 @@ const HomePage = () => {
                         rating={destin.rating}
                         imgURL={destin.imgUrl}
                         onReadMore={() => readMore(i)}
+                        isLoggedIn={!!user}
                     />
                 ))}
                 </>
@@ -134,6 +176,12 @@ const HomePage = () => {
         setDestinationsChanged(true);
         window.scrollTo(0, scrollMem);
     }
+
+    const handleLoginChange = (loggedIn: boolean) => {
+        setIsLoggedIn(loggedIn);
+      };
+
+      
 
     return (
         <div id='container' className={openModal || openAddDestination ? 'blur-background' : undefined}>
