@@ -59,13 +59,16 @@ export const auth = getAuth(app)
   async addDestination(addCity: string, addCountry: string, addImgURL?: string, addCategory?: string[], addDescription?: string) {
     const docRef = collection(db, "destinations");
     try {
-      await addDoc(docRef, {
+      const newDocRef = await addDoc(docRef, {
         city: addCity,
         country: addCountry,
         imgUrl: addImgURL,
         category: addCategory,
         description: addDescription || ""
       });
+
+      const newReviewsCol = collection(newDocRef, "reviews");
+      await addDoc(newReviewsCol, {});
     }
     catch (e) {
       console.error(e)
