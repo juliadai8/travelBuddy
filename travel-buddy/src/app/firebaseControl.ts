@@ -6,7 +6,8 @@ import {
   getFirestore, collection, getDocs,
   addDoc,
   doc,
-  updateDoc
+  updateDoc,
+  deleteDoc
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -76,6 +77,15 @@ export const auth = getAuth(app)
     }
     catch(e) {
       console.error(e);
+    }
+  }
+
+  async deleteDestination(destinationID: string) {
+    try {
+      await deleteDoc(doc(db, "destinations", destinationID))
+    }
+    catch(e) {
+      console.log(e);
     }
   }
 
