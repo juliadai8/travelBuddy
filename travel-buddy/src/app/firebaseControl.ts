@@ -46,6 +46,16 @@ export const auth = getAuth(app)
     return destinationsList;
   }
 
+  async getReviewsForDestination(destinationID: string) {
+    const reviewsCol = collection(db, "destinations", destinationID, "revi");
+    const reviewsSnapshot = await getDocs(reviewsCol);
+    const reviewList = reviewsSnapshot.docs.map(reviewDoc => ({
+        reviewID: reviewDoc.id,
+        ...reviewDoc.data()
+    }));
+    return reviewList;
+  }
+
   async addDestination(addCity: string, addCountry: string, addImgURL?: string, addCategory?: string[], addDescription?: string) {
     const docRef = collection(db, "destinations");
     try {
