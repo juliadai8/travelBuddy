@@ -74,6 +74,20 @@ export const auth = getAuth(app)
       console.error(e)
     }
   }
+
+  async addReview(destinationID: string, rating: number, userID: string) {
+    const docRef = collection(db, "destinations", destinationID, "reviews");
+    try {
+        const newDocRef = await addDoc(docRef, {
+          rating: rating,
+          userID: userID
+        });
+      }
+      catch (e) {
+        console.error(e)
+      }
+  }
+
   getAuthInstance() {
     return auth;
   }
