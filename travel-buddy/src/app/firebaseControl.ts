@@ -39,7 +39,10 @@ export const auth = getAuth(app)
   async getDestinastions(){
     const destinationsCol = collection(db, "destinations");
     const destinationsSnapshot = await getDocs(destinationsCol);
-    const destinationsList = destinationsSnapshot.docs.map(doc => doc.data());
+    const destinationsList = destinationsSnapshot.docs.map(doc =>  ({
+      id: doc.id,
+      ...doc.data()
+    }));
     return destinationsList;
   }
 
