@@ -73,8 +73,6 @@ describe('AddDestination allows', () => {
 })
 
 describe('Clicking add new destination', () => {
-    beforeEach(() => {
-    })
     it('is not allowed when fields are empty', () => {
         const onCloseMock = jest.fn();
         const {getByRole} = render(<AddDestination onClose={onCloseMock}/>);
