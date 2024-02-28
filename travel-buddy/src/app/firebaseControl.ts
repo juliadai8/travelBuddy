@@ -47,7 +47,7 @@ export const auth = getAuth(app)
   }
 
   async getReviewsForDestination(destinationID: string) {
-    const reviewsCol = collection(db, "destinations", destinationID, "revi");
+    const reviewsCol = collection(db, "destinations", destinationID, "reviews");
     const reviewsSnapshot = await getDocs(reviewsCol);
     const reviewList = reviewsSnapshot.docs.map(reviewDoc => ({
         reviewID: reviewDoc.id,
