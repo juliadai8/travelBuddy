@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/DestinationBox.css';
+import StarRating from '../components/StarRating';
 
 interface DestinationInterface {
     country: string;
@@ -22,7 +23,7 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                    <p>{rating}</p>
+                    <StarRating rating={2.5} />
                 </div>
                 <div className="button-container">
                     <button onClick={isLoggedIn ? onReadMore : () => alert('Please log in to read more')}>

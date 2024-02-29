@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import '../styles/DestinationModal.css';
+import StarRating from '../components/StarRating';
 
 interface DestinationInterface {
     country: string;
@@ -12,6 +13,7 @@ interface DestinationInterface {
 }
 
 // Note: The button must be alignes with the rating-stars when they are added
+// Note: Currently, rating is hard coded in. Should fetch from firestore.
 const DestinationModal: React.FC<DestinationInterface> = ({country, city, rating, tags, description, imgURL, onClose}) => {
 
     return (
@@ -23,7 +25,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({country, city, rating
                     <h1 className='not-blur'>{city}, {country}</h1>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
-                    {rating ? 'Rating: ' + rating : 'This destination does not have a rating yet'}
+                    <StarRating rating={3.6}/> 
                 </div>
                 <div id='tag-container' className='addPadding not-blur'>
                     {tags.length ? 'Tags: ' + tags?.join(", ") : 'There are no tags for this destination'}
