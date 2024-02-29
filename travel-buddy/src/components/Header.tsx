@@ -3,6 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import '../styles/Header.css';  
 import GoogleLoginButton from './GoogleLoginButton';
+import '../styles/myProfile.css'; 
 
 export const Header: React.FC = () => {
     return (
@@ -13,6 +14,10 @@ export const Header: React.FC = () => {
             </Link>
 
             <div className="navbar-end" style={{ display: 'flex' }}>
+                <Link href="/MyProfile" className='link'>
+                    <div className='navbar-start' style={{ fontFamily: 'Arial', fontSize: '18px', paddingRight: '20px', justifyContent: 'space-between'}}>My Profile</div>
+                </Link>
+
                 <GoogleLoginButton/>
         
                 
