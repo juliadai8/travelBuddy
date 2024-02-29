@@ -4,7 +4,8 @@ import { getAuth } from "firebase/auth";
 import {
   getFirestore, collection, getDocs,
   addDoc,
-  doc
+  doc,
+  setDoc
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -61,6 +62,16 @@ export const auth = getAuth(app)
   }
   getAuthInstance() {
     return auth;
+  }
+
+  async setUser(userID: string) {
+    try {
+      await setDoc(doc(db, "user_destinations", userID),{})
+      
+    } catch (e) {
+      console.error(e)
+      
+    }
   }
 
   

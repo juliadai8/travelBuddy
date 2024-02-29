@@ -14,13 +14,20 @@ interface DestinationInterface {
 // Note: The button must be alignes with the rating-stars when they are added
 const DestinationModal: React.FC<DestinationInterface> = ({country, city, rating, tags, description, imgURL, onClose}) => {
 
+    const handleBeenHereClick = () => {
+        // Handle the logic for "I've been here" button click
+    };
+
     return (
         <div id='modal-container' className='not-blur'>
             <button id='x-button' onClick={onClose} className='not-blur'>X</button>
             <img src={imgURL} alt="Error" className='not-blur'/>
             <div id='info-container' className='not-blur'>
                 <div id='title-container' className='not-blur'>
-                    <h1 className='not-blur'>{city}, {country}</h1>
+                    <h1 className='not-blur'>
+                    {city}, {country}
+                    <button onClick={handleBeenHereClick} className='not-blur' style={{ marginLeft: '10px'}}>I've been here</button>
+                    </h1>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
                     {rating ? 'Rating: ' + rating : 'This destination does not have a rating yet'}
@@ -33,7 +40,10 @@ const DestinationModal: React.FC<DestinationInterface> = ({country, city, rating
                 </div>
             </div>
         </div>
+
+        
     );
+   
 }
 
 export default DestinationModal;
