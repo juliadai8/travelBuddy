@@ -12,6 +12,7 @@ interface DestinationInterface {
 }
 
 // Note: The button must be alignes with the rating-stars when they are added
+// Note: Currently, rating is hard coded in. Should fetch from firestore.
 const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onReadMore, isLoggedIn}) => {
 
     return (
