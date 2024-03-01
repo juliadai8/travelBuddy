@@ -31,6 +31,10 @@ img {
 
 .more-div {
     width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
 h1 {
@@ -85,4 +89,13 @@ button:hover {
 button:active {
     background-color: rgb(100, 100, 100);
     transform: scale(0.97);
+}
+
+.weather-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 32px;
+    padding-right: 16px;
+    height: 32px;
 }
