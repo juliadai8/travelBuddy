@@ -15,17 +15,20 @@ const WeatherDisplay: React.FC<WeatherDisplayInterface> = ({country, city}) => {
     useEffect(() => {
         const countryCodeApi = `https://restcountries.com/v3.1/name/${country}`;
         
+        //First make a fetch request to restcountries to get country code
         fetch(countryCodeApi)
             .then(response => response.json())
             .then((data) => {
                 const countryCode = data[0].cca2;
                 const geoCodingApi = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${countryCode}&limit=1&appid=971ff3c555137597d9b8ceea73588668`;
 
+                //Then make a fetch request to openweathermap to get geolocation of city (Max 60 requests/minute)
                 fetch(geoCodingApi)
                     .then(response => response.json())
                     .then((data) => {
                         const weatherApi = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${data[0].lat}&lon=${data[0].lon}`;
 
+                        //Then make a fetch request to meteorologisk institutt to get weather data
                         fetch(weatherApi)
                             .then(response => response.json())
                             .then(data => {
