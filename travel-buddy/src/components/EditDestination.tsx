@@ -137,7 +137,7 @@ const EditDestination: React.FC<EditDestinationInterface> = ({id, city, country,
                     </form>
                     <h4 className='not-blur'>Description</h4>
                     <textarea className='not-blur' defaultValue={currentDescription} rows={12} cols={60} style={{ resize: "none" }} onChange={e => setDescription(e.target.value)}/>
-                    <button id='addButton' className='not-blur' onClick={handleSubmit}>Update destination</button>
+                    <button id='editButton' className='not-blur' onClick={handleSubmit}>Update destination</button>
                 </div>
             </div>
         </div>
