@@ -121,7 +121,7 @@ const EditDestination: React.FC<EditDestinationInterface> = ({id, city, country,
                     <form className='not-blur'>
                         <label className='not-blur'>
                             Image url:
-                            <input name='imgURL' className='not-blur' onChange={e => setImage(e.target.value)}/>
+                            <input name='imgURL' id='imgURL' className='not-blur' onChange={e => setImage(e.target.value)}/>
                         </label>
                         <select className='not-blur' defaultValue='' onChange={e => setNewClimate(e.target.value)}>
                             <option value='' disabled>climate</option>

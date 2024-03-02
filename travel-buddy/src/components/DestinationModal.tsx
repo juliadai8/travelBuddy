@@ -23,12 +23,20 @@ interface DestinationInterface {
 const DestinationModal: React.FC<DestinationInterface> = ({id, country, city, rating, tags, description, imgURL, admin, onClose, onEdit, onDelete}) => {
     const [reviewList, setReviewList] = useState<DocumentData[]>([]);
 
+    
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
             setReviewList(JSON.parse(JSON.stringify(reviews)));
         });
     }, []);
+
+    function deleteConfirmation() {
+        let text = "Are you sure you wan't to delete this destination?\nClick either OK or Cancel.";
+        if (confirm(text) == true && onDelete) {
+            onDelete();
+        } 
+    }
 
     return (
         <div id='modal-container' className='not-blur'>
@@ -42,7 +50,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({id, country, city, ra
                 </button>
             }
             {
-                admin && <button id='delete-button' className='not-blur' onClick={onDelete}>
+                admin && <button id='delete-button' className='not-blur' onClick={deleteConfirmation}>
                     Delete
                     <FontAwesomeIcon id='icon' className='not-blur' icon={faTrashCan}/>
                 </button>
