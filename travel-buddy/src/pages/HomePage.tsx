@@ -27,11 +27,14 @@ const HomePage = () => {
     const [user, setUser] = useState<User>();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setAdmin] = useState(false);
-    //const [userEmail, setUserEmail] = useState('');
-    const userEmail = localStorage.getItem("user")?.replace(/"/g, "");
+    const [userEmail, setUserEmail] = useState<string | undefined>('');
 
     useEffect(() => {
-        
+        setUserEmail(localStorage.getItem("user")?.replace(/"/g, ""));
+    }, [])
+
+    useEffect(() => {
+    
 /* 
         // let destinations: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
