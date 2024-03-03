@@ -75,11 +75,12 @@ export const auth = getAuth(app)
     }
   }
 
-  async addReview(destinationID: string, rating: number, userID: string) {
+  async addReview(destinationID: string, rating: number, comment: string, userID: string) {
     const docRef = collection(db, "destinations", destinationID, "reviews");
     try {
         const newDocRef = await addDoc(docRef, {
           rating: rating,
+          comment: comment,
           userID: userID
         });
       }
