@@ -53,7 +53,7 @@ const HomePage = () => {
         });
         
         //setUserEmail(localStorage.getItem('user')?.replace(/'/g,'') ?? '');
-        if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com' ) {
+        if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com' || userEmail === 'adrianhsolberg@gmail.com') {
             setAdmin(true);
         } else {
             setAdmin(false);
@@ -202,6 +202,7 @@ const HomePage = () => {
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             {openModal &&
                 <DestinationModal
+                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
                     city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
                     country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
                     rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
