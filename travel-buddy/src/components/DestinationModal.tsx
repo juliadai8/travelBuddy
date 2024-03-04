@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import '../styles/DestinationModal.css';
 import firebaseControl from '../app/firebaseControl';
 import { DocumentData } from 'firebase/firestore';
-import Box from "@mui/material/Box";
-import StarIcon from "@mui/icons-material/Star";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { User } from 'firebase/auth';
+import { Rating } from '@mui/material';
 
 
 
@@ -26,11 +24,10 @@ interface DestinationInterface {
 // Note: The button must be alignes with the rating-stars when they are added
 const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, rating, tags, description, imgURL, user, onClose }) => {
     const [reviewList, setReviewList] = useState<DocumentData[]>([]);
-    const firebasecontroller = new firebaseControl();
-    const [activeStar, setActiveStar] = useState(-1);
-    const totalStars = 5;
+    const [activeStar, setActiveStar] = useState<number>(2.5);
     const [comment, setComment] = useState<string>("");
     const [hasReviewed, setHasReviewed] = useState<boolean>(false);
+    const firebasecontroller = new firebaseControl();
 
     useEffect(() => {
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
@@ -52,58 +49,12 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
 
     const submitReview = () => {
         if (user && !hasReviewed) {
-            firebasecontroller.addReview(id, activeStar + 1, comment, user.email);
+            firebasecontroller.addReview(id, activeStar, comment, user.email);
         }
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
             setReviewList(JSON.parse(JSON.stringify(reviews)));
         });
-    }
-
-    const starRating = () => {
-        
-        const handleClick = (index: React.SetStateAction<number>) => {
-            setActiveStar(index);
-        };
-        return (
-    
-            <Box
-                sx={{
-                    display: "inline-flex",
-                    position: "relative",
-                    cursor: "pointer",
-                    textAlign: "left",
-    
-                }}
-            >
-                {[...new Array(totalStars)].map((arr, index) => {
-                    return (
-                        <Box
-                            position="relative"
-                            sx={{
-                                cursor: "pointer",
-                            }}
-                            onClick={() => handleClick(index)}
-                        >
-                            <Box
-                                sx={{
-                                    width: index <= activeStar ? "100%" : "0%",
-                                    overflow: "hidden",
-                                    position: "absolute",
-                                }}
-                            >
-                                <StarIcon />
-                            </Box>
-                            <Box>
-                                <StarBorderIcon />
-                            </Box>
-                        </Box>
-                    );
-                })}
-            </Box>
-    
-        );
-    };
-    
+    } 
 
     return (
         <div id='modal-container' className='not-blur'>
@@ -126,23 +77,26 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
                     <div id='myrating-container' className='addPadding not-blur'>
                         Add review:
                         <div id="starRating" className='not-blur'>
-                            {starRating()}
+                            <Rating name="half-rating" defaultValue={2.5} precision={0.5} onChange={(event, value) => setActiveStar(value as number)}/> 
                         </div>
                         <textarea id="review-destinations" rows={1} value={comment} onChange={handleCommentChange} placeholder="Optional comment"></textarea>
                         <button id="submit-review" className="addPadding not-blur"  onClick={submitReview}>Submit</button>
                     </div>
                 }
-                <div id="reviewfeed-container" className='addPadding not-blur'>
-                    <h2>Reviews</h2>
-                    {reviewList.map((review) => (
-                        <div className='singlereview-container'>
-                            <hr/>
-                            <div>{review.email}</div>
-                            <div>{review.comment}</div>
-                        </div>
-                    ))
-                    }
-                </div>
+                {reviewList.filter(review => review.comment !== "").length != 0 && 
+                    <div id="reviewfeed-container" className='addPadding not-blur'>
+                        <h3>Reviews</h3>
+                        {reviewList.filter(review => review.comment !== "").map((review) => (
+                            <div className='singlereview-container'>
+                                <hr/>
+                                <div style={{marginBottom: '5px'}}>{review.email}</div>
+                                <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/> 
+                                <div>{review.comment}</div>
+                            </div>
+                        ))
+                        }
+                    </div>
+                }
             </div>
         </div>
     );

@@ -52,7 +52,7 @@ button:active {
     border-width: 1px;
 }
 
-#title-container h1 h2 {
+#title-container h1, h3 {
     color: #3A3A3A;
 }
 
@@ -107,7 +107,7 @@ button:active {
 
 #submit-review {
     padding: 5px; 
-    margin: 0;
+    margin: 5px;
     box-sizing: border-box; 
 }
 
