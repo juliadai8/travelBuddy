@@ -114,7 +114,7 @@ const EditDestination: React.FC<EditDestinationInterface> = ({id, city, country,
             <div id='editDestination' className='not-blur'>
                 <div id='display-current-destination' className='not-blur'>
                     <img src={imgUrl} alt="Error" className='not-blur'/>
-                    <h1 className='not-blur'>{city}, {country}</h1>
+                    <h2 className='not-blur'>{city}, {country}</h2>
                 </div>
                 <div id='editDestination-inner' className='not-blur'>
                     <h5 id='statusMessage' className='not-blur'>{status}</h5>
