@@ -40,8 +40,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
 
     useEffect(() => {
         if (user) {
-            if (reviewList.filter(review => review.userID === user.uid).length !== 0) {
-                console.log("hei");
+            if (reviewList.filter(review => review.email === user.email).length !== 0) {
                 setHasReviewed(true);
             }
         }
@@ -55,6 +54,9 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
         if (user && !hasReviewed) {
             firebasecontroller.addReview(id, activeStar + 1, comment, user.email);
         }
+        firebasecontroller.getReviewsForDestination(id).then((reviews) => {
+            setReviewList(JSON.parse(JSON.stringify(reviews)));
+        });
     }
 
     const starRating = () => {
