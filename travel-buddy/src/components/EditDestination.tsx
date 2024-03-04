@@ -110,6 +110,7 @@ const EditDestination: React.FC<EditDestinationInterface> = ({id, city, country,
     return (
         <div id='editBox' className='not-blur'>
             <h1 className='not-blur'>Edit destination</h1>
+            <h5 id='statusmessage' className='not-blur'>{status}</h5>
             <button id='x-button' onClick={onClose} className='not-blur'>X</button>
             <div id='editDestination' className='not-blur'>
                 <div id='display-current-destination' className='not-blur'>
@@ -117,7 +118,6 @@ const EditDestination: React.FC<EditDestinationInterface> = ({id, city, country,
                     <h2 className='not-blur'>{city}, {country}</h2>
                 </div>
                 <div id='editDestination-inner' className='not-blur'>
-                    <h5 id='statusMessage' className='not-blur'>{status}</h5>
                     <form className='not-blur'>
                         <label className='not-blur'>
                             Image url:

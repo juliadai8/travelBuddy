@@ -12,6 +12,10 @@
     align-items: center;
 }
 
+#editBox h1 {
+    align-self: center;
+}
+
 #x-button {
     align-self: flex-start;
 }
@@ -41,6 +45,14 @@
     align-items: left;
     font-size: 14px;
     max-width: 50%;
+}
+
+#statusmessage {
+    color: rgb(214, 93, 93);
+    font-weight: 700;
+    font-size: 18px;
+    position: absolute;
+    padding-top: 50px;
 }
 
 #editDestination-inner select {
