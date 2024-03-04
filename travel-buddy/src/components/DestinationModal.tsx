@@ -53,7 +53,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
 
     const submitReview = () => {
         if (user && !hasReviewed) {
-            firebasecontroller.addReview(id, activeStar + 1, comment, user.uid)
+            firebasecontroller.addReview(id, activeStar + 1, comment, user.email);
         }
     }
 
@@ -111,14 +111,6 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
                 <div id='title-container' className='not-blur'>
                     <h1 className='not-blur'>{city}, {country}</h1>
                 </div>
-                <div id='myrating-container' className='addPadding not-blur'>
-                    My rating:
-                    <div id="starRating" className='not-blur'>
-                        {starRating()}
-                    </div>
-                    <textarea id="review-destinations" rows={1} value={comment} onChange={handleCommentChange} placeholder="Optional comment"></textarea>
-                    <button id="submit-review" className="addPadding not-blur"  onClick={submitReview}>Submit</button>
-                </div>
                 <div id="rating-container" className='addPadding not-blur'>
                     {rating ? 'Rating: ' + rating : 'This destination does not have a rating yet'}
                 </div>
@@ -127,6 +119,27 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
                 </div>
                 <div id="description-container" className='addPadding not-blur'>
                     {description ? description : 'No description for this destiantion'}
+                </div>
+                {!hasReviewed && 
+                    <div id='myrating-container' className='addPadding not-blur'>
+                        Add review:
+                        <div id="starRating" className='not-blur'>
+                            {starRating()}
+                        </div>
+                        <textarea id="review-destinations" rows={1} value={comment} onChange={handleCommentChange} placeholder="Optional comment"></textarea>
+                        <button id="submit-review" className="addPadding not-blur"  onClick={submitReview}>Submit</button>
+                    </div>
+                }
+                <div id="reviewfeed-container" className='addPadding not-blur'>
+                    <h2>Reviews</h2>
+                    {reviewList.map((review) => (
+                        <div className='singlereview-container'>
+                            <hr/>
+                            <div>{review.email}</div>
+                            <div>{review.comment}</div>
+                        </div>
+                    ))
+                    }
                 </div>
             </div>
         </div>

@@ -6,7 +6,6 @@
     box-shadow: 0 0 10px 5px #3A3A3A;
     position: absolute;
     z-index: 2;
-    padding: 20px;
 }
 
 .not_blur {
@@ -53,7 +52,7 @@ button:active {
     border-width: 1px;
 }
 
-#title-container h1 {
+#title-container h1 h2 {
     color: #3A3A3A;
 }
 
@@ -89,16 +88,16 @@ button:active {
 #myrating-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
     height: relative; 
-    position: absolute;
-    right: 20px;
+    position: relative;
 }
 
 #review-destinations {
     width: 300px; 
     height: 100px; 
     filter: none;
+    resize: none;
 }
 
 #starRating {
@@ -110,4 +109,10 @@ button:active {
     padding: 5px; 
     margin: 0;
     box-sizing: border-box; 
+}
+
+.singlereview-container {
+    border-top-color: #3A3A3A;
+    opacity: 0.5;
+    justify-content: space-between;
 }
