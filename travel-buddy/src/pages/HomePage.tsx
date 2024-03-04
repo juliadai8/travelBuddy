@@ -12,6 +12,9 @@ import Link from 'next/link';
 //import Login from '../components/LoginComponent';
 import { DocumentData } from 'firebase/firestore';
 import AddDestination from '../components/AddDestination';
+import Box from "@mui/material/Box";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
@@ -121,7 +124,7 @@ const HomePage = () => {
             // If searchQuery is not empty, only return true for destinations that include the searchQuery in their category
             return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase) || category.some(c => c.includes(searchQueryLowerCase));
         });
-}
+    }
     
 
     const cities = () => {
@@ -142,12 +145,20 @@ const HomePage = () => {
                         onReadMore={() => readMore(i)}
                         isLoggedIn={!!user}
                     />
-                ))}
+                    
+                ))
+                
+                }
                 </>
+                
             );
         }
         
     }
+
+    
+      
+      
 
     const closeModal = () => {
         setDestIndex(0);
@@ -207,7 +218,6 @@ const HomePage = () => {
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
             <div id='feed-container'>
-                
                 {cities()}
             </div>
             {openAddDestination && (<AddDestination onClose={() => closeAddDestination()} />)}

@@ -56,6 +56,11 @@ h2 {
     align-items: center;
 }
 
+.rating-container > p {
+    border-color: black;
+    
+}
+
 p {
     margin-right: 67px;
 }
@@ -86,3 +91,5 @@ button:active {
     background-color: rgb(100, 100, 100);
     transform: scale(0.97);
 }
+
+
