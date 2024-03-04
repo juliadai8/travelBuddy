@@ -221,11 +221,16 @@ const HomePage = () => {
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
-            <div id='feed-container'>
-                
+            <div id='feed-container'>   
                 {cities()}
             </div>
-            {openAddDestination && (<AddDestination onClose={() => closeAddDestination()} />)}
+            {openAddDestination && (
+                <AddDestination
+                    checkDuplicates={(country, city) => isDestinationDuplicate(destinationList, country, city)}
+                    destinationList={destinationList}
+                    onClose={() => closeAddDestination()}
+                />
+            )}
         </div>
     
     );
