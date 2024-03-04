@@ -33,7 +33,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({id, country, city, ra
 
     function deleteConfirmation() {
         let text = "Are you sure you wan't to delete this destination?\nClick either OK or Cancel.";
-        if (confirm(text) == true && onDelete) {
+        if (confirm(text) && onDelete) {
             onDelete();
         } 
     }
