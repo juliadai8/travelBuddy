@@ -185,7 +185,7 @@ const HomePage = () => {
 
     return (
         <div id='container' className={openModal || openAddDestination ? 'blur-background' : undefined}>
-            {isAdmin && (<button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
+            {!!user && (<button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
                 Add new travel destination
             </button>)} 
             {(openModal || openAddDestination) && <div className="overlay"></div>}
