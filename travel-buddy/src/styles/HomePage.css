@@ -26,9 +26,8 @@
 
 }
 
-
-
-.blur-background :not(.not-blur) {
+.blur-background #filter-container, .blur-background #feed-container, .blur-background #search-container,
+.blur-background #addDestinationButton{
     filter: blur(2px);
 }
 

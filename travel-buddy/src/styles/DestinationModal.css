@@ -93,7 +93,6 @@ button:active {
     height: relative; 
     position: absolute;
     right: 20px;
-    filter: none !important;
 }
 
 #review-destinations {
@@ -104,6 +103,7 @@ button:active {
 
 #starRating {
     filter: none !important;
+    
 }
 
 #submit-review {
