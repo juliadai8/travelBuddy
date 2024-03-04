@@ -13,50 +13,6 @@ interface DestinationInterface {
     isLoggedIn: boolean;
 }
 
-const starRating = () => {
-    const [activeStar, setActiveStar] = useState(-1);
-  const totalStars = 5;
-  const activeStars = 3;
-  const handleClick = (index: React.SetStateAction<number>) => {
-    setActiveStar(index);
-  };
-  return (
-    <Box
-      sx={{
-        display: "inline-flex",
-        position: "relative",
-        cursor: "pointer",
-        textAlign: "left",
-      }}
-    >
-      {[...new Array(totalStars)].map((arr, index) => {
-        return (
-          <Box
-            position="relative"
-            sx={{
-              cursor: "pointer",
-            }}
-            onClick={() => handleClick(index)}
-          >
-            <Box
-              sx={{
-                width: index <= activeStar ? "100%" : "0%",
-                overflow: "hidden",
-                position: "absolute",
-              }}
-            >
-              <StarIcon />
-            </Box>
-            <Box>
-              <StarBorderIcon />
-            </Box>
-          </Box>
-        );
-      })}
-    </Box>
-  );
-};
-
 // Note: The button must be alignes with the rating-stars when they are added
 const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onReadMore, isLoggedIn}) => {
 
@@ -69,7 +25,6 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                    <p>{starRating()}</p>
                 </div>
                 <div className="button-container">
                     <button onClick={isLoggedIn ? onReadMore : () => alert('Please log in to read more')}>

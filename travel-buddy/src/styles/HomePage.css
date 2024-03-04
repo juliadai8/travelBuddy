@@ -24,10 +24,16 @@
     display: flex;
     z-index: 1;
 
-} 
+}
+
+
 
 .blur-background :not(.not-blur) {
     filter: blur(2px);
+}
+
+.blur-background .not-blur {
+    filter: none !important;
 }
 
 .overlay {
@@ -66,3 +72,4 @@
     padding-left: 10px;
     padding-right: 10px;     
 }
+
