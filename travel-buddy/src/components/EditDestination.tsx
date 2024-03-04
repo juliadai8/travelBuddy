@@ -131,7 +131,7 @@ const EditDestination: React.FC<EditDestinationInterface> = ({id, city, country,
                             <option value='temperate'>Temperate</option>
                             <option value='tropical'>Tropical</option>
                         </select>
-                        <div className='not-blur' id='checkbox-container'>
+                        <div className='not-blur' id='edit-checkboxes'>
                             {categoryCheckbox()}
                         </div>
                     </form>
