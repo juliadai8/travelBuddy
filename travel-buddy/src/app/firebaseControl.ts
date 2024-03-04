@@ -29,7 +29,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const FieldValue = firebase.firestore.FieldValue; // Access FieldValue
 export const auth = getAuth(app)
 
   class firebaseControl {
@@ -118,37 +117,19 @@ export const auth = getAuth(app)
   }
 
 
-  /* async setUser(userID: string) {
+  async setUser(userID: string, destinationID: string) {
+    const collectionRef = collection(db, "user_destinations");
     try {
-      await setDoc(doc(db, "user_destinations", userID),{})
-      
-    } catch (e) {
-      console.error(e)
-      
+      const newDocRef = await addDoc(collectionRef, {
+        destinationID: destinationID,
+        userID: userID
+      });
     }
-  } */
 
-  async setUser(userID: string) {
-    try {
-      await setDoc(doc(db, "user_destinations", userID), {});
-      console.log("User document created successfully for", userID);
-    } catch (e) {
+    catch (e) {
       console.error("Error creating user document:", e);
     }
   }
-
-  async addDestinationToUser(userID: string, destinationID: string) {
-    try {
-      await updateDoc(doc(db, "user_destinations", userID), {
-        destinations: FieldValue.arrayUnion(destinationID) // Access arrayUnion through FieldValue
-      });
-      console.log("Destination added to user's list:", destinationID);
-    } catch (e) {
-      console.error("Error adding destination to user's list:", e);
-    }
-  }
-
-
 
 };
 

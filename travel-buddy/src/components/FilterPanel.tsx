@@ -9,11 +9,11 @@ interface FilterProps {
 const FilterPanel: React.FC<FilterProps> = ({categories, onFilterChange}) => {
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-    const handleTagClick = (tag: string) => {
-        const isSelected = selectedTags.includes(tag);
+    const handleHaveBeenClick = (id: string) => {
+        const isSelected = selectedTags.includes(id);
         const newSelectedTags = isSelected
-            ? selectedTags.filter(t => t !== tag)
-            : [...selectedTags, tag];
+            ? selectedTags.filter(t => t !== id)
+            : [...selectedTags, id];
         setSelectedTags(newSelectedTags);
         onFilterChange(newSelectedTags);
     };

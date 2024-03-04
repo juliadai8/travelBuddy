@@ -24,7 +24,7 @@ const HomePage = () => {
     const [destinationsChanged, setDestinationsChanged] = useState<boolean>(false);
     const router = useRouter();
     //const navigate = useNavigate();
-    const [user, setUser] = useState<User>();
+    const [user, setUser] = useState<User>();    
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setAdmin] = useState(false);
     //const [userEmail, setUserEmail] = useState('');
@@ -189,7 +189,7 @@ const HomePage = () => {
                 Add new travel destination
             </button>)} 
             {(openModal || openAddDestination) && <div className="overlay"></div>}
-            {openModal &&
+            {openModal && user &&
                 <DestinationModal
                     id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
                     city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
@@ -198,6 +198,9 @@ const HomePage = () => {
                     tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
                     description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
                     imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    user={user}
+                    destinationIDs="h"
+                    //onFilterChange={handl}
                     onClose={() => closeModal()} />}
             <div id='search-container'>
                 <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
