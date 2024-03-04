@@ -7,10 +7,13 @@ import {
   addDoc,
   doc,
   updateDoc,
-  deleteDoc
+  deleteDoc,
+  setDoc,
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+import firebase from 'firebase/compat/app'; // Import firebase
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -26,6 +29,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const FieldValue = firebase.firestore.FieldValue; // Access FieldValue
 export const auth = getAuth(app)
 
   class firebaseControl {
@@ -113,7 +117,8 @@ export const auth = getAuth(app)
     return auth;
   }
 
-  async setUser(userID: string) {
+
+  /* async setUser(userID: string) {
     try {
       await setDoc(doc(db, "user_destinations", userID),{})
       
@@ -121,7 +126,29 @@ export const auth = getAuth(app)
       console.error(e)
       
     }
+  } */
+
+  async setUser(userID: string) {
+    try {
+      await setDoc(doc(db, "user_destinations", userID), {});
+      console.log("User document created successfully for", userID);
+    } catch (e) {
+      console.error("Error creating user document:", e);
+    }
   }
+
+  async addDestinationToUser(userID: string, destinationID: string) {
+    try {
+      await updateDoc(doc(db, "user_destinations", userID), {
+        destinations: FieldValue.arrayUnion(destinationID) // Access arrayUnion through FieldValue
+      });
+      console.log("Destination added to user's list:", destinationID);
+    } catch (e) {
+      console.error("Error adding destination to user's list:", e);
+    }
+  }
+
+
 
 };
 

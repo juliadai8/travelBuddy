@@ -25,8 +25,14 @@ const DestinationModal: React.FC<DestinationInterface> = ({id, country, city, ra
         });
     }, []);
 
-    const handleBeenHereClick = () => {
-        // Handle the logic for "I've been here" button click
+    const handleBeenHereClick = async () => {
+        try {
+            const firebasecontroller = new firebaseControl();
+            await firebasecontroller.addDestinationToUser(userID, id);
+            console.log("Destination added to user's list:", id);
+        } catch (error) {
+            console.error("Error adding destination to user's list:", error);
+        }
     };
 
     return (
