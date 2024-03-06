@@ -6,10 +6,12 @@
     box-shadow: 0 0 10px 5px #3A3A3A;
     position: absolute;
     z-index: 2;
+    margin: 20px;
+    padding-bottom: 20px;
 }
 
 .not_blur {
-    filter: none;
+    filter: none;   
 }
 
 #x-button {
@@ -116,3 +118,4 @@ button:active {
     opacity: 0.5;
     justify-content: space-between;
 }
+

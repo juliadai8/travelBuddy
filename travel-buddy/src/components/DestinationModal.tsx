@@ -73,7 +73,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
                 <div id="description-container" className='addPadding not-blur'>
                     {description ? description : 'No description for this destiantion'}
                 </div>
-                {!hasReviewed && 
+                {!hasReviewed &&
                     <div id='myrating-container' className='addPadding not-blur'>
                         Add review:
                         <div id="starRating" className='not-blur'>
