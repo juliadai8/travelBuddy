@@ -1,0 +1,40 @@
+#checkboxHaveBeen-container {
+    background-color: #FAFCFE;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 10px;
+}
+
+
+/* Style the label for the checkbox */
+#checkboxHaveBeen-container label {
+    margin-left: 5px; /* Adjust the spacing between the checkbox and label */
+    cursor: pointer; /* Change cursor to pointer when hovering over the label */
+}
+
+/* Style the checkbox itself */
+#checkboxHaveBeen-container input[type="checkbox"] {
+    margin-right: 5px; /* Adjust the spacing between checkboxes */
+    cursor: pointer; /* Change cursor to pointer when hovering over the checkbox */
+}
+
+/* Style the appearance of the checkbox */
+#checkboxHaveBeen-container input[type="checkbox"]::before {
+    content: ""; /* Hide default checkbox */
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 3px; /* Rounded corners */
+    background-color: #fff; /* Checkbox background color */
+}
+
+/* Style the appearance of the checkbox when checked */
+#checkboxHaveBeen-container input[type="checkbox"]:checked::before {
+    background-color: #007bff; /* Change background color when checked */
+}
+
+/* Style the appearance of the checkbox when hovered */
+#checkboxHaveBeen-container input[type="checkbox"]:hover::before {
+    border-color: #007bff; /* Change border color when hovered */
+}

@@ -7,15 +7,10 @@ import {
   addDoc,
   doc,
   updateDoc,
-  deleteDoc,
-  setDoc,
-  query,
-  where,
+  deleteDoc
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import firebase from 'firebase/compat/app'; // Import firebase
-
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -101,11 +96,12 @@ export const auth = getAuth(app)
   }
 
 
-  async addReview(destinationID: string, rating: number, userID: string) {
+  async addReview(destinationID: string, rating: number, comment: string, userID: string) {
     const docRef = collection(db, "destinations", destinationID, "reviews");
     try {
         const newDocRef = await addDoc(docRef, {
           rating: rating,
+          comment: comment,
           userID: userID
         });
       }
@@ -117,7 +113,6 @@ export const auth = getAuth(app)
   getAuthInstance() {
     return auth;
   }
-
 
   async setUser(userID: string, destinationID: string) {
     const collectionRef = collection(db, "user_destinations");
@@ -134,20 +129,7 @@ export const auth = getAuth(app)
   }
 
 
-  async removeUserDestination(userID: string, destinationID: string) {
-    const collectionRef = collection(db, "user_destinations");
-    const querySnapshot = await getDocs(query(collectionRef, where("userID", "==", userID), where("destinationID", "==", destinationID)));
-    
-    querySnapshot.forEach(async (doc) => {
-        try {
-            await deleteDoc(doc.ref);
-            console.log("Destination removed from user's list:", destinationID);
-        } catch (error) {
-            console.error("Error removing destination from user's list:", error);
-        }
-    });
-}
-
 };
 
 export default firebaseControl;
+

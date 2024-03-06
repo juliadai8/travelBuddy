@@ -1,48 +1,44 @@
 import React, { useState } from 'react';
+import DestinationBox from './DestinationBox';
+import '../styles/HaveBeenCheckbox.css';
 
-interface userDestinationsProps {
-    categories: { [key: string]: string[] }; // Object containing category types as keys and corresponding categories as values
-    onFilterChange: (selectedTags: string[]) => void;
+
+interface HaveBeenProps {
+    onFilterChange: (selectedDestinations: string[]) => void;
 }
 
-const FilterPanel: React.FC<userDestinationsProps> = ({categories, onFilterChange}) => {
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({onFilterChange}) => {
+    const [selectedDestinations, setSelectedDestinations] = useState<string[]>([]);
 
-    const handleTagClick = (tag: string) => {
-        const isSelected = selectedTags.includes(tag);
-        const newSelectedTags = isSelected
-            ? selectedTags.filter(t => t !== tag)
-            : [...selectedTags, tag];
-        setSelectedTags(newSelectedTags);
-        onFilterChange(newSelectedTags);
+    //this method handles the checkbox mechanism  
+    const handleHaveBeenClick = (id: string) => {
+        const isSelected = selectedDestinations.includes(id);
+        const newSelectedDestinations = isSelected
+            ? selectedDestinations.filter(t => t !== id)
+            : [...selectedDestinations, id];
+        setSelectedDestinations(newSelectedDestinations);
+        onFilterChange(newSelectedDestinations);
     };
 
+    
     return (
-        <div id="filterPanel-container">
-            {Object.entries(categories).map(([category, tags]) => (
-                <div id="menu-container" key={category}>
-                <h4>{category}</h4>
-                <div id="checkbox-container">
-                    {
-                        tags.map((tag, i) => (
-                            // do we need a div for each checkbox?
-                            <label key={i}>
-                                <input
-                                    type="checkbox"
-                                    value={tag}
-                                    checked={selectedTags.includes(tag)}
-                                    // onClick={() => handleTagClick(tag)}
-                                    onChange={() => handleTagClick(tag)}
-                                />
-                                {tag}
-                            </label>
-                        ))
-                    }
-                </div>
-                </div>
-                ))}
+        <div id="checkboxHaveBeen-container" className="checkbox-container">
+            {selectedDestinations.map((id) => (
+                <React.Fragment key={id}>
+                    <input
+                        type="checkbox"
+                        value={id}
+                        checked={selectedDestinations.includes(id)}
+                        onChange={() => handleHaveBeenClick(id)}
+                        className="checkbox-input"
+                    />
+                    <label htmlFor={id} className="checkbox-label">{id}</label>
+                </React.Fragment>
+            ))}
         </div>
-    )
+    );
+
+    
 };
 
-export default FilterPanel
+export default HaveBeenCheckbox
