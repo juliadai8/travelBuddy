@@ -23,7 +23,7 @@ interface DestinationInterface {
     onClose?: () => void;
     onEdit?: () => void;
     onDelete?: () => void;
-    visited: boolean;
+    visited?: any;
 }
 
 

@@ -12,6 +12,7 @@ interface EditDestinationInterface {
     currentDescription: string;
     currentImgUrl: string;
     onClose?: () => void;
+    visited?: any;
 }
 
 const EditDestination: React.FC<EditDestinationInterface> = ({id, city, country, tags, currentDescription, currentImgUrl, onClose}) => {
