@@ -8,7 +8,7 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 interface DestinationInterface {
     country: string;
     city: string;
-    rating: string;
+    rating: any;
     imgURL: string;
     onReadMore?: () => void;
     isLoggedIn: boolean;

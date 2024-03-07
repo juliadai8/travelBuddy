@@ -62,15 +62,50 @@ const ProfilePage = () => {
         
     }, [destinationsChanged, isLoggedIn, userEmail])
 
+    // useEffect(() => {
+    //     const firebasecontroller = new firebaseControl();
+    //     firebasecontroller.getDestinastions().then((destinationsFirebase) => {
+    //         //setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+    //         const destList:DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
+    //         destList.map(dest => ({
+    //             visited: firebasecontroller.checkIfVisited(user?.uid, dest.id),
+    //             ...dest
+    //         }));
+    //         setDestinationList(destList);
+    //         setDestinationsChanged(false);
+    //     });
+
+    // }, [destinationsChanged])
+
+    const fetchReviewForDestination = async (userId:string|undefined, destinationId:string) => {
+        const fbcontroller = new firebaseControl();
+        return await fbcontroller.getReviewForDestinationUser(userId, destinationId);
+    };
+
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
         const getVisitedDestinationsForUser = auth.onAuthStateChanged((userAuth) => {
             if (userAuth) {
                 const idu = userAuth.uid
                 const destinationIDs = firebasecontroller.getDestinationIDsForUser(idu);
-                firebasecontroller.getVisitedDestinations(destinationIDs).then((destinationsFirebase) => {
-                    setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+                firebasecontroller.getVisitedDestinations(destinationIDs).then(async (destinationsFirebase) => {
+                    const destList: DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
+                    // destList.map(dest => ({
+                    //     myReview: firebasecontroller.getReviewForDestinationUser(user?.uid, dest.id),
+                    //     ...dest
+                    // }))
+
+                    const combinedData = await Promise.all(destList.map(async (dest) => {
+                        const myReview = await fetchReviewForDestination(user?.uid, dest.id);
+                        return {
+                            rating: myReview[0].rating,
+                            comment: myReview[0].comment,
+                            ...dest
+                        };
+                    }));
+                    //return combinedData;
                     setDestinationsChanged(false);
+                    setDestinationList(combinedData);
                 });
             }
         });
@@ -234,7 +269,10 @@ const ProfilePage = () => {
                     description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
                     imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
                     user={user}
-                    onClose={() => closeModal()} />}
+                    onClose={() => closeModal()} 
+                    visited={true}
+                    admin={isAdmin}
+                />}
             <div id='search-container'>
                 
                 

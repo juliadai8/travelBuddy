@@ -49,9 +49,15 @@ export const auth = getAuth(app)
     return destinationsList;
   }
 
-  async getReviewForDestinationUser(userID: string | undefined, reviews: DocumentData[]) {
-    const filteredReviews = reviews.filter(review => review.userID == userID)
-    console.log("")
+  async getReviewForDestinationUser(userID: string | undefined, destinationID: string) {
+    const reviewsCol = collection(db, "destinations", destinationID, "reviews");
+    const reviewsSnapshot = await getDocs(reviewsCol);
+    const reviewList:DocumentData[] = reviewsSnapshot.docs.map(reviewDoc => ({
+        reviewID: reviewDoc.id,
+        ...reviewDoc.data()
+    }));
+    const filteredReviews = reviewList.filter(review => review.userID == userID)
+    //console.log("")
     return filteredReviews;
   }
 
