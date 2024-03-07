@@ -124,6 +124,20 @@ const HomePage = () => {
             // If searchQuery is not empty, only return true for destinations that include the searchQuery in their category
             return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase) || category.some(c => c.includes(searchQueryLowerCase));
         });
+}
+
+/**
+     * Validation method to check if there already exists a destination of the provided city and country
+     * @param destinations The list of destinations that already exists
+     * @param country  The country of the destination to be created
+     * @param city The city of the destination to be created
+     * @returns true if destination exists, false otherwise
+     */
+    const isDestinationDuplicate = (destinations: DocumentData[], country: string, city: string): boolean => {
+        const destinationsOfCity = filteredDestinationsSearch(destinations, country)
+        const destinationsOfCountry = filteredDestinationsSearch(destinations, city)
+
+        return (destinationsOfCity.length > 0 && destinationsOfCountry.length > 0) ? true: false
     }
     
 
@@ -219,10 +233,16 @@ const HomePage = () => {
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
-            <div id='feed-container'>
+            <div id='feed-container'>   
                 {cities()}
             </div>
-            {openAddDestination && (<AddDestination onClose={() => closeAddDestination()} />)}
+            {openAddDestination && (
+                <AddDestination
+                    checkDuplicates={(country, city) => isDestinationDuplicate(destinationList, country, city)}
+                    destinationList={destinationList}
+                    onClose={() => closeAddDestination()}
+                />
+            )}
         </div>
     
     );
