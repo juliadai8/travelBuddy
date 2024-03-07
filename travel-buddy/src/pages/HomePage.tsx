@@ -12,9 +12,6 @@ import Link from 'next/link';
 //import Login from '../components/LoginComponent';
 import { DocumentData } from 'firebase/firestore';
 import AddDestination from '../components/AddDestination';
-import Box from "@mui/material/Box";
-import StarIcon from "@mui/icons-material/Star";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
