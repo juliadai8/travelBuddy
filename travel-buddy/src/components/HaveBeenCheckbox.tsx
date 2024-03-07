@@ -3,7 +3,7 @@ import firebaseControl from '@/app/firebaseControl';
 import { User } from 'firebase/auth';
 
 interface HaveBeenProps {
-    user: User;
+    user: User | undefined;
     id: string;
 }
 
@@ -24,7 +24,7 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
         const checkVisited = async () => {
             try {
                 const firebasecontroller = new firebaseControl();
-                const visited = await firebasecontroller.checkIfVisited(user.uid, id);
+                const visited = await firebasecontroller.checkIfVisited(user?.uid, id);
                 setIsChecked(visited);
             } catch (error) {
                 console.error("Error checking if visited:", error);
@@ -37,10 +37,10 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
         try {
             const firebasecontroller = new firebaseControl();
             if (!isChecked) {
-                await firebasecontroller.setUser(user.uid, id);
+                await firebasecontroller.setUser(user?.uid, id);
                 console.log("Destination added to user's list:", id);
             } else {
-                await firebasecontroller.removeUserDestination(user.uid, id);
+                await firebasecontroller.removeUserDestination(user?.uid, id);
                 console.log("Destination removed from user's list:", id);
             }
             setIsChecked(!isChecked); 
@@ -51,13 +51,13 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
 
     return (
         <div id="checkbox-container" >
-        <div>
+        <div style={{display: "flex", flexDirection: 'row'}}>
+            <label>Visited:</label>
             <input
                 type="checkbox"
                 checked={isChecked}
                 onChange={handleCheckboxChange}
             />
-            <label>I've been here</label>
         </div>      
         </div>  
        
