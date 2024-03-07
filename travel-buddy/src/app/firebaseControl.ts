@@ -72,7 +72,7 @@ export const auth = getAuth(app)
     }
   }
 
-  async editDestination(destinationID: string, updateCity?: string, updateCountry?: string, updateImgURL?: string, updateCategories?: string[], updateDescription?: string) {
+  async editDestination(destinationID: string, updateImgURL?: string, updateCategories?: string[], updateDescription?: string) {
     const docRef = doc(db, "destinations", destinationID);
     try {
       await updateDoc(docRef, {

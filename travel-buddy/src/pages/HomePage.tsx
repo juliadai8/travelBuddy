@@ -12,6 +12,7 @@ import Link from 'next/link';
 //import Login from '../components/LoginComponent';
 import { DocumentData } from 'firebase/firestore';
 import AddDestination from '../components/AddDestination';
+import EditDestination from '../components/EditDestination';
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
@@ -22,6 +23,7 @@ const HomePage = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [openAddDestination, setOpenAddDestination] = useState<boolean>(false);
     const [destinationsChanged, setDestinationsChanged] = useState<boolean>(false);
+    const [openEdit, setEdit] = useState<boolean>(false);
     const router = useRouter();
     //const navigate = useNavigate();
     const [user, setUser] = useState<User>();
@@ -49,6 +51,7 @@ const HomePage = () => {
                 setUser(undefined);
                 setOpenModal(false);
                 setOpenAddDestination(false);
+                setEdit(false);
             }
         });
         
@@ -206,10 +209,25 @@ const HomePage = () => {
         setIsLoggedIn(loggedIn);
       };
 
-      
+    const editDestination = () => {
+        setEdit(true);
+        setOpenModal(false);
+    }
+
+    const closeEdit = () => {
+        setEdit(false);
+        setDestinationsChanged(true);
+    }
+
+    const deleteDestination = (id: string) => {
+        const firebaseController = new firebaseControl;
+        firebaseController.deleteDestination(id);
+        setDestinationsChanged(true);
+        closeModal();
+    }
 
     return (
-        <div id='container' className={openModal || openAddDestination ? 'blur-background'  : undefined}>
+        <div id='container' className={openModal || openAddDestination || openEdit ? 'blur-background'  : undefined}>
             {!!user && 
                 (<button id='addDestinationButton'
                     onClick={() => setOpenAddDestination(true)}
@@ -229,7 +247,19 @@ const HomePage = () => {
                     description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
                     imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
                     user={user}
-                    onClose={() => closeModal()} />}
+                    admin={isAdmin}
+                    onEdit={() => editDestination()}
+                    onDelete={() => deleteDestination(filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id)}
+                    onClose={() => closeModal()}/>}
+                {openEdit && <EditDestination
+                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
+                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
+                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
+                    currentDescription={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
+                    currentImgUrl={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
+                    onClose={() => closeEdit()}/>
+                }
             <div id='search-container'>
                 <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
                 
