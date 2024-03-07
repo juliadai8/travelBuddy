@@ -109,10 +109,10 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
                         <button id="submit-review" className="addPadding not-blur"  onClick={submitReview}>Submit</button>
                     </div>
                 }
-                {reviewList.filter(review => review.comment !== "").length != 0 && 
+                {reviewList.filter(review => review.comment !== "" && review.comment).length != 0 && 
                     <div id="reviewfeed-container" className='addPadding not-blur'>
                         <h3>Reviews</h3>
-                        {reviewList.filter(review => review.comment !== "").map((review) => (
+                        {reviewList.filter(review => review.comment !== "" && review.comment).map((review) => (
                             <div className='singlereview-container'>
                                 <hr/>
                                 <div style={{marginBottom: '5px'}}>{review.email}</div>
