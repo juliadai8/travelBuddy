@@ -159,12 +159,20 @@ const HomePage = () => {
                         onReadMore={() => readMore(i)}
                         isLoggedIn={!!user}
                     />
-                ))}
+                    
+                ))
+                
+                }
                 </>
+                
             );
         }
         
     }
+
+    
+      
+      
 
     const closeModal = () => {
         setDestIndex(0);
@@ -215,6 +223,7 @@ const HomePage = () => {
                     tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
                     description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
                     imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    user={user}
                     onClose={() => closeModal()} />}
             <div id='search-container'>
                 <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
