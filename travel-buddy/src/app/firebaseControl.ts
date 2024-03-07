@@ -146,16 +146,34 @@ export const auth = getAuth(app)
     });
   }
 
-  async checkIfVisited(userID: string, destinationID: string): Promise<boolean> {
+  async checkIfVisited(userID: string|undefined, destinationID: string): Promise<boolean> {
     try {
-        const docRef = doc(db, "user_destinations", userID + destinationID);
+        const querySnapshot = await getDocs(
+            query(
+                collection(db, "user_destinations"),
+                where("userID", "==", userID),
+                where("destinationID", "==", destinationID)
+            )
+        );
+        return !querySnapshot.empty;
+        /* const docRef = doc(db, "user_destinations", userID + "_" + destinationID); // Assuming destinationID is unique
         const docSnapshot = await getDoc(docRef);
-        return docSnapshot.exists();
+        return docSnapshot.exists(); */
     } catch (error) {
         console.error("Error checking if destination is visited:", error);
         return false;
     }
 }
+
+  /* async getVisitedPairs(){
+    const pairCol = collection(db, "user_destinations");
+    const destinationsSnapshot = await getDocs(pairCol);
+    const pairList = destinationsSnapshot.docs.map(doc =>  ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    return pairList;
+  } */
 
 };
 

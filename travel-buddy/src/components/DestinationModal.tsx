@@ -15,7 +15,8 @@ interface DestinationInterface {
     description: string;
     imgURL: string;
     onClose?: () => void;
-    user: User;}
+    user: User;
+    visited: boolean;}
 
 // Note: The button must be alignes with the rating-stars when they are added
 const DestinationModal: React.FC<DestinationInterface> = ({
@@ -27,16 +28,19 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     description, 
     imgURL, 
     onClose, 
-    user, 
+    user,
+    visited, 
     }) => {
     
     const [reviewList, setReviewList] = useState<DocumentData[]>([]);
+    const [isVisited, setIsVisited] = useState<Boolean>(false);
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
             setReviewList(JSON.parse(JSON.stringify(reviews)));
         });
+        setIsVisited(visited);
     }, []);
 
     

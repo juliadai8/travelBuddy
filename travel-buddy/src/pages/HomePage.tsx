@@ -61,9 +61,16 @@ const HomePage = () => {
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
-            setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+            //setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+            const destList:DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
+            destList.map(dest => ({
+                visited: firebasecontroller.checkIfVisited(user?.uid, dest.id),
+                ...dest.data()
+            }));
+            setDestinationList(destList);
             setDestinationsChanged(false);
         });
+
     }, [destinationsChanged])
 
     async function signOut() {
@@ -199,7 +206,8 @@ const HomePage = () => {
                     description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
                     imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
                     user={user}
-                    onClose={() => closeModal()} />}
+                    onClose={() => closeModal()}
+                    visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited} />}
             <div id='search-container'>
                 <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
                 
