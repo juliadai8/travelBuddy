@@ -76,3 +76,7 @@ body{
     padding-right: 10px;     
 }
 
+.disable-button {
+    pointer-events: none;
+    cursor: default;
+  }
