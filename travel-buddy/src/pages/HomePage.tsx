@@ -198,10 +198,15 @@ const HomePage = () => {
       
 
     return (
-        <div id='container' className={openModal || openAddDestination ? 'blur-background' : undefined}>
-            {!!user && (<button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
-                Add new travel destination
-            </button>)} 
+        <div id='container' className={openModal || openAddDestination ? 'blur-background'  : undefined}>
+            {!!user && 
+                (<button id='addDestinationButton'
+                    onClick={() => setOpenAddDestination(true)}
+                    disabled={openModal || openAddDestination}
+                    className={openModal || openAddDestination ? 'disable-button' : undefined}>
+                    Add new travel destination
+                </button>)
+            } 
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             {openModal &&
                 <DestinationModal
@@ -228,8 +233,7 @@ const HomePage = () => {
                 <AddDestination
                     checkDuplicates={(country, city) => isDestinationDuplicate(destinationList, country, city)}
                     destinationList={destinationList}
-                    onClose={() => closeAddDestination()}
-                />
+                    onClose={() => closeAddDestination()}/>
             )}
         </div>
     

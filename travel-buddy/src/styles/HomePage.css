@@ -66,3 +66,8 @@
     padding-left: 10px;
     padding-right: 10px;     
 }
+
+.disable-button {
+    pointer-events: none;
+    cursor: default;
+  }
