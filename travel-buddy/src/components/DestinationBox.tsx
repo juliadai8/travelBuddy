@@ -32,9 +32,6 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
                 <div className='weather-container'>
                     <WeatherDisplay country={country} city={city} />
                 </div>
-                <div className='weather-container'>
-                    <WeatherDisplay country={country} city={city} />
-                </div>
                 <div className="button-container">
                     <button onClick={isLoggedIn ? onReadMore : () => alert('Please log in to read more')}>
                     Read More</button>
