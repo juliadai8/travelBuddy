@@ -17,23 +17,26 @@ import EditDestination from '../components/EditDestination';
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
-    const [openModal, setOpenModal] = useState(false);
-    const [destIndex, setDestIndex] = useState(0);
-    const [scrollMem, setScrollMem] = useState(0);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [destIndex, setDestIndex] = useState<number>(0);
+    const [scrollMem, setScrollMem] = useState<number>(0);
+    const [searchQuery, setSearchQuery] = useState<string>('');
     const [openAddDestination, setOpenAddDestination] = useState<boolean>(false);
     const [destinationsChanged, setDestinationsChanged] = useState<boolean>(false);
     const [openEdit, setEdit] = useState<boolean>(false);
     const router = useRouter();
     //const navigate = useNavigate();
     const [user, setUser] = useState<User>();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setAdmin] = useState(false);
-    //const [userEmail, setUserEmail] = useState('');
-    const userEmail = localStorage.getItem("user")?.replace(/"/g, "");
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [isAdmin, setAdmin] = useState<boolean>(false);
+    const [userEmail, setUserEmail] = useState<string | undefined>('');
 
     useEffect(() => {
-        
+        setUserEmail(localStorage.getItem("user")?.replace(/"/g, ""));
+    }, [])
+
+    useEffect(() => {
+    
 /* 
         // let destinations: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
@@ -125,6 +128,20 @@ const HomePage = () => {
             return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase) || category.some(c => c.includes(searchQueryLowerCase));
         });
 }
+
+/**
+     * Validation method to check if there already exists a destination of the provided city and country
+     * @param destinations The list of destinations that already exists
+     * @param country  The country of the destination to be created
+     * @param city The city of the destination to be created
+     * @returns true if destination exists, false otherwise
+     */
+    const isDestinationDuplicate = (destinations: DocumentData[], country: string, city: string): boolean => {
+        const destinationsOfCity = filteredDestinationsSearch(destinations, country)
+        const destinationsOfCountry = filteredDestinationsSearch(destinations, city)
+
+        return (destinationsOfCity.length > 0 && destinationsOfCountry.length > 0) ? true: false
+    }
     
 
     const cities = () => {
@@ -145,12 +162,20 @@ const HomePage = () => {
                         onReadMore={() => readMore(i)}
                         isLoggedIn={!!user}
                     />
-                ))}
+                    
+                ))
+                
+                }
                 </>
+                
             );
         }
         
     }
+
+    
+      
+      
 
     const closeModal = () => {
         setDestIndex(0);
@@ -216,6 +241,7 @@ const HomePage = () => {
                     tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
                     description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
                     imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    user={user}
                     admin={isAdmin}
                     onEdit={() => editDestination()}
                     onDelete={() => deleteDestination(filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id)}
@@ -237,11 +263,16 @@ const HomePage = () => {
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
-            <div id='feed-container'>
-                
+            <div id='feed-container'>   
                 {cities()}
             </div>
-            {openAddDestination && (<AddDestination onClose={() => closeAddDestination()} />)}
+            {openAddDestination && (
+                <AddDestination
+                    checkDuplicates={(country, city) => isDestinationDuplicate(destinationList, country, city)}
+                    destinationList={destinationList}
+                    onClose={() => closeAddDestination()}
+                />
+            )}
         </div>
     
     );
