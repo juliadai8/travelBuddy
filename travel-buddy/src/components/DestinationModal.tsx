@@ -49,7 +49,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
 
     const submitReview = () => {
         if (user && !hasReviewed) {
-            firebasecontroller.addReview(id, activeStar, comment, user.email);
+            firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid);
         }
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
             setReviewList(JSON.parse(JSON.stringify(reviews)));

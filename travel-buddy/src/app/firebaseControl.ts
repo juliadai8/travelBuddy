@@ -95,13 +95,14 @@ export const auth = getAuth(app)
     }
   }
 
-  async addReview(destinationID: string, rating: number, comment: string, email: string | null) {
+  async addReview(destinationID: string, rating: number, comment: string, email: string | null, userID: string | null) {
     const docRef = collection(db, "destinations", destinationID, "reviews");
     try {
         const newDocRef = await addDoc(docRef, {
           rating: rating,
           comment: comment,
-          email: email
+          email: email,
+          userID: userID
         });
       }
       catch (e) {
