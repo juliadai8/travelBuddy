@@ -4,6 +4,7 @@ import firebaseControl from '../app/firebaseControl';
 import { DocumentData } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import { Rating } from '@mui/material';
+import HaveBeenCheckbox from './HaveBeenCheckbox';
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,22 +23,39 @@ interface DestinationInterface {
     onClose?: () => void;
     onEdit?: () => void;
     onDelete?: () => void;
+    visited?: any;
 }
 
 
 
 // Note: The button must be alignes with the rating-stars when they are added
-const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, rating, tags, description, imgURL, user, admin, onClose , onEdit, onDelete}) => {
+const DestinationModal: React.FC<DestinationInterface> = ({
+    id, 
+    country, 
+    city, 
+    rating, 
+    tags, 
+    description, 
+    imgURL, 
+    admin, 
+    onClose, 
+    user,
+    visited, 
+    onEdit, 
+    onDelete}) => {
+    
     const [reviewList, setReviewList] = useState<DocumentData[]>([]);
     const [activeStar, setActiveStar] = useState<number>(2.5);
     const [comment, setComment] = useState<string>("");
     const [hasReviewed, setHasReviewed] = useState<boolean>(false);
     const firebasecontroller = new firebaseControl();
+    const [isVisited, setIsVisited] = useState<Boolean>(false);
 
     useEffect(() => {
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
             setReviewList(JSON.parse(JSON.stringify(reviews)));
         });
+        setIsVisited(visited);
     }, []);
 
     useEffect(() => {
@@ -89,6 +107,9 @@ const DestinationModal: React.FC<DestinationInterface> = ({ id, country, city, r
             <div id='info-container' className='not-blur'>
                 <div id='title-container' className='not-blur'>
                     <h1 className='not-blur'>{city}, {country}</h1>
+                </div>
+                <div id="visited-container" className='addPadding not-blur'>
+                    <HaveBeenCheckbox id={id} user={user}/>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
                     {rating ? 'Rating: ' + rating : 'This destination does not have a rating yet'}

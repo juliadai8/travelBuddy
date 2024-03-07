@@ -67,9 +67,16 @@ const HomePage = () => {
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
-            setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+            //setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+            const destList:DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
+            destList.map(dest => ({
+                visited: firebasecontroller.checkIfVisited(user?.uid, dest.id),
+                ...dest
+            }));
+            setDestinationList(destList);
             setDestinationsChanged(false);
         });
+
     }, [destinationsChanged])
 
     async function signOut() {
@@ -237,7 +244,7 @@ const HomePage = () => {
                 </button>)
             } 
             {(openModal || openAddDestination) && <div className="overlay"></div>}
-            {openModal &&
+            {openModal && user &&
                 <DestinationModal
                     id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
                     city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
@@ -258,7 +265,8 @@ const HomePage = () => {
                     currentDescription={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
                     currentImgUrl={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
                     id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
-                    onClose={() => closeEdit()}/>
+                    onClose={() => closeEdit()}
+                    visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited}/>
                 }
             <div id='search-container'>
                 <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
