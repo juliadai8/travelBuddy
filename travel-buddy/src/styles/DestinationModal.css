@@ -63,6 +63,13 @@ button:active {
     padding-right: 10px;
 }
 
+#visited-container {
+    margin-top: 5px;
+    height: 5ch;
+    display: flex;
+    align-items: center;
+}
+
 #rating-container {
     margin-top: 5px;
     height: 5ch;

@@ -50,7 +50,7 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
     };
 
     return (
-        <div id="checkbox-container" >
+        <div>
         <div style={{display: "flex", flexDirection: 'row'}}>
             <label>Visited:</label>
             <input
