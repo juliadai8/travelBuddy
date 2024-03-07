@@ -16,22 +16,25 @@ import AddDestination from '../components/AddDestination';
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
-    const [openModal, setOpenModal] = useState(false);
-    const [destIndex, setDestIndex] = useState(0);
-    const [scrollMem, setScrollMem] = useState(0);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [destIndex, setDestIndex] = useState<number>(0);
+    const [scrollMem, setScrollMem] = useState<number>(0);
+    const [searchQuery, setSearchQuery] = useState<string>('');
     const [openAddDestination, setOpenAddDestination] = useState<boolean>(false);
     const [destinationsChanged, setDestinationsChanged] = useState<boolean>(false);
     const router = useRouter();
     //const navigate = useNavigate();
     const [user, setUser] = useState<User>();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setAdmin] = useState(false);
-    //const [userEmail, setUserEmail] = useState('');
-    const userEmail = localStorage.getItem("user")?.replace(/"/g, "");
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [isAdmin, setAdmin] = useState<boolean>(false);
+    const [userEmail, setUserEmail] = useState<string | undefined>('');
 
     useEffect(() => {
-        
+        setUserEmail(localStorage.getItem("user")?.replace(/"/g, ""));
+    }, [])
+
+    useEffect(() => {
+    
 /* 
         // let destinations: DocumentData[] = [];
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
@@ -163,12 +166,20 @@ const HomePage = () => {
                         onReadMore={() => readMore(i)}
                         isLoggedIn={!!user}
                     />
-                ))}
+                    
+                ))
+                
+                }
                 </>
+                
             );
         }
         
     }
+
+    
+      
+      
 
     const closeModal = () => {
         setDestIndex(0);
@@ -205,10 +216,15 @@ const HomePage = () => {
       
 
     return (
-        <div id='container' className={openModal || openAddDestination ? 'blur-background' : undefined}>
-            {isAdmin && (<button id='addDestinationButton' onClick={() => setOpenAddDestination(true)}>
-                Add new travel destination
-            </button>)} 
+        <div id='container' className={openModal || openAddDestination ? 'blur-background'  : undefined}>
+            {!!user && 
+                (<button id='addDestinationButton'
+                    onClick={() => setOpenAddDestination(true)}
+                    disabled={openModal || openAddDestination}
+                    className={openModal || openAddDestination ? 'disable-button' : undefined}>
+                    Add new travel destination
+                </button>)
+            } 
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             {openModal && user &&
                 <DestinationModal
@@ -237,8 +253,7 @@ const HomePage = () => {
                 <AddDestination
                     checkDuplicates={(country, city) => isDestinationDuplicate(destinationList, country, city)}
                     destinationList={destinationList}
-                    onClose={() => closeAddDestination()}
-                />
+                    onClose={() => closeAddDestination()}/>
             )}
         </div>
     
