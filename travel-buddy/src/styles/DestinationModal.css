@@ -93,6 +93,40 @@ button:active {
     margin-top: 5px;
 }
 
+#admin-buttons {
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#edit-button {
+    background-color: transparent;
+    font-size: 16px;
+    color: rgb(55, 102, 222);
+    margin-left: 5px;
+}
+
+#delete-button {
+    background-color: transparent;
+    font-size: 16px;
+    color: rgb(224, 70, 70);
+    margin-right: 5px;
+}
+
+#delete-button:hover {
+    transform: scale(1.05);
+}
+
+#edit-button:hover {
+    transform: scale(1.05);
+}
+
+#icon {
+    margin-left: 5px;
+}
+
 
 #myrating-container {
     display: flex;

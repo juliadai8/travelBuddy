@@ -7,6 +7,9 @@ import { Rating } from '@mui/material';
 import HaveBeenCheckbox from './HaveBeenCheckbox';
 
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+
 interface DestinationInterface {
     id: string;
     country: string;
@@ -15,9 +18,15 @@ interface DestinationInterface {
     tags: string[];
     description: string;
     imgURL: string;
+    admin: boolean;
     user: User | undefined;
     onClose?: () => void;
-    visited: boolean;}
+    onEdit?: () => void;
+    onDelete?: () => void;
+    visited: boolean;
+}
+
+
 
 // Note: The button must be alignes with the rating-stars when they are added
 const DestinationModal: React.FC<DestinationInterface> = ({
@@ -28,10 +37,12 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     tags, 
     description, 
     imgURL, 
+    admin, 
     onClose, 
     user,
     visited, 
-    }) => {
+    onEdit, 
+    onDelete}) => {
     
     const [reviewList, setReviewList] = useState<DocumentData[]>([]);
     const [activeStar, setActiveStar] = useState<number>(2.5);
@@ -68,10 +79,31 @@ const DestinationModal: React.FC<DestinationInterface> = ({
         });
     } 
 
+    function deleteConfirmation() {
+        let text = "Are you sure you wan't to delete this destination?\nClick either OK or Cancel.";
+        if (confirm(text) && onDelete) {
+            onDelete();
+        } 
+    }
+
     return (
         <div id='modal-container' className='not-blur'>
             <button id='x-button' onClick={onClose} className='not-blur'>X</button>
-            <img src={imgURL} alt="Error" className='not-blur' />
+            <img src={imgURL} alt="Error" className='not-blur'/>
+            <div id='admin-buttons' className='not-blur'>
+            {
+                admin &&
+                <button id='edit-button' onClick={onEdit} className='not-blur'>
+                    Edit <FontAwesomeIcon id='icon' className='not-blur' icon={faPenToSquare} />
+                </button>
+            }
+            {
+                admin && <button id='delete-button' className='not-blur' onClick={deleteConfirmation}>
+                    Delete
+                    <FontAwesomeIcon id='icon' className='not-blur' icon={faTrashCan}/>
+                </button>
+            }
+            </div>
             <div id='info-container' className='not-blur'>
                 <div id='title-container' className='not-blur'>
                     <h1 className='not-blur'>{city}, {country}</h1>
@@ -98,10 +130,10 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                         <button id="submit-review" className="addPadding not-blur"  onClick={submitReview}>Submit</button>
                     </div>
                 }
-                {reviewList.filter(review => review.comment !== "").length != 0 && 
+                {reviewList.filter(review => review.comment !== "" && review.comment).length != 0 && 
                     <div id="reviewfeed-container" className='addPadding not-blur'>
                         <h3>Reviews</h3>
-                        {reviewList.filter(review => review.comment !== "").map((review) => (
+                        {reviewList.filter(review => review.comment !== "" && review.comment).map((review) => (
                             <div className='singlereview-container'>
                                 <hr/>
                                 <div style={{marginBottom: '5px'}}>{review.email}</div>
