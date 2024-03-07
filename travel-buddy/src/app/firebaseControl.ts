@@ -118,7 +118,7 @@ export const auth = getAuth(app)
     return auth;
   }
 
-  async setUser(userID: string, destinationID: string) {
+  async setUser(userID: string | undefined, destinationID: string) {
     const collectionRef = collection(db, "user_destinations");
     try {
       const newDocRef = await addDoc(collectionRef, {
@@ -132,7 +132,7 @@ export const auth = getAuth(app)
   }
 
 
-  async removeUserDestination(userID: string, destinationID: string) {
+  async removeUserDestination(userID: string | undefined, destinationID: string) {
     const querySnapshot = await getDocs(
         query(
             collection(db, "user_destinations"),
