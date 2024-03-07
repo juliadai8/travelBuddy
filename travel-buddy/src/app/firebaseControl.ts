@@ -11,6 +11,8 @@ import {
   documentId,
   updateDoc,
   deleteDoc,
+  getDoc,
+  
   DocumentData
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
@@ -117,7 +119,7 @@ export const auth = getAuth(app)
 
 
 
-  async editDestination(destinationID: string, updateCity?: string, updateCountry?: string, updateImgURL?: string, updateCategories?: string[], updateDescription?: string) {
+  async editDestination(destinationID: string, updateImgURL?: string, updateCategories?: string[], updateDescription?: string) {
     const docRef = doc(db, "destinations", destinationID);
     try {
       await updateDoc(docRef, {
@@ -159,6 +161,64 @@ export const auth = getAuth(app)
     return auth;
   }
 
+  async setUser(userID: string | undefined, destinationID: string) {
+    const collectionRef = collection(db, "user_destinations");
+    try {
+      const newDocRef = await addDoc(collectionRef, {
+        destinationID: destinationID,
+        userID: userID
+      });
+    }
+    catch (e) {
+      console.error("Error creating user document:", e);
+    }
+  }
+
+
+  async removeUserDestination(userID: string | undefined, destinationID: string) {
+    const querySnapshot = await getDocs(
+        query(
+            collection(db, "user_destinations"),
+            where("userID", "==", userID),
+            where("destinationID", "==", destinationID)
+        )
+    );
+
+    querySnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+    });
+  }
+
+  async checkIfVisited(userID: string|undefined, destinationID: string): Promise<boolean> {
+    try {
+        const querySnapshot = await getDocs(
+            query(
+                collection(db, "user_destinations"),
+                where("userID", "==", userID),
+                where("destinationID", "==", destinationID)
+            )
+        );
+        return !querySnapshot.empty;
+        /* const docRef = doc(db, "user_destinations", userID + "_" + destinationID); // Assuming destinationID is unique
+        const docSnapshot = await getDoc(docRef);
+        return docSnapshot.exists(); */
+    } catch (error) {
+        console.error("Error checking if destination is visited:", error);
+        return false;
+    }
+}
+
+  /* async getVisitedPairs(){
+    const pairCol = collection(db, "user_destinations");
+    const destinationsSnapshot = await getDocs(pairCol);
+    const pairList = destinationsSnapshot.docs.map(doc =>  ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    return pairList;
+  } */
+
 };
 
 export default firebaseControl;
+
