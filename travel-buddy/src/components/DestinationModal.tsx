@@ -15,10 +15,7 @@ interface DestinationInterface {
     description: string;
     imgURL: string;
     onClose?: () => void;
-    user: User;
-    destinationIDs: string;
-    onFilterChange: (selectedDestinations: string[]) => void;
-}
+    user: User;}
 
 // Note: The button must be alignes with the rating-stars when they are added
 const DestinationModal: React.FC<DestinationInterface> = ({
@@ -31,8 +28,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     imgURL, 
     onClose, 
     user, 
-    destinationIDs, 
-    onFilterChange}) => {
+    }) => {
     
     const [reviewList, setReviewList] = useState<DocumentData[]>([]);
 
@@ -43,16 +39,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
         });
     }, []);
 
-    const handleUserDestinations = async () => {
-        try {
-            const firebasecontroller = new firebaseControl();
-            await firebasecontroller.setUser(user.uid, id);
-            console.log("Destination added to user's list:", id);
-        } catch (error) {
-            console.error("Error adding destination to user's list:", error);
-        }
-    };
-
+    
 
     return (
         <div id='modal-container' className='not-blur'>
@@ -62,8 +49,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                 <div id='title-container' className='not-blur'>
                     <h1 className='not-blur'>{city}, {country}</h1>
 
-                    <button onClick={handleUserDestinations} className='not-blur' style={{ marginLeft: '10px'}}>I've been here</button>
-                    {/* <HaveBeenCheckbox id={id} onFilterChange={onFilterChange} /> */}
+                     <HaveBeenCheckbox id={id} user={user}/>
 
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>

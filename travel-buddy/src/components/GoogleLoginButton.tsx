@@ -63,9 +63,8 @@ const GoogleLoginButton: React.FC = () => {
       {isLoggedIn ? (
         <button onClick={handleGoogleLogout}>Sign out</button>
       ) : (
-        <button onClick={handleGoogleLogin}>Sign in with Google</button>
-        
-        
+        <button onClick={handleGoogleLogin}>Sign in with Google</button> 
+  
       )}
     </div>
   );

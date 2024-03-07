@@ -199,8 +199,6 @@ const HomePage = () => {
                     description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
                     imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
                     user={user}
-                    destinationIDs="h"
-                    onFilterChange={onFilterChange}
                     onClose={() => closeModal()} />}
             <div id='search-container'>
                 <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>

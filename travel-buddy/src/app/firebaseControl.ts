@@ -7,7 +7,11 @@ import {
   addDoc,
   doc,
   updateDoc,
-  deleteDoc
+  deleteDoc,
+  query,
+  where,
+  getDoc,
+  
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -122,12 +126,36 @@ export const auth = getAuth(app)
         userID: userID
       });
     }
-
     catch (e) {
       console.error("Error creating user document:", e);
     }
   }
 
+
+  async removeUserDestination(userID: string, destinationID: string) {
+    const querySnapshot = await getDocs(
+        query(
+            collection(db, "user_destinations"),
+            where("userID", "==", userID),
+            where("destinationID", "==", destinationID)
+        )
+    );
+
+    querySnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+    });
+  }
+
+  async checkIfVisited(userID: string, destinationID: string): Promise<boolean> {
+    try {
+        const docRef = doc(db, "user_destinations", userID + destinationID);
+        const docSnapshot = await getDoc(docRef);
+        return docSnapshot.exists();
+    } catch (error) {
+        console.error("Error checking if destination is visited:", error);
+        return false;
+    }
+}
 
 };
 

@@ -1,44 +1,72 @@
-import React, { useState } from 'react';
-import DestinationBox from './DestinationBox';
-import '../styles/HaveBeenCheckbox.css';
-
+import React, { useEffect, useState } from 'react';
+import firebaseControl from '@/app/firebaseControl';
+import { User } from 'firebase/auth';
 
 interface HaveBeenProps {
-    onFilterChange: (selectedDestinations: string[]) => void;
+    user: User;
+    id: string;
 }
 
-const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({onFilterChange}) => {
-    const [selectedDestinations, setSelectedDestinations] = useState<string[]>([]);
+const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
+    const [isChecked, setIsChecked] = useState(false);
 
-    //this method handles the checkbox mechanism  
-    const handleHaveBeenClick = (id: string) => {
-        const isSelected = selectedDestinations.includes(id);
-        const newSelectedDestinations = isSelected
-            ? selectedDestinations.filter(t => t !== id)
-            : [...selectedDestinations, id];
-        setSelectedDestinations(newSelectedDestinations);
-        onFilterChange(newSelectedDestinations);
+    /* const handleUserDestinations = async () => {
+        try {
+            const firebasecontroller = new firebaseControl();
+            await firebasecontroller.setUser(user.uid, id);
+            console.log("Destination added to user's list:", id);
+        } catch (error) {
+            console.error("Error adding destination to user's list:", error);
+        }
+    }; */
+
+    useEffect(() => {
+        const checkIfVisited = async () => {
+            try {
+                const firebasecontroller = new firebaseControl();
+                const visited = await firebasecontroller.checkIfVisited(user.uid, id);
+                setIsChecked(visited);
+            } catch (error) {
+                console.error("Error checking if visited:", error);
+            }
+        };
+
+        checkIfVisited();
+    }, [user.uid, id]);
+
+    const handleCheckboxChange = async () => {
+        try {
+            const firebasecontroller = new firebaseControl();
+            if (!isChecked) {
+                // If checkbox is checked, add the destination
+                await firebasecontroller.setUser(user.uid, id);
+                console.log("Destination added to user's list:", id);
+            } else {
+                // If checkbox is unchecked, remove the destination
+                // Assuming you have a method in firebaseControl to remove the document
+                await firebasecontroller.removeUserDestination(user.uid, id);
+                console.log("Destination removed from user's list:", id);
+            }
+            setIsChecked(!isChecked); // Toggle the checkbox state
+        } catch (error) {
+            console.error("Error handling checkbox change:", error);
+        }
     };
 
-    
     return (
-        <div id="checkboxHaveBeen-container" className="checkbox-container">
-            {selectedDestinations.map((id) => (
-                <React.Fragment key={id}>
-                    <input
-                        type="checkbox"
-                        value={id}
-                        checked={selectedDestinations.includes(id)}
-                        onChange={() => handleHaveBeenClick(id)}
-                        className="checkbox-input"
-                    />
-                    <label htmlFor={id} className="checkbox-label">{id}</label>
-                </React.Fragment>
-            ))}
-        </div>
-    );
+        <div id="checkbox-container" >
+        <div>
+            <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+            />
+            <label>I've been here</label>
+        </div>      
+        </div>  
+       
 
-    
+    );
 };
 
-export default HaveBeenCheckbox
+export default HaveBeenCheckbox;
