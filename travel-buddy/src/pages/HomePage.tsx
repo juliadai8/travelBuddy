@@ -65,7 +65,7 @@ const HomePage = () => {
             const destList:DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
             destList.map(dest => ({
                 visited: firebasecontroller.checkIfVisited(user?.uid, dest.id),
-                ...dest.data()
+                ...dest
             }));
             setDestinationList(destList);
             setDestinationsChanged(false);
