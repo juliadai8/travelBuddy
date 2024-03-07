@@ -1,10 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { update } from "firebase/database";
 import {
   getFirestore, collection, getDocs,
   addDoc,
-  doc
+  doc,
+  updateDoc,
+  deleteDoc
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,12 +27,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export const auth = getAuth(app)
-
-/* class firebaseControl {
-  static getAuth(): import("@firebase/auth").Auth {
-    //throw new Error('Method not implemented.');
-    return auth;
-  } */
 
   class firebaseControl {
     static getAuth() {
@@ -57,9 +54,9 @@ export const auth = getAuth(app)
   }
 
   async addDestination(addCity: string, addCountry: string, addImgURL?: string, addCategory?: string[], addDescription?: string) {
-    const docRef = collection(db, "destinations");
+    const collectionRef = collection(db, "destinations");
     try {
-      const newDocRef = await addDoc(docRef, {
+      const newDocRef = await addDoc(collectionRef, {
         city: addCity,
         country: addCountry,
         imgUrl: addImgURL,
@@ -75,11 +72,36 @@ export const auth = getAuth(app)
     }
   }
 
-  async addReview(destinationID: string, rating: number, userID: string) {
+  async editDestination(destinationID: string, updateCity?: string, updateCountry?: string, updateImgURL?: string, updateCategories?: string[], updateDescription?: string) {
+    const docRef = doc(db, "destinations", destinationID);
+    try {
+      await updateDoc(docRef, {
+        imgUrl: updateImgURL,
+        category: updateCategories,
+        description: updateDescription
+      });
+    }
+    catch(e) {
+      console.error(e);
+    }
+  }
+
+  async deleteDestination(destinationID: string) {
+    try {
+      await deleteDoc(doc(db, "destinations", destinationID))
+    }
+    catch(e) {
+      console.log(e);
+    }
+  }
+
+
+  async addReview(destinationID: string, rating: number, comment: string, userID: string) {
     const docRef = collection(db, "destinations", destinationID, "reviews");
     try {
         const newDocRef = await addDoc(docRef, {
           rating: rating,
+          comment: comment,
           userID: userID
         });
       }
@@ -91,8 +113,6 @@ export const auth = getAuth(app)
   getAuthInstance() {
     return auth;
   }
-
-  
 
 };
 
