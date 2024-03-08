@@ -127,7 +127,6 @@ button:active {
     margin-left: 5px;
 }
 
-
 #myrating-container {
     display: flex;
     flex-direction: column;
@@ -154,9 +153,16 @@ button:active {
     box-sizing: border-box; 
 }
 
-.singlereview-container {
+#singlereview-container {
     border-top-color: #3A3A3A;
     opacity: 0.5;
+    justify-content: space-between;
+}
+
+#top-of-review {
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
 }
 

@@ -47,7 +47,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     const [reviewList, setReviewList] = useState<DocumentData[]>([]);
     const [activeStar, setActiveStar] = useState<number>(2.5);
     const [comment, setComment] = useState<string>("");
-    const [myReview, setMyReview] = useState<string>("");
+    const [myReviewID, setMyReviewID] = useState<string>("");
     const firebasecontroller = new firebaseControl();
     const [isVisited, setIsVisited] = useState<Boolean>(false);
 
@@ -62,7 +62,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
         if (user) {
             const myReviews = reviewList.filter(review => review.email === user.email);
             if (myReviews.length !== 0) {
-                setMyReview(myReviews[0].reviewID);
+                setMyReviewID(myReviews[0].reviewID);
             }
         }
     }, [reviewList]);
@@ -72,7 +72,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     }
 
     const submitReview = () => {
-        if (user && !myReview) {
+        if (user && !myReviewID) {
             firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid);
         }
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
@@ -121,7 +121,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                 <div id="description-container" className='addPadding not-blur'>
                     {description ? description : 'No description for this destiantion'}
                 </div>
-                {!myReview &&
+                {!myReviewID &&
                     <div id='myrating-container' className='addPadding not-blur'>
                         Add review:
                         <div id="starRating" className='not-blur'>
@@ -135,10 +135,15 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <div id="reviewfeed-container" className='addPadding not-blur'>
                         <h3>Reviews</h3>
                         {reviewList.filter(review => review.comment !== "" && review.comment).map((review) => (
-                            <div className='singlereview-container'>
+                            <div id='singlereview-container'>
                                 <hr/>
-                                <div style={{marginBottom: '5px'}}>{review.email}</div>
-                                <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/> 
+                                <div id='top-of-review'>
+                                    {review.email}
+                                    {review.reviewID === myReviewID && 
+                                        <FontAwesomeIcon id='edit-button' className='not-blur' icon={faPenToSquare} />
+                                    }
+                                </div>
+                                    <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
                                 <div>{review.comment}</div>
                             </div>
                         ))
