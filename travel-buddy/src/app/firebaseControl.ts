@@ -127,6 +127,15 @@ export const auth = getAuth(app)
     }
   }
 
+  async deleteReview(destinationID: string, reviewID: string) {
+    try {
+        await deleteDoc(doc(db, "destinations", destinationID, "reviews", reviewID));
+      }
+    catch (e) {
+        console.error(e);
+    }
+  }
+
   getAuthInstance() {
     return auth;
   }
