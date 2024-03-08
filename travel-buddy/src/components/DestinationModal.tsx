@@ -47,7 +47,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     const [reviewList, setReviewList] = useState<DocumentData[]>([]);
     const [activeStar, setActiveStar] = useState<number>(2.5);
     const [comment, setComment] = useState<string>("");
-    const [hasReviewed, setHasReviewed] = useState<boolean>(false);
+    const [myReview, setMyReview] = useState<string>("");
     const firebasecontroller = new firebaseControl();
     const [isVisited, setIsVisited] = useState<Boolean>(false);
 
@@ -60,8 +60,9 @@ const DestinationModal: React.FC<DestinationInterface> = ({
 
     useEffect(() => {
         if (user) {
-            if (reviewList.filter(review => review.email === user.email).length !== 0) {
-                setHasReviewed(true);
+            const myReviews = reviewList.filter(review => review.email === user.email);
+            if (myReviews.length !== 0) {
+                setMyReview(myReviews[0].reviewID);
             }
         }
     }, [reviewList]);
@@ -71,7 +72,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     }
 
     const submitReview = () => {
-        if (user && !hasReviewed) {
+        if (user && !myReview) {
             firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid);
         }
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
@@ -120,7 +121,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                 <div id="description-container" className='addPadding not-blur'>
                     {description ? description : 'No description for this destiantion'}
                 </div>
-                {!hasReviewed &&
+                {!myReview &&
                     <div id='myrating-container' className='addPadding not-blur'>
                         Add review:
                         <div id="starRating" className='not-blur'>
