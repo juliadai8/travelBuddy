@@ -173,3 +173,30 @@ button:active {
     padding: 10px;
 }
 
+#triple-button-div {
+    display: flex;
+    flex-direction: row;
+}
+
+
+#back-review {
+    font-size: 30px;
+    color: rgb(55, 102, 222);
+    margin: 5px;
+}
+
+#update-review {
+    font-size: 30px;
+    color: rgb(0, 193, 0);
+    margin: 5px;
+}
+
+#delete-review {
+    font-size: 30px;
+    color: rgb(224, 70, 70);
+    margin: 5px;
+}
+
+#back-review:hover, #update-review:hover, #delete-review:hover{
+    transform: scale(1.05);
+}
