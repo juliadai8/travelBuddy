@@ -105,9 +105,16 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     } 
 
     function deleteConfirmation() {
-        let text = "Are you sure you wan't to delete this destination?\nClick either OK or Cancel.";
+        let text = "Are you sure you want to delete this destination?\nClick either OK or Cancel.";
         if (confirm(text) && onDelete) {
             onDelete();
+        } 
+    }
+
+    const deleteReviewConfirmation = () => {
+        let text = "Are you sure you want to delete this review?\nClick either OK or Cancel.";
+        if (confirm(text)) {
+            deleteReview();
         } 
     }
 
@@ -137,7 +144,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                             <div >
                                 <FontAwesomeIcon id='back-review' className='not-blur' icon={faCircleArrowLeft} onClick={() => setIsEditingReview(false)}/>
                                 <FontAwesomeIcon id='update-review' className='not-blur' icon={faCircleCheck} onClick={updateReview}/>
-                                <FontAwesomeIcon id='delete-review' className='not-blur' icon={faTrashCan} onClick={deleteReview}/>
+                                <FontAwesomeIcon id='delete-review' className='not-blur' icon={faTrashCan} onClick={deleteReviewConfirmation}/>
                             </div>
                         </div>
                     ))
