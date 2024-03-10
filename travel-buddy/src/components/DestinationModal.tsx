@@ -61,7 +61,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
 
     useEffect(() => {
         if (user) {
-            const myReviews = reviewList.filter(review => review.email === user.email);
+            const myReviews = reviewList.filter(review => review.userID === user.uid);
             if (myReviews.length !== 0) {
                 setMyReviewID(myReviews[0].reviewID);
                 setComment(myReviews[0].comment);
@@ -146,15 +146,17 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <h3>My Review</h3>
                     <hr/>
                     {reviewList.filter(review => review.reviewID === myReviewID).map((review) => (
-                        <div id='singlereview-container'>
+                        <div style={{justifyContent: 'space-between'}}>
                             <div id='top-of-review'>
-                                {review.email}
+                                <div style={{opacity: 0.5}}>
+                                    {review.email}
+                                </div>
                                 {review.reviewID === myReviewID && 
                                     <FontAwesomeIcon id='edit-button' className='not-blur' icon={faPenToSquare} onClick={() => setIsEditingReview(true)}/>
                                 }
                             </div>
-                                <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
-                            <div>{review.comment}</div>
+                            <Rating style={{opacity: 0.5}} name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
+                            <div style={{opacity: 0.5}}>{review.comment}</div>
                         </div>
                     ))
                     }
