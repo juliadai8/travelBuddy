@@ -156,12 +156,12 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                                 <div style={{opacity: 0.5}}>
                                     {review.email}
                                 </div>
-                                {review.reviewID === myReviewID && 
-                                    <FontAwesomeIcon id='edit-button' className='not-blur' icon={faPenToSquare} onClick={() => setIsEditingReview(true)}/>
-                                }
+                                <FontAwesomeIcon id='edit-button' className='not-blur' icon={faPenToSquare} onClick={() => setIsEditingReview(true)}/>
                             </div>
-                            <Rating style={{opacity: 0.5}} name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
-                            <div style={{opacity: 0.5}}>{review.comment}</div>
+                            <Rating style={{opacity: 0.5}} name="half-rating" value={review.rating} precision={0.5} readOnly/>
+                            <div style={{opacity: 0.5}}>
+                                {review.comment}
+                            </div>
                         </div>
                     ))
                     }
@@ -205,7 +205,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     {description ? description : 'No description for this destiantion'}
                 </div>
                 {showEditOrAdd()}
-                {reviewList.filter(review => review.comment !== "" && review.comment).length != 0 && 
+                {reviewList.filter(review => review.comment !== "" && review.comment && review.reviewID !== myReviewID).length != 0 && 
                     <div id="reviewfeed-container" className='addPadding not-blur'>
                         <h3>All Reviews</h3>
                         {reviewList.filter(review => review.comment !== "" && review.comment && review.reviewID !== myReviewID).map((review) => (
@@ -214,11 +214,8 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                                 <div id='singlereview-container'>
                                     <div id='top-of-review'>
                                         {review.email}
-                                        {review.reviewID === myReviewID && 
-                                            <FontAwesomeIcon id='edit-button' className='not-blur' icon={faPenToSquare} onClick={() => setIsEditingReview(true)}/>
-                                        }
                                     </div>
-                                        <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
+                                    <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
                                     <div>{review.comment}</div>
                                 </div>
                             </div>
