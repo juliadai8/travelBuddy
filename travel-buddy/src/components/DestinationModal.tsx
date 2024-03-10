@@ -126,17 +126,22 @@ const DestinationModal: React.FC<DestinationInterface> = ({
         }
         else if (isEditingReview) {
             return (
-                <div id='myrating-container' className='addPadding not-blur'>
-                    Edit your review:
-                    <div id="starRating" className='not-blur'>
-                        <Rating name="half-rating" defaultValue={activeStar} precision={0.5} onChange={(event, value) => setActiveStar(value as number)}/> 
-                    </div>
-                    <textarea id="review-destinations" rows={1} onChange={handleCommentChange}>{comment}</textarea>
-                    <div >
-                        <FontAwesomeIcon id='back-review' className='not-blur' icon={faCircleArrowLeft} onClick={() => setIsEditingReview(false)}/>
-                        <FontAwesomeIcon id='update-review' className='not-blur' icon={faCircleCheck} onClick={updateReview}/>
-                        <FontAwesomeIcon id='delete-review' className='not-blur' icon={faTrashCan} onClick={deleteReview}/>
-                    </div>
+                <div>
+                    {reviewList.filter(review => review.reviewID === myReviewID).map((review) => (
+                        <div id='myrating-container' className='addPadding not-blur'>
+                            Edit your review:
+                            <div id="starRating" className='not-blur'>
+                                <Rating name="half-rating" defaultValue={review.rating} precision={0.5} onChange={(event, value) => setActiveStar(value as number)}/> 
+                            </div>
+                            <textarea id="review-destinations" rows={1} onChange={handleCommentChange}>{review.comment}</textarea>
+                            <div >
+                                <FontAwesomeIcon id='back-review' className='not-blur' icon={faCircleArrowLeft} onClick={() => setIsEditingReview(false)}/>
+                                <FontAwesomeIcon id='update-review' className='not-blur' icon={faCircleCheck} onClick={updateReview}/>
+                                <FontAwesomeIcon id='delete-review' className='not-blur' icon={faTrashCan} onClick={deleteReview}/>
+                            </div>
+                        </div>
+                    ))
+                    }
                 </div>
             )
         }
