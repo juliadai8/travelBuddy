@@ -50,6 +50,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     const [myReviewID, setMyReviewID] = useState<string>("");
     const firebasecontroller = new firebaseControl();
     const [isVisited, setIsVisited] = useState<Boolean>(false);
+    const [isEditingReview, setIsEditingReview] = useState<boolean>(false);
 
     useEffect(() => {
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
@@ -63,6 +64,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
             const myReviews = reviewList.filter(review => review.email === user.email);
             if (myReviews.length !== 0) {
                 setMyReviewID(myReviews[0].reviewID);
+                setComment(myReviews[0].comment);
             }
         }
     }, [reviewList]);
@@ -80,11 +82,68 @@ const DestinationModal: React.FC<DestinationInterface> = ({
         });
     } 
 
+    const updateReview = () => {
+        firebasecontroller.updateReview(id, myReviewID, activeStar, comment).then(() => {
+            firebasecontroller.getReviewsForDestination(id).then((reviews) => {
+                setReviewList(JSON.parse(JSON.stringify(reviews)));
+            });
+            setIsEditingReview(false);
+        });
+    } 
+
     function deleteConfirmation() {
         let text = "Are you sure you wan't to delete this destination?\nClick either OK or Cancel.";
         if (confirm(text) && onDelete) {
             onDelete();
         } 
+    }
+
+    const showEditOrAdd = () => {
+        if (!myReviewID) {
+            return (
+                <div id='myrating-container' className='addPadding not-blur'>
+                    Add review:
+                    <div id="starRating" className='not-blur'>
+                        <Rating name="half-rating" defaultValue={2.5} precision={0.5} onChange={(event, value) => setActiveStar(value as number)}/> 
+                    </div>
+                    <textarea id="review-destinations" rows={1} value={comment} onChange={handleCommentChange} placeholder="Optional comment"></textarea>
+                    <button id="submit-review" className="addPadding not-blur"  onClick={submitReview}>Submit</button>
+                </div>
+            )
+        }
+        else if (isEditingReview) {
+            return (
+                <div id='myrating-container' className='addPadding not-blur'>
+                    Edit your review:
+                    <div id="starRating" className='not-blur'>
+                        <Rating name="half-rating" defaultValue={activeStar} precision={0.5} onChange={(event, value) => setActiveStar(value as number)}/> 
+                    </div>
+                    <textarea id="review-destinations" rows={1} onChange={handleCommentChange}>{comment}</textarea>
+                    <button id="submit-review" className="addPadding not-blur"  onClick={updateReview}>Update</button>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div id='reviewfeed-container' className='addPadding not-blur'>
+                    <h3>My Review</h3>
+                    <hr/>
+                    {reviewList.filter(review => review.reviewID === myReviewID).map((review) => (
+                        <div id='singlereview-container'>
+                            <div id='top-of-review'>
+                                {review.email}
+                                {review.reviewID === myReviewID && 
+                                    <FontAwesomeIcon id='edit-button' className='not-blur' icon={faPenToSquare} onClick={() => setIsEditingReview(true)}/>
+                                }
+                            </div>
+                                <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
+                            <div>{review.comment}</div>
+                        </div>
+                    ))
+                    }
+                </div>
+            )
+        }
     }
 
     return (
@@ -121,30 +180,23 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                 <div id="description-container" className='addPadding not-blur'>
                     {description ? description : 'No description for this destiantion'}
                 </div>
-                {!myReviewID &&
-                    <div id='myrating-container' className='addPadding not-blur'>
-                        Add review:
-                        <div id="starRating" className='not-blur'>
-                            <Rating name="half-rating" defaultValue={2.5} precision={0.5} onChange={(event, value) => setActiveStar(value as number)}/> 
-                        </div>
-                        <textarea id="review-destinations" rows={1} value={comment} onChange={handleCommentChange} placeholder="Optional comment"></textarea>
-                        <button id="submit-review" className="addPadding not-blur"  onClick={submitReview}>Submit</button>
-                    </div>
-                }
+                {showEditOrAdd()}
                 {reviewList.filter(review => review.comment !== "" && review.comment).length != 0 && 
                     <div id="reviewfeed-container" className='addPadding not-blur'>
-                        <h3>Reviews</h3>
-                        {reviewList.filter(review => review.comment !== "" && review.comment).map((review) => (
-                            <div id='singlereview-container'>
+                        <h3>All Reviews</h3>
+                        {reviewList.filter(review => review.comment !== "" && review.comment && review.reviewID !== myReviewID).map((review) => (
+                            <div>
                                 <hr/>
-                                <div id='top-of-review'>
-                                    {review.email}
-                                    {review.reviewID === myReviewID && 
-                                        <FontAwesomeIcon id='edit-button' className='not-blur' icon={faPenToSquare} />
-                                    }
+                                <div id='singlereview-container'>
+                                    <div id='top-of-review'>
+                                        {review.email}
+                                        {review.reviewID === myReviewID && 
+                                            <FontAwesomeIcon id='edit-button' className='not-blur' icon={faPenToSquare} onClick={() => setIsEditingReview(true)}/>
+                                        }
+                                    </div>
+                                        <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
+                                    <div>{review.comment}</div>
                                 </div>
-                                    <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
-                                <div>{review.comment}</div>
                             </div>
                         ))
                         }
