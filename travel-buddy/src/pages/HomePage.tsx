@@ -235,6 +235,8 @@ const HomePage = () => {
         closeModal();
     }
 
+    const destination = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex];
+
     return (
         <div id='container' className={openModal || openAddDestination || openEdit ? 'blur-background'  : undefined}>
             {!!user && 
@@ -248,27 +250,27 @@ const HomePage = () => {
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             {openModal && user &&
                 <DestinationModal
-                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
-                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
-                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                    rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].RatingCount == 0 ? 0 : filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].TotalRating / filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].RatingCount}
-                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                    description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                    imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    id={destination.id}
+                    city={destination.city}
+                    country={destination.country}
+                    rating={destination.RatingCount == 0 ? 0 : destination.TotalRating / destination.RatingCount}
+                    tags={destination.category}
+                    description={destination.description}
+                    imgURL={destination.imgUrl}
                     user={user}
                     admin={isAdmin}
                     onEdit={() => editDestination()}
                     onDelete={() => deleteDestination(filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id)}
                     onClose={() => closeModal()}/>}
                 {openEdit && <EditDestination
-                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
-                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                    currentDescription={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                    currentImgUrl={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
-                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
+                    city={destination.city}
+                    country={destination.country}
+                    tags={destination.category}
+                    currentDescription={destination.description}
+                    currentImgUrl={destination.imgUrl}
+                    id={destination.id}
                     onClose={() => closeEdit()}
-                    visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited}/>
+                    visited={destination.visited}/>
                 }
             <div id='search-container'>
                 <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
