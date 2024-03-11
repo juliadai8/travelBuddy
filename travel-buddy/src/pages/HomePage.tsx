@@ -152,6 +152,15 @@ const HomePage = () => {
     
 
     const cities = () => {
+        console.log(destinationList.map((destination) => {
+            return {
+                TotalRating: destination.TotalRating,
+                TotalRatingType: typeof destination.TotalRating, 
+                RatingCount: destination.RatingCount,
+                RatingCountType: typeof destination.RatingCount,
+                rating: destination.TotalRating / destination.RatingCount
+            }
+        }));
         const filteredAndSearchedDestinations = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)
         if (filteredAndSearchedDestinations.length === 0) {
             return <h1>No destinations found</h1>;
@@ -159,30 +168,23 @@ const HomePage = () => {
         else {
             return (
                 <>
-                {filteredAndSearchedDestinations.map((destin, i) => (
+                {
+                filteredAndSearchedDestinations.map((destin, i) => (
                     <DestinationBox
                         key={i}
                         city={destin.city}
                         country={destin.country}
-                        rating={destin.rating}
+                        rating={destin.RatingCount == 0 ? 0 : destin.TotalRating / destin.RatingCount}
                         imgURL={destin.imgUrl}
                         onReadMore={() => readMore(i)}
                         isLoggedIn={!!user}
                     />
-                    
-                ))
-                
-                }
-                </>
-                
+                ))}
+                </> 
             );
         }
         
     }
-
-    
-      
-      
 
     const closeModal = () => {
         setDestIndex(0);

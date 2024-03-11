@@ -4,21 +4,20 @@ import WeatherDisplay from '../components/WeatherDisplay';
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import StarRating from '../components/StarRating';
+import ReviewRating from '../components/ReviewRating';
 
 interface DestinationInterface {
     country: string;
     city: string;
-    rating: string;
+    rating: number;
     imgURL: string;
     onReadMore?: () => void;
     isLoggedIn: boolean;
 }
 
 // Note: The button must be alignes with the rating-stars when they are added
-// Note: Currently, rating is hard coded in. Should fetch from firestore.
 const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onReadMore, isLoggedIn}) => {
-
+    
     return (
         <div className='box'>
             <img src={imgURL} alt="Error loading image" className='inner-div' />
@@ -28,8 +27,7 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                <StarRating rating={2.5} />
-
+                    <ReviewRating rating={rating} />
                 </div>
                 <div className='weather-container'>
                     <WeatherDisplay country={country} city={city} />
