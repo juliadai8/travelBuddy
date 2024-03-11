@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { update } from "firebase/database";
+import { getStorage } from "firebase/storage";
 import {
   getFirestore, collection, getDocs,
   addDoc,
@@ -30,11 +31,16 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+export const storage = getStorage(app);
 export const auth = getAuth(app)
+
 
   class firebaseControl {
     static getAuth() {
       return auth;
+    }
+    static getStorage() {
+      return storage;
     }
 
   async getDestinastions(){

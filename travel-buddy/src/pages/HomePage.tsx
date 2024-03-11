@@ -13,6 +13,15 @@ import Link from 'next/link';
 import { DocumentData } from 'firebase/firestore';
 import AddDestination from '../components/AddDestination';
 import EditDestination from '../components/EditDestination';
+//import storage from '../app/firebaseControl';
+//import {ref} from "firebase/storage"
+import {
+    ref,
+    uploadBytesResumable,
+    getDownloadURL,
+} from "firebase/storage";
+import { storage } from '../app/firebaseControl';
+
 
 const HomePage = () => {
     const [tags, setTags] = useState<string[]>([]);
@@ -30,20 +39,24 @@ const HomePage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [isAdmin, setAdmin] = useState<boolean>(false);
     const [userEmail, setUserEmail] = useState<string | undefined>('');
+    const [percent, setPercent] = useState(0);
+    //const [file, setFile] = useState<string | undefined>('');
+    const [file, setFile] = useState<File | undefined>(undefined);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
         setUserEmail(localStorage.getItem("user")?.replace(/"/g, ""));
     }, [])
 
     useEffect(() => {
-    
-/* 
-        // let destinations: DocumentData[] = [];
-        firebasecontroller.getDestinastions().then((destinationsFirebase) => {
-            setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
-            setDestinationsChanged(false);
-        });
-         */
+
+        /* 
+                // let destinations: DocumentData[] = [];
+                firebasecontroller.getDestinastions().then((destinationsFirebase) => {
+                    setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
+                    setDestinationsChanged(false);
+                });
+                 */
         const unsubscribe = auth.onAuthStateChanged((userAuth) => {
             if (userAuth) {
                 setUser(userAuth);
@@ -54,21 +67,21 @@ const HomePage = () => {
                 setEdit(false);
             }
         });
-        
+
         //setUserEmail(localStorage.getItem('user')?.replace(/'/g,'') ?? '');
         if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com' || userEmail === 'adrianhsolberg@gmail.com') {
             setAdmin(true);
         } else {
             setAdmin(false);
         }
-        
+
     }, [destinationsChanged, isLoggedIn, userEmail])
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
         firebasecontroller.getDestinastions().then((destinationsFirebase) => {
             //setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
-            const destList:DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
+            const destList: DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
             destList.map(dest => ({
                 visited: firebasecontroller.checkIfVisited(user?.uid, dest.id),
                 ...dest
@@ -78,6 +91,57 @@ const HomePage = () => {
         });
 
     }, [destinationsChanged])
+
+    useEffect(() => {
+        // Retrieve the image URL from Firebase Storage
+        const storageRef = ref(storage, '/files/image.jpg');
+        getDownloadURL(storageRef).then(url => {
+            setImageUrl(url);
+        }).catch(error => {
+            console.error('Error retrieving image URL:', error);
+        });
+    }, []);
+
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+        if (event.target.files && event.target.files.length > 0) {
+            setFile(event.target.files[0]);
+        }
+    }
+
+
+    function handleUpload() {
+        if (!file) {
+            alert("Please choose a file first!")
+            return;
+        }
+        const storage = firebaseControl.getStorage();
+        const storageRef = ref(storage, `/files/${file.name}`);
+        const blob = new Blob([file]);
+        const uploadTask = uploadBytesResumable(storageRef, blob);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+
+                // update progress
+                setPercent(percent);
+            },
+            (err) => console.log(err),
+            async () => {
+                // Get the download URL of the uploaded image
+                const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                // Display the image
+                displayImage(imageUrl);
+            }
+        );
+    }
+    function displayImage(imageUrl: string) {
+        const imgElement = document.getElementById("uploadedImage") as HTMLImageElement;
+        imgElement.src = imageUrl;
+    }
+
 
     async function signOut() {
         setUser(undefined);
@@ -91,12 +155,12 @@ const HomePage = () => {
         window.scrollTo(0, 0);
     }
 
-        /**
-     * Helper function to check whether the input parameter is empty
-     * @param val Value to check
-     * @returns true if val is null, false otherwise
-     */
-    function isEmpty(val: string | any[] | null | undefined){
+    /**
+ * Helper function to check whether the input parameter is empty
+ * @param val Value to check
+ * @returns true if val is null, false otherwise
+ */
+    function isEmpty(val: string | any[] | null | undefined) {
         return (val === undefined || val == null || val.length <= 0) ? true : false;
     }
     /**
@@ -105,7 +169,7 @@ const HomePage = () => {
      * @param category  the category of which we want to filter the list by
      * @returns list of the filtered destinations
      */
-    const filterDestinationsByType = (destinations: DocumentData[], tags ?: string[] ): DocumentData[] => {
+    const filterDestinationsByType = (destinations: DocumentData[], tags?: string[]): DocumentData[] => {
         if (isEmpty(tags)) {
             return destinations;
         }
@@ -119,7 +183,7 @@ const HomePage = () => {
         })
     }
 
-    
+
 
     const filteredDestinationsSearch = (destinations: DocumentData[], searchQuery: string): DocumentData[] => {
         return destinations.filter(destin => {
@@ -134,22 +198,22 @@ const HomePage = () => {
             // If searchQuery is not empty, only return true for destinations that include the searchQuery in their category
             return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase) || category.some(c => c.includes(searchQueryLowerCase));
         });
-}
+    }
 
-/**
-     * Validation method to check if there already exists a destination of the provided city and country
-     * @param destinations The list of destinations that already exists
-     * @param country  The country of the destination to be created
-     * @param city The city of the destination to be created
-     * @returns true if destination exists, false otherwise
-     */
+    /**
+         * Validation method to check if there already exists a destination of the provided city and country
+         * @param destinations The list of destinations that already exists
+         * @param country  The country of the destination to be created
+         * @param city The city of the destination to be created
+         * @returns true if destination exists, false otherwise
+         */
     const isDestinationDuplicate = (destinations: DocumentData[], country: string, city: string): boolean => {
         const destinationsOfCity = filteredDestinationsSearch(destinations, country)
         const destinationsOfCountry = filteredDestinationsSearch(destinations, city)
 
-        return (destinationsOfCity.length > 0 && destinationsOfCountry.length > 0) ? true: false
+        return (destinationsOfCity.length > 0 && destinationsOfCountry.length > 0) ? true : false
     }
-    
+
 
     const cities = () => {
         const filteredAndSearchedDestinations = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)
@@ -159,30 +223,30 @@ const HomePage = () => {
         else {
             return (
                 <>
-                {filteredAndSearchedDestinations.map((destin, i) => (
-                    <DestinationBox
-                        key={i}
-                        city={destin.city}
-                        country={destin.country}
-                        rating={destin.rating}
-                        imgURL={destin.imgUrl}
-                        onReadMore={() => readMore(i)}
-                        isLoggedIn={!!user}
-                    />
-                    
-                ))
-                
-                }
+                    {filteredAndSearchedDestinations.map((destin, i) => (
+                        <DestinationBox
+                            key={i}
+                            city={destin.city}
+                            country={destin.country}
+                            rating={destin.rating}
+                            imgURL={destin.imgUrl}
+                            onReadMore={() => readMore(i)}
+                            isLoggedIn={!!user}
+                        />
+
+                    ))
+
+                    }
                 </>
-                
+
             );
         }
-        
+
     }
 
-    
-      
-      
+
+
+
 
     const closeModal = () => {
         setDestIndex(0);
@@ -192,11 +256,11 @@ const HomePage = () => {
     }
 
     const onFilterChange = (t: string[] = []) => {
-        setTags(t);        
+        setTags(t);
     }
 
     const categories_dict = {
-        "Activities": ["Hiking", "Skiing", "Sightseeing"], 
+        "Activities": ["Hiking", "Skiing", "Sightseeing"],
         "Climate": ["Tropical", "Dry", "Continental", "Polar", "Temperate"],
         "Destination type": ["City", "Beach", "Culture", "Safari", "Historical", "Active"],
         "Continent": ["Europe", "Asia", "Africa", "North America", "South America", "Oceania"],
@@ -214,7 +278,7 @@ const HomePage = () => {
 
     const handleLoginChange = (loggedIn: boolean) => {
         setIsLoggedIn(loggedIn);
-      };
+    };
 
     const editDestination = () => {
         setEdit(true);
@@ -234,15 +298,15 @@ const HomePage = () => {
     }
 
     return (
-        <div id='container' className={openModal || openAddDestination || openEdit ? 'blur-background'  : undefined}>
-            {!!user && 
+        <div id='container' className={openModal || openAddDestination || openEdit ? 'blur-background' : undefined}>
+            {!!user &&
                 (<button id='addDestinationButton'
                     onClick={() => setOpenAddDestination(true)}
                     disabled={openModal || openAddDestination}
                     className={openModal || openAddDestination ? 'disable-button' : undefined}>
                     Add new travel destination
                 </button>)
-            } 
+            }
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             {openModal && user &&
                 <DestinationModal
@@ -257,36 +321,46 @@ const HomePage = () => {
                     admin={isAdmin}
                     onEdit={() => editDestination()}
                     onDelete={() => deleteDestination(filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id)}
-                    onClose={() => closeModal()}/>}
-                {openEdit && <EditDestination
-                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
-                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                    currentDescription={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                    currentImgUrl={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
-                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
-                    onClose={() => closeEdit()}
-                    visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited}/>
-                }
+                    onClose={() => closeModal()} />}
+            {openEdit && <EditDestination
+                city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
+                country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
+                tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
+                currentDescription={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
+                currentImgUrl={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
+                onClose={() => closeEdit()}
+                visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited} />
+            }
             <div id='search-container'>
-                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
-                
-                
+                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations" />
             </div>
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
-            <div id='feed-container'>   
+
+            <div>
+                <input type="file" onChange={handleChange} accept="" />
+                <button onClick={handleUpload}>Upload to Firebase</button>
+                <p>{percent} % done</p>
+                <img id="uploadedImage" src="" alt="Uploaded Image" />
+            </div>
+
+            <div>
+            {imageUrl && <img src={imageUrl} alt="Uploaded Image" />}
+        </div>
+
+            <div id='feed-container'>
                 {cities()}
             </div>
             {openAddDestination && (
                 <AddDestination
                     checkDuplicates={(country, city) => isDestinationDuplicate(destinationList, country, city)}
                     destinationList={destinationList}
-                    onClose={() => closeAddDestination()}/>
+                    onClose={() => closeAddDestination()} />
             )}
         </div>
-    
+
     );
 };
 
