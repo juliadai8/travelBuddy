@@ -127,7 +127,17 @@ class firebaseControl {
 
   async updateReview(destinationID: string, reviewID: string, rating: number, comment: string) {
     const docRef = doc(db, "destinations", destinationID, "reviews", reviewID);
+    const oldReviewRef = doc(db, "destinations", destinationID, "reviews", reviewID);
+    const oldReviewSnapshot = await getDoc(oldReviewRef);
+    const oldRreviewData = oldReviewSnapshot.data();
+    const ratingDocRef = doc(db, "destinations", destinationID);
+    const ratingDocSnapshot = await getDoc(ratingDocRef);
+    const ratingData = ratingDocSnapshot.data();
     try {
+        await updateDoc(ratingDocRef, {
+            TotalRating: ratingData?.TotalRating + rating - oldRreviewData?.rating
+        });
+
         await updateDoc(docRef, {
             rating: rating,
             comment: comment
@@ -139,7 +149,18 @@ class firebaseControl {
   }
 
   async deleteReview(destinationID: string, reviewID: string) {
+    const oldReviewRef = doc(db, "destinations", destinationID, "reviews", reviewID);
+    const oldReviewSnapshot = await getDoc(oldReviewRef);
+    const oldRreviewData = oldReviewSnapshot.data();
+    const ratingDocRef = doc(db, "destinations", destinationID);
+    const ratingDocSnapshot = await getDoc(ratingDocRef);
+    const ratingData = ratingDocSnapshot.data();
     try {
+        await updateDoc(ratingDocRef, {
+            TotalRating: ratingData?.TotalRating - oldRreviewData?.rating,
+            RatingCount: ratingData?.RatingCount - 1
+        });
+
         await deleteDoc(doc(db, "destinations", destinationID, "reviews", reviewID));
       }
     catch (e) {

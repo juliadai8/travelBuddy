@@ -15,7 +15,7 @@ interface DestinationInterface {
     id: string;
     country: string;
     city: string;
-    rating: string;
+    rating: number;
     tags: string[];
     description: string;
     imgURL: string;
@@ -205,7 +205,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <HaveBeenCheckbox id={id} user={user}/>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
-                    <ReviewRating rating={3.6}/> 
+                    <ReviewRating rating={rating}/> 
                 </div>
                 <div id='tag-container' className='addPadding not-blur'>
                     {tags.length ? 'Tags: ' + tags?.join(", ") : 'There are no tags for this destination'}
