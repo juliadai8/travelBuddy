@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/DestinationBox.css';
+import WeatherDisplay from '../components/WeatherDisplay';
+import Box from "@mui/material/Box";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarRating from '../components/StarRating';
 
 interface DestinationInterface {
@@ -24,7 +28,11 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                    <StarRating rating={2.5} />
+                <StarRating rating={2.5} />
+
+                </div>
+                <div className='weather-container'>
+                    <WeatherDisplay country={country} city={city} />
                 </div>
                 <div className="button-container">
                     <button onClick={isLoggedIn ? onReadMore : () => alert('Please log in to read more')}>
