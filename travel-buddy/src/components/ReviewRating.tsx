@@ -1,13 +1,12 @@
 import React from 'react';
-import '../styles/StarRating.css';
+import '../styles/ReviewRating.css';
 
-interface StarRatingInterface {
+interface ReviewRatingInterface {
     rating: number;
 }
 
 // Note: The button must be alignes with the rating-stars when they are added
-const StarRating: React.FC<StarRatingInterface> = ({ rating }) => {
-
+const ReviewRating: React.FC<ReviewRatingInterface> = ({ rating }) => {
     return (
         <div className="rating not-blur">
             <div className="rating-upper not-blur" style={{ width: rating / 5 * 100 + "%" }}>
@@ -28,4 +27,4 @@ const StarRating: React.FC<StarRatingInterface> = ({ rating }) => {
     );
 }
 
-export default StarRating;
+export default ReviewRating;
