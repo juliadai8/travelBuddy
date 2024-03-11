@@ -9,6 +9,7 @@ import HaveBeenCheckbox from './HaveBeenCheckbox';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan, faCircleArrowLeft, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import ReviewRating from './ReviewRating';
 
 interface DestinationInterface {
     id: string;
@@ -204,7 +205,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <HaveBeenCheckbox id={id} user={user}/>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
-                    <StarRating rating={3.6}/> 
+                    <ReviewRating rating={3.6}/> 
                 </div>
                 <div id='tag-container' className='addPadding not-blur'>
                     {tags.length ? 'Tags: ' + tags?.join(", ") : 'There are no tags for this destination'}
@@ -223,7 +224,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                                     <div id='top-of-review'>
                                         {review.email}
                                     </div>
-                                    <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
+                                    <Rating name="half-rating" value={review.rating} precision={0.5} readOnly/>
                                     <div>{review.comment}</div>
                                 </div>
                             </div>
