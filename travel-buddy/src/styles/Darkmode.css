@@ -15,11 +15,11 @@
     color: rgb(21, 37, 53);
 }
 
-.dark-mode #box button {
+.dark-mode #box button, .dark-mode #editButton, .dark-mode #navbar button, .dark-mode #search-and-add button {
     background-color: rgb(40,46,51);
 }
 
-.dark-mode #container button:hover {
+.dark-mode #box button:hover, .dark-mode #editButton:hover, .dark-mode #navbar button:hover, .dark-mode #search-and-add button:hover {
     background-color: rgb(56,65,74);
 }
 
@@ -54,19 +54,15 @@
     background-color: rgb(40,46,51);
 }
 
-.dark-mode #search-container input {
+.dark-mode #search-and-add input {
     background-color: rgb(222,228,234);
     color: rgb(115,132,150);
 }
 
-.dark-mode #search-container button {
-    background-color: rgb(40,46,51);
-}
-
-
 .dark-mode #modal-container {
     background-color: rgb(22,26,29);
     color: rgb(222,228,234);
+    box-shadow: 0px 20px 20px 10px rgba(0, 0, 0, 0.4);
 }
 
 .dark-mode #modal-container textarea {

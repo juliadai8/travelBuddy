@@ -260,19 +260,17 @@ const HomePage = () => {
                     onClose={() => closeEdit()}
                     visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited}/>
                 }
-                <div id='search-container'>
-                    <div id="search-and-add">
-                        <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
-                        {!!user && 
-                            (<button
-                                onClick={() => setOpenAddDestination(true)}
-                                disabled={openModal || openAddDestination}
-                                className={openModal || openAddDestination ? 'disable-button' : undefined}>
-                                Add new travel destination
-                            </button>)
-                        } 
-                    </div>
-                </div>
+                <div id="search-and-add">
+                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
+                    {!!user && 
+                        (<button
+                            onClick={() => setOpenAddDestination(true)}
+                            disabled={openModal || openAddDestination}
+                            className={openModal || openAddDestination ? 'disable-button' : undefined}>
+                            Add new travel destination
+                        </button>)
+                    } 
+                </div>        
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
