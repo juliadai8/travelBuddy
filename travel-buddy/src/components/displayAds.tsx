@@ -13,16 +13,16 @@ const DisplayAds = () => {
                 const promises = res.items.map((itemRef) =>
                     getDownloadURL(itemRef).catch((error) => {
                         console.log(error);
-                        return ''; // Return an empty string if there's an error
+                        return '';
                     })
                 );
                 Promise.all(promises)
-                    .then((urls) => setUrls(urls.filter(url => url !== ''))) // Filter out empty strings
+                    .then((urls) => setUrls(urls.filter(url => url !== '')))
                     .catch((error) => console.log(error));
             })
             .catch((error) => console.log(error));
     }, []);
-    
+
 
     return (
         <div id='display'>
