@@ -1,0 +1,15 @@
+.adContainer{
+    position: relative;
+}
+
+.adColumn{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+    margin: auto;
+    width: 50%;
+    height: 100%;
+    padding: 20px;
+    border-radius: 10px;
+}

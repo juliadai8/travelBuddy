@@ -13,14 +13,9 @@ import Link from 'next/link';
 import { DocumentData } from 'firebase/firestore';
 import AddDestination from '../components/AddDestination';
 import EditDestination from '../components/EditDestination';
-//import storage from '../app/firebaseControl';
-//import {ref} from "firebase/storage"
-import {
-    ref,
-    uploadBytesResumable,
-    getDownloadURL,
-} from "firebase/storage";
-import { storage } from '../app/firebaseControl';
+import FileUploader from '../components/FileUploader';
+import DisplayAds from '../components/displayAds';
+
 
 
 const HomePage = () => {
@@ -39,10 +34,11 @@ const HomePage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [isAdmin, setAdmin] = useState<boolean>(false);
     const [userEmail, setUserEmail] = useState<string | undefined>('');
-    const [percent, setPercent] = useState(0);
+    //const [percent, setPercent] = useState(0);
     //const [file, setFile] = useState<string | undefined>('');
-    const [file, setFile] = useState<File | undefined>(undefined);
+    //const [file, setFile] = useState<File | undefined>(undefined);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
+    //const [doUpload, setDoUpload] = useState<boolean>(false);
 
     useEffect(() => {
         setUserEmail(localStorage.getItem("user")?.replace(/"/g, ""));
@@ -69,7 +65,9 @@ const HomePage = () => {
         });
 
         //setUserEmail(localStorage.getItem('user')?.replace(/'/g,'') ?? '');
-        if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com' || userEmail === 'adrianhsolberg@gmail.com') {
+        if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com' 
+        || userEmail === 'adrianhsolberg@gmail.com' || userEmail === 'hallvardfuttererwannebo@gmail.com'
+        ) {
             setAdmin(true);
         } else {
             setAdmin(false);
@@ -92,55 +90,7 @@ const HomePage = () => {
 
     }, [destinationsChanged])
 
-    useEffect(() => {
-        // Retrieve the image URL from Firebase Storage
-        const storageRef = ref(storage, '/files/image.jpg');
-        getDownloadURL(storageRef).then(url => {
-            setImageUrl(url);
-        }).catch(error => {
-            console.error('Error retrieving image URL:', error);
-        });
-    }, []);
-
-    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        if (event.target.files && event.target.files.length > 0) {
-            setFile(event.target.files[0]);
-        }
-    }
-
-
-    function handleUpload() {
-        if (!file) {
-            alert("Please choose a file first!")
-            return;
-        }
-        const storage = firebaseControl.getStorage();
-        const storageRef = ref(storage, `/files/${file.name}`);
-        const blob = new Blob([file]);
-        const uploadTask = uploadBytesResumable(storageRef, blob);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const percent = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-
-                // update progress
-                setPercent(percent);
-            },
-            (err) => console.log(err),
-            async () => {
-                // Get the download URL of the uploaded image
-                const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                // Display the image
-                displayImage(imageUrl);
-            }
-        );
-    }
-    function displayImage(imageUrl: string) {
-        const imgElement = document.getElementById("uploadedImage") as HTMLImageElement;
-        imgElement.src = imageUrl;
-    }
+    
 
 
     async function signOut() {
@@ -339,16 +289,13 @@ const HomePage = () => {
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
 
-            <div>
-                <input type="file" onChange={handleChange} accept="" />
-                <button onClick={handleUpload}>Upload to Firebase</button>
-                <p>{percent} % done</p>
-                <img id="uploadedImage" src="" alt="Uploaded Image" />
+            <div id='FileUploader'>
+            <FileUploader admin={isAdmin}/> 
             </div>
 
-            <div>
-            {imageUrl && <img src={imageUrl} alt="Uploaded Image" />}
-        </div>
+            <div id='displayAds'>
+            <DisplayAds/>
+            </div>
 
             <div id='feed-container'>
                 {cities()}

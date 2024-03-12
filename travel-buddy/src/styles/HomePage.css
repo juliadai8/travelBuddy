@@ -80,3 +80,7 @@ body{
     pointer-events: none;
     cursor: default;
   }
+
+#displayAds{
+    position: relative;
+}
