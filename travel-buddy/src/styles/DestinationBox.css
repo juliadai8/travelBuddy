@@ -56,11 +56,11 @@ h2 {
     display: flex;
     justify-content: right;
     align-items: center;
+    margin-right: 16px;
 }
 
 .rating-container > p {
     border-color: black;
-    
 }
 
 p {
