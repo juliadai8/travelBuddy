@@ -5,7 +5,7 @@ import { DocumentData } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import { Rating } from '@mui/material';
 import HaveBeenCheckbox from './HaveBeenCheckbox';
-
+import WeatherDisplay from '../components/WeatherDisplay';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan, faCircleArrowLeft, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
@@ -203,6 +203,9 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                 </div>
                 <div id="visited-container" className='addPadding not-blur'>
                     <HaveBeenCheckbox id={id} user={user}/>
+                </div>
+                <div id="weather-display-container" className='addPadding not-blur'>
+                    <WeatherDisplay country={country} city={city}/>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
                     <ReviewRating rating={rating}/> 
