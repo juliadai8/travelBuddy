@@ -12,10 +12,12 @@ interface DestinationInterface {
     imgURL: string;
     onReadMore?: () => void;
     isLoggedIn: boolean;
+    review?: string;
+    myRating?: string;
 }
 
 // Note: The button must be alignes with the rating-stars when they are added
-const MyDestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onReadMore, isLoggedIn}) => {
+const MyDestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onReadMore, isLoggedIn, review, myRating}) => {
 
     return (
         <div className='box'>
@@ -26,8 +28,8 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({country, city, rating
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                <p>{rating}</p>
-
+                {myRating && <p>{myRating}</p>}
+                {review && <p>{review}</p>}
                 </div>
                 <div className='weather-container'>
                     <WeatherDisplay country={country} city={city} />

@@ -56,10 +56,10 @@ export const auth = getAuth(app)
         reviewID: reviewDoc.id,
         ...reviewDoc.data()
     }));
-    const filteredReviews = reviewList.filter(review => review.userID == userID)
-    //console.log("")
+    const filteredReviews = reviewList.filter(review => review.userID === userID);
     return filteredReviews;
   }
+
 
   async getReviewsForDestination(destinationID: string) {
     const reviewsCol = collection(db, "destinations", destinationID, "reviews");

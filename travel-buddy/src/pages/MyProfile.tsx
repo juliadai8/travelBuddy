@@ -97,11 +97,19 @@ const ProfilePage = () => {
 
                     const combinedData = await Promise.all(destList.map(async (dest) => {
                         const myReview = await fetchReviewForDestination(user?.uid, dest.id);
-                        return {
-                            rating: myReview[0].rating,
-                            comment: myReview[0].comment,
-                            ...dest
-                        };
+                        if (myReview && myReview.length > 0) {
+                            return {
+                                rating: myReview[0].rating,
+                                comment: myReview[0].comment,
+                                ...dest
+                            };
+                        } else {
+                            return {
+                                rating: null,
+                                comment: null,
+                                ...dest
+                            };
+                        }
                     }));
                     //return combinedData;
                     setDestinationsChanged(false);
@@ -109,7 +117,7 @@ const ProfilePage = () => {
                 });
             }
         });
-    }, [destinationsChanged])
+    }, [user, destinationsChanged])
 
     async function signOut() {
         setUser(undefined);
@@ -202,7 +210,8 @@ const ProfilePage = () => {
                         rating={destin.rating}
                         imgURL={destin.imgUrl}
                         //onReadMore={() => readMore(i)}
-
+                        review={destin.comment}
+                        myRating={destin.rating}
                         isLoggedIn={!!user}
                     />
                     
