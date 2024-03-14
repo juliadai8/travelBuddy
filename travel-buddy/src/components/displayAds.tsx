@@ -25,14 +25,10 @@ const DisplayAds = () => {
 
 
     return (
-        <div id='display'>
-            <div className='adContainer '>
-                <div className="adColumn">
-                    {urls.map((url, index) => (
-                        <img key={index} src={url} alt={`File ${index + 1}`} />
-                    ))}
-                </div>
-            </div>
+        <div id="adColumn">
+            {urls.map((url, index) => (
+                <img key={index} src={url} alt={`File ${index + 1}`} />
+            ))}
         </div>
     );
 };

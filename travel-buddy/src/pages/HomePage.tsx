@@ -65,8 +65,8 @@ const HomePage = () => {
         });
 
         //setUserEmail(localStorage.getItem('user')?.replace(/'/g,'') ?? '');
-        if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com' 
-        || userEmail === 'adrianhsolberg@gmail.com' || userEmail === 'hallvardfuttererwannebo@gmail.com'
+        if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com'
+            || userEmail === 'adrianhsolberg@gmail.com' || userEmail === 'hallvardfuttererwannebo@gmail.com'
         ) {
             setAdmin(true);
         } else {
@@ -90,7 +90,7 @@ const HomePage = () => {
 
     }, [destinationsChanged])
 
-    
+
 
 
     async function signOut() {
@@ -140,13 +140,13 @@ const HomePage = () => {
             const searchQueryLowerCase = searchQuery.toLowerCase();
             const cityName = destin.city.toLowerCase();
             const countryName = destin.country.toLowerCase();
-            const category = Array.isArray(destin.category) ? destin.category.map(c => c.toLowerCase()) : [];
+            // const category = Array.isArray(destin.category) ? destin.category.map(c => c.toLowerCase()) : [];
             // If searchQuery is empty, return true for all destinations
             if (!searchQueryLowerCase) {
                 return true;
             }
             // If searchQuery is not empty, only return true for destinations that include the searchQuery in their category
-            return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase) || category.some(c => c.includes(searchQueryLowerCase));
+            return cityName.includes(searchQueryLowerCase) || countryName.includes(searchQueryLowerCase); // || category.some(c => c.includes(searchQueryLowerCase));
         });
     }
 
@@ -289,14 +289,16 @@ const HomePage = () => {
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
 
-            <div id='FileUploader'>
-            <FileUploader admin={isAdmin}/> 
+            <div id='fileUploader'>
+                <FileUploader admin={isAdmin} />
             </div>
 
-            <div id='displayAds'>
-            <DisplayAds/>
-            </div>
 
+            <div id='ad-container'>
+                <div id='displayAds'>
+                    <DisplayAds />
+                </div>
+            </div>
             <div id='feed-container'>
                 {cities()}
             </div>
@@ -307,6 +309,7 @@ const HomePage = () => {
                     onClose={() => closeAddDestination()} />
             )}
         </div>
+
 
     );
 };

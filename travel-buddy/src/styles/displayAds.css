@@ -1,15 +1,12 @@
-.adContainer{
-    position: relative;
-}
-
-.adColumn{
+#adColumn{
     display: flex;
+    align-items: center;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: flex-end;
-    margin: auto;
-    width: 50%;
-    height: 100%;
-    padding: 20px;
-    border-radius: 10px;
+    z-index: 1;
+    width: 100%;
+
+}
+#adColumn img {
+    height: inherit;
+    width: inherit;
 }
