@@ -9,7 +9,7 @@ import WeatherDisplay from '../components/WeatherDisplay';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan, faCircleArrowLeft, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import ReviewRating from './ReviewRating';
+// import ReviewRating from './ReviewRating';
 
 interface DestinationInterface {
     id: string;
@@ -53,6 +53,8 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     const firebasecontroller = new firebaseControl();
     const [isVisited, setIsVisited] = useState<Boolean>(false);
     const [isEditingReview, setIsEditingReview] = useState<boolean>(false);
+    const [avgRating, setAvgRating] = useState<number>(rating);
+    const [ratingChanged, setRatingChanged] = useState<boolean>(false); 
 
     useEffect(() => {
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
@@ -60,6 +62,13 @@ const DestinationModal: React.FC<DestinationInterface> = ({
         });
         setIsVisited(visited);
     }, []);
+
+    useEffect(() => {
+        firebasecontroller.getDestination(id).then((dest) => {
+            setAvgRating(dest?.RatingCount == 0 ? 0 : dest?.TotalRating / dest?.RatingCount);
+            setRatingChanged(false);
+        })
+    }, [ratingChanged]);
 
     useEffect(() => {
         if (user) {
@@ -78,7 +87,10 @@ const DestinationModal: React.FC<DestinationInterface> = ({
 
     const submitReview = () => {
         if (user && !myReviewID) {
-            firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid);
+            firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid).then(() => {
+                setRatingChanged(true);
+            });
+
         }
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
             setReviewList(JSON.parse(JSON.stringify(reviews)));
@@ -90,6 +102,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
             firebasecontroller.getReviewsForDestination(id).then((reviews) => {
                 setReviewList(JSON.parse(JSON.stringify(reviews)));
             });
+            setRatingChanged(true);
             setIsEditingReview(false);
         });
     }
@@ -99,6 +112,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
             firebasecontroller.getReviewsForDestination(id).then((reviews) => {
                 setReviewList(JSON.parse(JSON.stringify(reviews)));
             });
+            setRatingChanged(true);
             setIsEditingReview(false);
             setMyReviewID("");
             setComment("");
@@ -208,7 +222,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <WeatherDisplay country={country} city={city}/>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
-                    <ReviewRating rating={rating}/> 
+                    <Rating name="average-rating" precision={0.25} value={rating} readOnly/> 
                 </div>
                 <div id='tag-container' className='addPadding not-blur'>
                     {tags.length ? 'Tags: ' + tags?.join(", ") : 'There are no tags for this destination'}

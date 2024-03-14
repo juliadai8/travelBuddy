@@ -37,7 +37,7 @@ class firebaseControl {
         return auth;
     }
 
-    async getDestinastions() {
+    async getDestinations() {
         const destinationsCol = collection(db, "destinations");
         const destinationsSnapshot = await getDocs(destinationsCol);
         const destinationsList = destinationsSnapshot.docs.map(doc => ({
@@ -46,6 +46,13 @@ class firebaseControl {
         }));
         return destinationsList;
     }
+
+    async getDestination(id: string) {
+      const destinationsDoc = doc(db, "destinations", id);
+      const destinationSnapshot = await getDoc(destinationsDoc);
+      const destination = destinationSnapshot.data()
+      return destination;
+  }
 
     async getReviewsForDestination(destinationID: string) {
         const reviewsCol = collection(db, "destinations", destinationID, "reviews");
@@ -112,7 +119,7 @@ class firebaseControl {
                 TotalRating: ratingData?.TotalRating + rating,
                 RatingCount: ratingData?.RatingCount + 1
             });
-
+            console.log("Hei")
             const newDocRef = await addDoc(docRef, {
                 rating: rating,
                 comment: comment,

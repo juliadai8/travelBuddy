@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import '../styles/DestinationBox.css';
 import WeatherDisplay from '../components/WeatherDisplay';
 import Box from "@mui/material/Box";
-import StarIcon from "@mui/icons-material/Star";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
+// import StarIcon from "@mui/icons-material/Star";
+// import StarBorderIcon from "@mui/icons-material/StarBorder";
 import ReviewRating from '../components/ReviewRating';
+import { Rating } from '@mui/material';
 
 interface DestinationInterface {
     country: string;
@@ -27,7 +28,7 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                    <ReviewRating rating={rating} />
+                    <Rating name="average-rating" value={rating} precision={0.25} readOnly />
                 </div>
                 <div className='weather-container'>
                     <WeatherDisplay country={country} city={city} />

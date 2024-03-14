@@ -66,7 +66,7 @@ const HomePage = () => {
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
-        firebasecontroller.getDestinastions().then((destinationsFirebase) => {
+        firebasecontroller.getDestinations().then((destinationsFirebase) => {
             //setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
             const destList:DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
             destList.map(dest => ({
