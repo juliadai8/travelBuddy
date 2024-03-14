@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ref, listAll, getStorage, getDownloadURL } from "firebase/storage";
 import '../styles/displayAds.css';
+import { deleteObject } from "firebase/storage";
 
-const DisplayAds = () => {
+
+interface displayAdsInterface {
+    admin: boolean;
+}
+
+const DisplayAds: React.FC<displayAdsInterface> = ({admin}) => {
     const [urls, setUrls] = useState<string[]>([]);
 
     useEffect(() => {
@@ -23,11 +29,28 @@ const DisplayAds = () => {
             .catch((error) => console.log(error));
     }, []);
 
+    const deleteAd = (url: string) => {
+        const storage = getStorage();
+        const fileRef = ref(storage, url);
 
+        deleteObject(fileRef)
+            .then(() => {
+                console.log("File deleted successfully");
+                // Then remove the URL from the state
+                setUrls(prevUrls => prevUrls.filter(prevUrl => prevUrl !== url));
+            })
+            .catch((error) => {
+                console.error("Error deleting file: ", error);
+            });
+    };
+    const reversedUrls = urls.slice().reverse();
     return (
         <div id="adColumn">
-            {urls.map((url, index) => (
-                <img key={index} src={url} alt={`File ${index + 1}`} />
+            {reversedUrls.map((url, index) => (
+                <div id ='delete' key={index}>
+                    <img src={url} alt={`File ${index + 1}`} />
+                    {admin && <button onClick={() => deleteAd(url)}>Delete</button>}
+                </div>
             ))}
         </div>
     );

@@ -296,7 +296,7 @@ const HomePage = () => {
 
             <div id='ad-container'>
                 <div id='displayAds'>
-                    <DisplayAds />
+                    <DisplayAds admin={isAdmin}/>
                 </div>
             </div>
             <div id='feed-container'>
