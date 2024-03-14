@@ -70,6 +70,13 @@ button:active {
     align-items: center;
 }
 
+#weather-display-container {
+    margin-top: 5px;
+    height: 5ch;
+    display: flex;
+    align-items: center;
+}
+
 #rating-container {
     margin-top: 5px;
     height: 5ch;
