@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/DestinationBox.css';
+import '../styles/MyDestinationBox.css';
 import WeatherDisplay from '../components/WeatherDisplay';
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { Rating } from '@mui/material';
 
 interface DestinationInterface {
     country: string;
@@ -28,15 +29,23 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({country, city, rating
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                {myRating && <p>{myRating}</p>}
-                {review && <p>{review}</p>}
+                {/* {myRating && <p>{myRating}</p>} */}
+                <Rating name="half-rating" defaultValue={rating} precision={0.5} readOnly/>
+                {/* {review && <p>{review}</p>} */}
                 </div>
+                {/* {review && <p>{review}</p>} */}
                 <div className='weather-container'>
                     <WeatherDisplay country={country} city={city} />
                 </div>
                 
             </div>
+            <div className='review-container'>
+                {review && <p>{review}</p>}
+            </div>
+            
         </div>
+        
+        
     );
 }
 
