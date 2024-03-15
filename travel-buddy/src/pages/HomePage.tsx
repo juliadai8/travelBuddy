@@ -248,19 +248,11 @@ const HomePage = () => {
     }
 
     return (
-        <div id='container' className={openModal || openAddDestination || openEdit ? 'blur-background' : undefined}>
-            {!!user &&
-                (<button id='addDestinationButton'
-                    onClick={() => setOpenAddDestination(true)}
-                    disabled={openModal || openAddDestination}
-                    className={openModal || openAddDestination ? 'disable-button' : undefined}>
-                    Add new travel destination
-                </button>)
-            }
+        <div id='container' className={openModal || openAddDestination || openEdit ? 'blur-background'  : undefined}>
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             {openModal && user &&
                 <DestinationModal
-                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
+                id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
                     city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
                     country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
                     rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
@@ -271,20 +263,28 @@ const HomePage = () => {
                     admin={isAdmin}
                     onEdit={() => editDestination()}
                     onDelete={() => deleteDestination(filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id)}
-                    onClose={() => closeModal()} />}
-            {openEdit && <EditDestination
-                city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
-                country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                currentDescription={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                currentImgUrl={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
-                id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
-                onClose={() => closeEdit()}
-                visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited} />
-            }
-            <div id='search-container'>
-                <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations" />
-            </div>
+                    onClose={() => closeModal()}/>}
+                {openEdit && <EditDestination
+                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
+                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
+                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
+                    currentDescription={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
+                    currentImgUrl={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
+                    onClose={() => closeEdit()}
+                    visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited}/>
+                }
+                <div id="search-and-add">
+                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
+                    {!!user && 
+                        (<button
+                            onClick={() => setOpenAddDestination(true)}
+                            disabled={openModal || openAddDestination}
+                            className={openModal || openAddDestination ? 'disable-button' : undefined}>
+                            Add new travel destination
+                        </button>)
+                    } 
+                </div>        
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
