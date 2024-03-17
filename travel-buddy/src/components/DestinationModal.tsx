@@ -89,12 +89,12 @@ const DestinationModal: React.FC<DestinationInterface> = ({
         if (user && !myReviewID) {
             firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid).then(() => {
                 setRatingChanged(true);
+            }).then(() => {
+                firebasecontroller.getReviewsForDestination(id).then((reviews) => {
+                    setReviewList(JSON.parse(JSON.stringify(reviews)));
+                });
             });
-
-        }
-        firebasecontroller.getReviewsForDestination(id).then((reviews) => {
-            setReviewList(JSON.parse(JSON.stringify(reviews)));
-        });
+        }    
     } 
 
     const updateReview = () => {
