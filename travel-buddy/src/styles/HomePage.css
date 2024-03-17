@@ -33,7 +33,7 @@ body{
 }
 
 .blur-background #filter-container, .blur-background #feed-container, .blur-background #search-container,
-.blur-background #addDestinationButton{
+.blur-background #addDestinationButton, .blur-background #search-and-add {
     filter: blur(2px);
 }
 
@@ -48,7 +48,7 @@ body{
     z-index: 2;
 }
 
-/* #addDestinationButton {
+#addDestinationButton {
     position: absolute;
     align-self: flex-end;
     margin:50px;
@@ -56,54 +56,25 @@ body{
     width: 110px;
     z-index: 2;
     border-radius: 10px;
-} */
+} 
 
-/* #search-container {
+#search-container {
     width: 50%;
     display: flex;
     direction: row;
     justify-content: space-between;
     left: auto;
-    height: 50px;
+    height: 40px;
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
 #search-container input { 
     flex-grow: 1;
-    margin-right: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding-left: 10px;
-    padding-right: 10px;     
-} */
-
-/* #search-container {
-    width: 50%;
-} */
-
-#search-and-add {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    height: 40px;
-    width: 50%;
-}
-
-#search-and-add input {
-    flex-grow: 1;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-right: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    width: 560px;
-}
-
-#search-and-add button {
-    width: 130px;
 }
 
 .disable-button {
