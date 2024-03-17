@@ -4,7 +4,7 @@ import { User } from 'firebase/auth';
 import '../styles/HaveBeenCheckbox.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faMapPin } from '@fortawesome/free-solid-svg-icons'
 
 interface HaveBeenProps {
     user: User | undefined;
@@ -24,7 +24,7 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
         }
     }; */
 
-    useEffect(() => {
+    const checkRender = () => {
         const checkVisited = async () => {
             try {
                 const firebasecontroller = new firebaseControl();
@@ -34,7 +34,13 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
                 console.error("Error checking if visited:", error);
             }
         };
-            checkVisited();
+        checkVisited();
+    }
+
+    checkRender();
+    
+    useEffect(() => {
+        checkRender();
     }, []);
 
     const handleCheckboxChange = async () => {
@@ -55,8 +61,7 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
 
     return (
         <>
-            <label className="visitedLabel">Visited:</label>
-            {isChecked ? <FontAwesomeIcon icon={faEye} onClick={handleCheckboxChange} /> : <FontAwesomeIcon icon={faEyeSlash} onClick={handleCheckboxChange} />}  
+            {isChecked ? <FontAwesomeIcon className="visitedIcon" icon={faMapPin} onClick={handleCheckboxChange} style={{color: "#63E6BE",}} /> : <FontAwesomeIcon className="visitedIcon" icon={faMapPin} onClick={handleCheckboxChange} style={{color: "#c0c0c0",}} />}
         </>  
     );
 };

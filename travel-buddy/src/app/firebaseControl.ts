@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { User, getAuth } from "firebase/auth";
 import { update } from "firebase/database";
 import {
   getFirestore, collection, getDocs,
@@ -11,6 +11,7 @@ import {
   query,
   where,
   getDoc,
+  DocumentData,
   
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
@@ -163,6 +164,34 @@ export const auth = getAuth(app)
         console.error("Error checking if destination is visited:", error);
         return false;
     }
+}
+
+async getDestinationsWithVisited(user: User | undefined) {
+    const destinationsCol = collection(db, "destinations");
+    const destinationsSnapshot = await getDocs(destinationsCol);
+
+    if(typeof user !== "undefined"){
+        let destinationList: DocumentData[] = [];
+        for(const destination of destinationsSnapshot.docs){
+            await this.checkIfVisited(user?.uid, destination.id).then((hasVisited) => {
+                destinationList.push({
+                    id: destination.id,
+                    visited: hasVisited,
+                    ...destination.data()
+                });
+            });
+        }
+
+        return destinationList;
+    }
+
+    const destinationsList = destinationsSnapshot.docs.map(doc =>  ({
+        id: doc.id,
+        visited: false,
+        ...doc.data()
+    }));
+
+    return destinationsList;
 }
 
   /* async getVisitedPairs(){

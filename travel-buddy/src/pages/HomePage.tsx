@@ -66,13 +66,8 @@ const HomePage = () => {
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
-        firebasecontroller.getDestinastions().then((destinationsFirebase) => {
-            //setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
-            const destList:DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
-            destList.map(dest => ({
-                visited: firebasecontroller.checkIfVisited(user?.uid, dest.id),
-                ...dest
-            }));
+        firebasecontroller.getDestinastions().then((destList) => {
+            console.log("Destination List: ", destList)
             setDestinationList(destList);
             setDestinationsChanged(false);
         });
@@ -119,8 +114,6 @@ const HomePage = () => {
         })
     }
 
-    
-
     const filteredDestinationsSearch = (destinations: DocumentData[], searchQuery: string): DocumentData[] => {
         return destinations.filter(destin => {
             const searchQueryLowerCase = searchQuery.toLowerCase();
@@ -149,7 +142,6 @@ const HomePage = () => {
 
         return (destinationsOfCity.length > 0 && destinationsOfCountry.length > 0) ? true: false
     }
-    
 
     const cities = () => {
         const filteredAndSearchedDestinations = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)
@@ -168,6 +160,8 @@ const HomePage = () => {
                         imgURL={destin.imgUrl}
                         onReadMore={() => readMore(i)}
                         isLoggedIn={!!user}
+                        user={user}
+                        id={destin.id}
                     />
                     
                 ))
@@ -180,15 +174,13 @@ const HomePage = () => {
         
     }
 
-    
-      
-      
-
     const closeModal = () => {
         setDestIndex(0);
         setOpenModal(false);
         window.scrollTo(0, scrollMem);
         setScrollMem(0);
+
+        setDestinationsChanged(true);
     }
 
     const onFilterChange = (t: string[] = []) => {

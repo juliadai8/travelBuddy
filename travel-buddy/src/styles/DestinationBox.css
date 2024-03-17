@@ -80,6 +80,7 @@ button {
     border-radius: 5px;
     color: white;
     font-weight: bold;
+    margin-left: 10px;
 }
 
 button:hover {
