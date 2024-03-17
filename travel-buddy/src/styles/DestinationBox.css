@@ -60,7 +60,6 @@ h2 {
 
 .rating-container > p {
     border-color: black;
-    
 }
 
 p {
@@ -91,6 +90,7 @@ button:active {
     background-color: rgb(100, 100, 100);
     transform: scale(0.97);
 }
+
 .weather-container {
     display: flex;
     flex-direction: row;

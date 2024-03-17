@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import firebaseControl from '@/app/firebaseControl';
 import { User } from 'firebase/auth';
+import '../styles/HaveBeenCheckbox.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 interface HaveBeenProps {
     user: User | undefined;
@@ -37,11 +41,11 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
         try {
             const firebasecontroller = new firebaseControl();
             if (!isChecked) {
-                await firebasecontroller.setUser(user?.uid, id);
-                console.log("Destination added to user's list:", id);
+                await firebasecontroller.setUserDestination(user?.uid, id);
+                console.log("User added to destination's list:", id);
             } else {
                 await firebasecontroller.removeUserDestination(user?.uid, id);
-                console.log("Destination removed from user's list:", id);
+                console.log("User removed from destination's list:", id);
             }
             setIsChecked(!isChecked); 
         } catch (error) {
@@ -50,18 +54,10 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
     };
 
     return (
-        <div>
-        <div style={{display: "flex", flexDirection: 'row'}}>
-            <label>Visited:</label>
-            <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-            />
-        </div>      
-        </div>  
-       
-
+        <>
+            <label className="visitedLabel">Visited:</label>
+            {isChecked ? <FontAwesomeIcon icon={faEye} onClick={handleCheckboxChange} /> : <FontAwesomeIcon icon={faEyeSlash} onClick={handleCheckboxChange} />}  
+        </>  
     );
 };
 

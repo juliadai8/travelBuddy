@@ -118,7 +118,7 @@ export const auth = getAuth(app)
     return auth;
   }
 
-  async setUser(userID: string | undefined, destinationID: string) {
+  async setUserDestination(userID: string | undefined, destinationID: string) {
     const collectionRef = collection(db, "user_destinations");
     try {
       const newDocRef = await addDoc(collectionRef, {
