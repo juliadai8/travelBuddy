@@ -156,7 +156,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                             <div id="starRating" className='not-blur'>
                                 <Rating name="half-rating" defaultValue={review.rating} precision={0.5} onChange={(event, value) => setActiveStar(value as number)}/> 
                             </div>
-                            <textarea id="review-destinations" rows={1} onChange={handleCommentChange}>{review.comment}</textarea>
+                            <textarea id="review-destinations" rows={1} onChange={handleCommentChange} defaultValue={review.comment}></textarea>
                             <div >
                                 <FontAwesomeIcon id='back-review' className='not-blur' icon={faCircleArrowLeft} onClick={() => setIsEditingReview(false)}/>
                                 <FontAwesomeIcon id='update-review' className='not-blur' icon={faCircleCheck} onClick={updateReview}/>
@@ -222,7 +222,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <WeatherDisplay country={country} city={city}/>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
-                    <Rating name="average-rating" precision={0.25} value={rating} readOnly/> 
+                    <Rating name="average-rating" precision={0.25} value={avgRating} readOnly/> 
                 </div>
                 <div id='tag-container' className='addPadding not-blur'>
                     {tags.length ? 'Tags: ' + tags?.join(", ") : 'There are no tags for this destination'}

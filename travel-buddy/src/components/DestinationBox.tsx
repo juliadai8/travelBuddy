@@ -20,7 +20,7 @@ interface DestinationInterface {
 const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onReadMore, isLoggedIn}) => {
     
     return (
-        <div className='box' id='box'>
+        <div className='box' id='box' onClick={isLoggedIn ? onReadMore : () => alert('Please log in to read more')}>
             <img src={imgURL} alt="Error loading image" className='inner-div' />
             <div className='inner-div info-div'>
                 <h1>{city}</h1>
@@ -34,7 +34,7 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
                     <WeatherDisplay country={country} city={city} />
                 </div>
                 <div className="button-container">
-                    <button onClick={isLoggedIn ? onReadMore : () => alert('Please log in to read more')}>
+                    <button>
                     Read More</button>
                 </div>
             </div>
