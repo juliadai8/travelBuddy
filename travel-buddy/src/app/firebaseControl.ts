@@ -93,6 +93,7 @@ export const auth = getAuth(app)
   async deleteDestination(destinationID: string) {
     try {
       await deleteDoc(doc(db, "destinations", destinationID))
+      this.deleteAllReviews(destinationID);
     }
     catch(e) {
       console.log(e);
@@ -185,7 +186,20 @@ export const auth = getAuth(app)
         console.error("Error checking if destination is visited:", error);
         return false;
     }
-}
+  }
+
+  async deleteAllReviews(destinationID: string) {
+    const reviewsRef = collection(db, "destinations", destinationID, "reviews");
+    try {
+      const querySnapshot = await getDocs(reviewsRef);
+      querySnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+    }
+    catch(e) {
+      console.error(e);
+    }
+  }
 
   /* async getVisitedPairs(){
     const pairCol = collection(db, "user_destinations");
