@@ -151,7 +151,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
             return (
                 <div>
                     {reviewList.filter(review => review.reviewID === myReviewID).map((review) => (
-                        <div id='myrating-container' className='addPadding not-blur'>
+                        <div key={review.reviewID} id='myrating-container' className='addPadding not-blur'>
                             Edit your review:
                             <div id="starRating" className='not-blur'>
                                 <Rating name="half-rating" defaultValue={review.rating} precision={0.5} onChange={(event, value) => setActiveStar(value as number)}/> 
@@ -174,7 +174,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <h3>My Review</h3>
                     <hr/>
                     {reviewList.filter(review => review.reviewID === myReviewID).map((review) => (
-                        <div style={{justifyContent: 'space-between'}}>
+                        <div key={review.reviewID} style={{justifyContent: 'space-between'}}>
                             <div id='top-of-review'>
                                 <div style={{opacity: 0.5}}>
                                     {review.email}
@@ -235,7 +235,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <div id="reviewfeed-container" className='addPadding not-blur'>
                         <h3>All Reviews</h3>
                         {reviewList.filter(review => review.comment !== "" && review.comment && review.reviewID !== myReviewID).map((review) => (
-                            <div>
+                            <div key={review.reviewID}>
                                 <hr/>
                                 <div id='singlereview-container'>
                                     <div id='top-of-review'>
