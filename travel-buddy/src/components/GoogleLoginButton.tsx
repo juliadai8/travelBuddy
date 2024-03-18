@@ -33,7 +33,10 @@ const GoogleLoginButton: React.FC = () => {
   }; */
 
   const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider(); 
+    const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+      prompt: 'select_account'
+    });
     try {
       const result = await signInWithPopup(firebaseControl.getAuth(), provider);
       const user = result.user;
