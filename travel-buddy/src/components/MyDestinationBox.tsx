@@ -21,6 +21,8 @@ interface DestinationInterface {
 const MyDestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onReadMore, isLoggedIn, review, myRating}) => {
 
     return (
+        <div>
+        <div className='outer-box'>
         <div className='box'>
             <img src={imgURL} alt="Error loading image" className='inner-div' />
             <div className='inner-div info-div'>
@@ -29,17 +31,21 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({country, city, rating
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                {/* {myRating && <p>{myRating}</p>} */}
                 <Rating name="half-rating" defaultValue={rating} precision={0.5} readOnly/>
-                {/* {review && <p>{review}</p>} */}
                 </div>
-                {/* {review && <p>{review}</p>} */}
                 <div className='weather-container'>
                     <WeatherDisplay country={country} city={city} />
                 </div>
                 
             </div>
+            
+            
+        </div>
+        </div>
+            
             <div className='review-container'>
+                <h3>Your review for {city}</h3>
+                <Rating name="half-rating" defaultValue={rating} precision={0.5} readOnly/>
                 {review && <p>{review}</p>}
             </div>
             

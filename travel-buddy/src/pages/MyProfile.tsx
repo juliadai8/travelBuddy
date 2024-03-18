@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { DocumentData } from 'firebase/firestore';
 import AddDestination from '../components/AddDestination';
 import Header from '../components/Header';
-
+import '../styles/MyDestinationBox.css'
 const ProfilePage = () => {
     const [tags, setTags] = useState<string[]>([]);
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
@@ -266,7 +266,8 @@ const ProfilePage = () => {
     return (
         <div id='container' className={openModal || openAddDestination ? 'blur-background'  : undefined}>
             <Header />
-            
+            <div className='header-padding'>
+                <p className='headline'>Your visited destinations</p>
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             {openModal &&
                 <DestinationModal
@@ -297,6 +298,7 @@ const ProfilePage = () => {
                     destinationList={destinationList}
                     onClose={() => closeAddDestination()}/>
             )}
+        </div>
         </div>
     
     );
