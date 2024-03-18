@@ -99,14 +99,15 @@ class firebaseControl {
         }
     }
 
-    async deleteDestination(destinationID: string) {
-        try {
-            await deleteDoc(doc(db, "destinations", destinationID))
-        }
-        catch (e) {
-            console.log(e);
-        }
+  async deleteDestination(destinationID: string) {
+    try {
+      await deleteDoc(doc(db, "destinations", destinationID))
+      this.deleteAllReviews(destinationID);
     }
+    catch(e) {
+      console.log(e);
+    }
+  }
 
     async addReview(destinationID: string, rating: number, comment: string, email: string | null, userID: string | null) {
         const docRef = collection(db, "destinations", destinationID, "reviews");
@@ -229,6 +230,20 @@ class firebaseControl {
             return false;
         }
     }
+
+    async deleteAllReviews(destinationID: string) {
+      const reviewsRef = collection(db, "destinations", destinationID, "reviews");
+      try {
+        const querySnapshot = await getDocs(reviewsRef);
+        querySnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+      });
+      }
+      catch(e) {
+        console.error(e);
+      }
+    }
+  
 
     /* async getVisitedPairs(){
       const pairCol = collection(db, "user_destinations");

@@ -239,7 +239,7 @@ const HomePage = () => {
 
     return (
         <div id='container' className={openModal || openAddDestination || openEdit ? 'blur-background'  : undefined}>
-            {(openModal || openAddDestination) && <div className="overlay"></div>}
+            {(openModal || openAddDestination || openEdit) && <div className="overlay"></div>}
             {openModal && user &&
                 <DestinationModal
                     id={destination.id}
@@ -264,16 +264,17 @@ const HomePage = () => {
                     onClose={() => closeEdit()}
                     visited={destination.visited}/>
                 }
-                <div id="search-and-add">
-                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
                     {!!user && 
                         (<button
+                            id = 'addDestinationButton'
                             onClick={() => setOpenAddDestination(true)}
                             disabled={openModal || openAddDestination}
                             className={openModal || openAddDestination ? 'disable-button' : undefined}>
                             Add new travel destination
                         </button>)
                     } 
+                <div id="search-container">
+                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations" />
                 </div>        
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
