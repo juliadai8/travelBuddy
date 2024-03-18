@@ -34,7 +34,7 @@ body{
 }
 
 .blur-background #filter-container, .blur-background #feed-container, .blur-background #search-container,
-.blur-background #addDestinationButton{
+.blur-background #addDestinationButton, .blur-background #ad-container {
     filter: blur(2px);
 }
 
