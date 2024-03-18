@@ -77,13 +77,8 @@ const HomePage = () => {
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
-        firebasecontroller.getDestinastions().then((destinationsFirebase) => {
-            //setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
-            const destList: DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
-            destList.map(dest => ({
-                visited: firebasecontroller.checkIfVisited(user?.uid, dest.id),
-                ...dest
-            }));
+        firebasecontroller.getDestinastions().then((destList) => {
+            console.log("Destination List: ", destList)
             setDestinationList(destList);
             setDestinationsChanged(false);
         });
@@ -133,8 +128,6 @@ const HomePage = () => {
         })
     }
 
-
-
     const filteredDestinationsSearch = (destinations: DocumentData[], searchQuery: string): DocumentData[] => {
         return destinations.filter(destin => {
             const searchQueryLowerCase = searchQuery.toLowerCase();
@@ -173,20 +166,22 @@ const HomePage = () => {
         else {
             return (
                 <>
-                    {filteredAndSearchedDestinations.map((destin, i) => (
-                        <DestinationBox
-                            key={i}
-                            city={destin.city}
-                            country={destin.country}
-                            rating={destin.rating}
-                            imgURL={destin.imgUrl}
-                            onReadMore={() => readMore(i)}
-                            isLoggedIn={!!user}
-                        />
-
-                    ))
-
-                    }
+                {filteredAndSearchedDestinations.map((destin, i) => (
+                    <DestinationBox
+                        key={i}
+                        city={destin.city}
+                        country={destin.country}
+                        rating={destin.rating}
+                        imgURL={destin.imgUrl}
+                        onReadMore={() => readMore(i)}
+                        isLoggedIn={!!user}
+                        user={user}
+                        id={destin.id}
+                    />
+                    
+                ))
+                
+                }
                 </>
 
             );
@@ -194,15 +189,13 @@ const HomePage = () => {
 
     }
 
-
-
-
-
     const closeModal = () => {
         setDestIndex(0);
         setOpenModal(false);
         window.scrollTo(0, scrollMem);
         setScrollMem(0);
+
+        setDestinationsChanged(true);
     }
 
     const onFilterChange = (t: string[] = []) => {
@@ -249,7 +242,7 @@ const HomePage = () => {
 
     return (
         <div id='container' className={openModal || openAddDestination || openEdit ? 'blur-background'  : undefined}>
-            {(openModal || openAddDestination) && <div className="overlay"></div>}
+            {(openModal || openAddDestination || openEdit) && <div className="overlay"></div>}
             {openModal && user &&
                 <DestinationModal
                 id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
@@ -274,16 +267,17 @@ const HomePage = () => {
                     onClose={() => closeEdit()}
                     visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited}/>
                 }
-                <div id="search-and-add">
-                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations"/>
                     {!!user && 
                         (<button
+                            id = 'addDestinationButton'
                             onClick={() => setOpenAddDestination(true)}
                             disabled={openModal || openAddDestination}
                             className={openModal || openAddDestination ? 'disable-button' : undefined}>
                             Add new travel destination
                         </button>)
                     } 
+                <div id="search-container">
+                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations" />
                 </div>        
             <div id='filter-container'>
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />

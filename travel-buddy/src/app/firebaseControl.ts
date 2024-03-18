@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { User, getAuth } from "firebase/auth";
 import { update } from "firebase/database";
 import { getStorage } from "firebase/storage";
 import {
@@ -12,6 +12,7 @@ import {
   query,
   where,
   getDoc,
+  DocumentData,
   
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
@@ -99,6 +100,7 @@ export const auth = getAuth(app)
   async deleteDestination(destinationID: string) {
     try {
       await deleteDoc(doc(db, "destinations", destinationID))
+      this.deleteAllReviews(destinationID);
     }
     catch(e) {
       console.log(e);
@@ -146,7 +148,7 @@ export const auth = getAuth(app)
     return auth;
   }
 
-  async setUser(userID: string | undefined, destinationID: string) {
+  async setUserDestination(userID: string | undefined, destinationID: string) {
     const collectionRef = collection(db, "user_destinations");
     try {
       const newDocRef = await addDoc(collectionRef, {
@@ -191,6 +193,47 @@ export const auth = getAuth(app)
         console.error("Error checking if destination is visited:", error);
         return false;
     }
+  }
+
+  async deleteAllReviews(destinationID: string) {
+    const reviewsRef = collection(db, "destinations", destinationID, "reviews");
+    try {
+      const querySnapshot = await getDocs(reviewsRef);
+      querySnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+    }
+    catch(e) {
+      console.error(e);
+    }
+  }
+
+async getDestinationsWithVisited(user: User | undefined) {
+    const destinationsCol = collection(db, "destinations");
+    const destinationsSnapshot = await getDocs(destinationsCol);
+
+    if(typeof user !== "undefined"){
+        let destinationList: DocumentData[] = [];
+        for(const destination of destinationsSnapshot.docs){
+            await this.checkIfVisited(user?.uid, destination.id).then((hasVisited) => {
+                destinationList.push({
+                    id: destination.id,
+                    visited: hasVisited,
+                    ...destination.data()
+                });
+            });
+        }
+
+        return destinationList;
+    }
+
+    const destinationsList = destinationsSnapshot.docs.map(doc =>  ({
+        id: doc.id,
+        visited: false,
+        ...doc.data()
+    }));
+
+    return destinationsList;
 }
 
   /* async getVisitedPairs(){
