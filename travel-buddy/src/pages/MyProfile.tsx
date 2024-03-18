@@ -269,6 +269,9 @@ const ProfilePage = () => {
             <div className='header-padding'>
                 <p className='headline'>Your visited destinations</p>
             {(openModal || openAddDestination) && <div className="overlay"></div>}
+            <div id='filter-container' className='filter-container'> 
+                <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
+            </div>
             {openModal &&
                 <DestinationModal
                     id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
@@ -283,11 +286,7 @@ const ProfilePage = () => {
                     visited={true}
                     admin={isAdmin}
                 />}
-            <div id='search-container'>
-                
-                
-                
-            </div>
+           
             
             <div id='feed-container'>   
                 {cities()}
