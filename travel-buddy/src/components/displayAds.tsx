@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ref, listAll, getStorage, getDownloadURL } from "firebase/storage";
 import '../styles/displayAds.css';
 import { deleteObject } from "firebase/storage";
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 interface displayAdsInterface {
@@ -49,7 +51,9 @@ const DisplayAds: React.FC<displayAdsInterface> = ({admin}) => {
             {reversedUrls.map((url, index) => (
                 <div id ='delete' key={index}>
                     <img src={url} alt={`File ${index + 1}`} />
-                    {admin && <button onClick={() => deleteAd(url)}>Delete</button>}
+                    {admin && <button onClick={() => deleteAd(url)}>
+                        <FontAwesomeIcon id='icon' className='not-blur' icon={faTrashCan}/>
+                    </button>}
                 </div>
             ))}
         </div>

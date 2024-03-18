@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from '../app/firebaseControl';
+import '../styles/FileUploader.css';
 
 
 interface FileUploaderInterface {
@@ -40,7 +41,7 @@ const FileUploader: React.FC<FileUploaderInterface> = ({admin}) => {
     };
 
     return (
-        <div>
+        <div id="fileUploader">
            {admin && <input type="file" onChange={handleChange} accept=".png, .jpg, .gif"/>}
            {admin && <button onClick={handleUpload}>Upload ad</button>}
         </div>
