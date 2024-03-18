@@ -120,7 +120,6 @@ class firebaseControl {
                 TotalRating: ratingData?.TotalRating + rating,
                 RatingCount: ratingData?.RatingCount + 1
             });
-            console.log("Hei")
             const newDocRef = await addDoc(docRef, {
                 rating: rating,
                 comment: comment,
