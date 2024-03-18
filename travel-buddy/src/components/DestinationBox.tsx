@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import '../styles/DestinationBox.css';
 import WeatherDisplay from '../components/WeatherDisplay';
 import Box from "@mui/material/Box";
@@ -6,6 +6,8 @@ import Box from "@mui/material/Box";
 // import StarBorderIcon from "@mui/icons-material/StarBorder";
 import ReviewRating from '../components/ReviewRating';
 import { Rating } from '@mui/material';
+import HaveBeenCheckbox from './HaveBeenCheckbox';
+import { User } from 'firebase/auth';
 
 interface DestinationInterface {
     country: string;
@@ -14,11 +16,13 @@ interface DestinationInterface {
     imgURL: string;
     onReadMore?: () => void;
     isLoggedIn: boolean;
+    user: User | undefined;
+    id: string;
 }
 
 // Note: The button must be alignes with the rating-stars when they are added
-const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onReadMore, isLoggedIn}) => {
-    
+const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, imgURL, onReadMore, isLoggedIn, user, id}) => {
+    const [render, setRender] = useState({state: false});
     return (
         <div className='box' id='box' onClick={isLoggedIn ? onReadMore : () => alert('Please log in to read more')}>
             <img src={imgURL} alt="Error loading image" className='inner-div' />
@@ -34,7 +38,8 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
                     <WeatherDisplay country={country} city={city} />
                 </div>
                 <div className="button-container">
-                    <button>
+                    {typeof user !== "undefined" && <HaveBeenCheckbox user={user} id={id} />}
+                    <button onClick={isLoggedIn ? onReadMore : () => alert('Please log in to read more')}>
                     Read More</button>
                 </div>
             </div>
