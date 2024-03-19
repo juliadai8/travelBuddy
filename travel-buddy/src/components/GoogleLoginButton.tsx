@@ -42,6 +42,7 @@ const GoogleLoginButton: React.FC = () => {
         setIsLoggedIn(true);
         localStorage.setItem('user', JSON.stringify(user.email));
       }
+      window.location.reload(); 
     } catch (error) {
       console.error(error);
     }
@@ -53,6 +54,7 @@ const GoogleLoginButton: React.FC = () => {
       await signOut(firebaseControl.getAuth());
         localStorage.setItem('user', '');
         setIsLoggedIn(false);
+        window.location.reload(); 
     } catch (error) {
       console.error(error);
     }
