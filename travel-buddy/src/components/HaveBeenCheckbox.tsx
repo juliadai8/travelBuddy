@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import firebaseControl from '@/app/firebaseControl';
+import firebaseControl from '../app/firebaseControl';
 import { User } from 'firebase/auth';
 import '../styles/HaveBeenCheckbox.css';
 
