@@ -32,7 +32,7 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
             </div>
             <div className='inner-div more-div'>
                 <div className='rating-container'>
-                    <Rating name="average-rating" value={rating} precision={0.25} readOnly />
+                    <Rating data-testid="rating" name="average-rating" value={rating} precision={0.25} readOnly />
                 </div>
                 <div className='weather-container'>
                     <WeatherDisplay country={country} city={city} />

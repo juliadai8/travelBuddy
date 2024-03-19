@@ -46,4 +46,11 @@ describe(DestinationBox, () => {
         expect(onReadMoreMock).not.toHaveBeenCalled();
         expect(mockAlert).toHaveBeenCalled();
     });
+
+    it("shows rating stars", () => {
+        const onReadMoreMock = jest.fn();
+        const { getByTestId } = render(<DestinationBox country='Country' city='City' rating={5} imgURL='https://media.snl.no/media/132105/article_topimage_Oslo_SNL.png' onReadMore={onReadMoreMock} isLoggedIn={true} user={undefined} id={'testId'}/>);        
+        const rating = getByTestId('rating');
+        expect(rating).toBeInTheDocument();
+    });
 });
