@@ -53,7 +53,6 @@ const ProfilePage = () => {
             }
         });
         
-        //setUserEmail(localStorage.getItem('user')?.replace(/'/g,'') ?? '');
         if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com' || userEmail === 'adrianhsolberg@gmail.com') {
             setAdmin(true);
         } else {
