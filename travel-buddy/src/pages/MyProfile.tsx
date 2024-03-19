@@ -62,20 +62,6 @@ const ProfilePage = () => {
         
     }, [destinationsChanged, isLoggedIn, userEmail])
 
-    // useEffect(() => {
-    //     const firebasecontroller = new firebaseControl();
-    //     firebasecontroller.getDestinastions().then((destinationsFirebase) => {
-    //         //setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
-    //         const destList:DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
-    //         destList.map(dest => ({
-    //             visited: firebasecontroller.checkIfVisited(user?.uid, dest.id),
-    //             ...dest
-    //         }));
-    //         setDestinationList(destList);
-    //         setDestinationsChanged(false);
-    //     });
-
-    // }, [destinationsChanged])
 
     const fetchReviewForDestination = async (userId:string|undefined, destinationId:string) => {
         const fbcontroller = new firebaseControl();
