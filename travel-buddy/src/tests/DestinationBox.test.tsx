@@ -28,11 +28,22 @@ describe(DestinationBox, () => {
         expect(imgElement?.getAttribute('alt')).toEqual('Error loading image');
     });
 
-    it("allows clicking read more when logged in", async () => {
+    it("allows clicking read more when logged in", () => {
         const onReadMoreMock = jest.fn();
         const { getByRole } = render(<DestinationBox country='Country' city='City' rating={5} imgURL='https://media.snl.no/media/132105/article_topimage_Oslo_SNL.png' onReadMore={onReadMoreMock} isLoggedIn={true} user={undefined} id={'testId'}/>);        
         const button = getByRole('button', {name: 'Read More'})
         fireEvent.click(button);
         expect(onReadMoreMock).toHaveBeenCalled();
+    });
+
+    it("does not allow reading more when not logged in", () => {
+        const onReadMoreMock = jest.fn();
+        window.alert = () => {};  
+        const mockAlert = jest.spyOn(window, 'alert');
+        const { getByRole } = render(<DestinationBox country='Country' city='City' rating={5} imgURL='https://media.snl.no/media/132105/article_topimage_Oslo_SNL.png' onReadMore={onReadMoreMock} isLoggedIn={false} user={undefined} id={'testId'}/>);        
+        const button = getByRole('button', {name: 'Read More'})
+        fireEvent.click(button);
+        expect(onReadMoreMock).not.toHaveBeenCalled();
+        expect(mockAlert).toHaveBeenCalled();
     });
 });
