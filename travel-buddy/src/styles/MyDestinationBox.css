@@ -126,16 +126,14 @@ button:active {
 }
 
 .review-container {
-
-    width: 750px;
+    width: 730px;
     border-radius: 10px;
     overflow: hidden;
     margin-left: 10px;
     background-color: #a1bcd9;
     margin-bottom: 30px;
     opacity: 1;
-   
-    
+    padding: 10px;
 }
 
 .header-padding{
