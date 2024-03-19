@@ -90,10 +90,6 @@ const ProfilePage = () => {
                 const destinationIDs = firebasecontroller.getDestinationIDsForUser(idu);
                 firebasecontroller.getVisitedDestinations(destinationIDs).then(async (destinationsFirebase) => {
                     const destList: DocumentData[] = JSON.parse(JSON.stringify(destinationsFirebase));
-                    // destList.map(dest => ({
-                    //     myReview: firebasecontroller.getReviewForDestinationUser(user?.uid, dest.id),
-                    //     ...dest
-                    // }))
 
                     const combinedData = await Promise.all(destList.map(async (dest) => {
                         const myReview = await fetchReviewForDestination(user?.uid, dest.id);
