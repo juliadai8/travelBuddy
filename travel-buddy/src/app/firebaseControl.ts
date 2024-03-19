@@ -13,8 +13,6 @@ import {
   updateDoc,
   deleteDoc,
   getDoc,
-  DocumentData,
-  
   DocumentData
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
