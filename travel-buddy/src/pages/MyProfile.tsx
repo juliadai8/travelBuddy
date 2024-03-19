@@ -193,8 +193,9 @@ const ProfilePage = () => {
 
     const cities = () => {
         //const firebaseController = new firebaseControl() 
+        const filteredAndSearchedDestinations = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)
         //firebaseController.getReviewForDestinationUser("qQOfqOEzxNS2utynTNJFVZT8Bs43", firebaseController.getReviewsForDestination("dNDQbqz8WLPIbt4iVjbV"))
-        if (destinationList.length === 0) {
+        if (filteredAndSearchedDestinations.length === 0) {
             return <h1>No destinations found</h1>;
         }
         else {
@@ -202,7 +203,7 @@ const ProfilePage = () => {
                 
                 <>
 
-                {destinationList.map((destin, i) => (
+                {filteredAndSearchedDestinations.map((destin, i) => (
                     <MyDestinationBox
                         key={i}
                         city={destin.city}
@@ -272,20 +273,21 @@ const ProfilePage = () => {
             <div id='filter-container' className='filter-container'> 
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
             </div>
-            {openModal &&
+            {openModal && user &&
                 <DestinationModal
-                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
-                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
-                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                    rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
-                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                    description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                    imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
-                    user={user}
-                    onClose={() => closeModal()} 
-                    visited={true}
-                    admin={isAdmin}
+                id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
+                city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
+                country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
+                rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
+                tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
+                description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
+                imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                user={user}
+                admin={isAdmin}
+                
+                onClose={() => closeModal()}
                 />}
+                
            
             
             <div id='feed-container'>   
