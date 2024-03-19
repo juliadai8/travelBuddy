@@ -214,6 +214,7 @@ const ProfilePage = () => {
                         review={destin.comment}
                         myRating={destin.rating}
                         isLoggedIn={!!user}
+                        averageRating={destin.RatingCount == 0 ? 0 : destin.TotalRating / destin.RatingCount}
                     />
                     
                 ))
