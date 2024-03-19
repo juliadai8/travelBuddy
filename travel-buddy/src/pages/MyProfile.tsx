@@ -36,13 +36,6 @@ const ProfilePage = () => {
 
     useEffect(() => {
     
-/* 
-        // let destinations: DocumentData[] = [];
-        firebasecontroller.getDestinastions().then((destinationsFirebase) => {
-            setDestinationList(JSON.parse(JSON.stringify(destinationsFirebase)));
-            setDestinationsChanged(false);
-        });
-         */
         const unsubscribe = auth.onAuthStateChanged((userAuth) => {
             if (userAuth) {
                 setUser(userAuth);
