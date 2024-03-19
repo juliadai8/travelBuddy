@@ -43,7 +43,8 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
         checkRender();
     }, []);
 
-    const handleCheckboxChange = async () => {
+    const handleCheckboxChange = async (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+        event.stopPropagation();
         try {
             const firebasecontroller = new firebaseControl();
             if (!isChecked) {

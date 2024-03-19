@@ -77,8 +77,7 @@ const HomePage = () => {
 
     useEffect(() => {
         const firebasecontroller = new firebaseControl();
-        firebasecontroller.getDestinastions().then((destList) => {
-            console.log("Destination List: ", destList)
+        firebasecontroller.getDestinations().then((destList) => {
             setDestinationList(destList);
             setDestinationsChanged(false);
         });
@@ -159,6 +158,15 @@ const HomePage = () => {
 
 
     const cities = () => {
+        console.log(destinationList.map((destination) => {
+            return {
+                TotalRating: destination.TotalRating,
+                TotalRatingType: typeof destination.TotalRating, 
+                RatingCount: destination.RatingCount,
+                RatingCountType: typeof destination.RatingCount,
+                rating: destination.TotalRating / destination.RatingCount
+            }
+        }));
         const filteredAndSearchedDestinations = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)
         if (filteredAndSearchedDestinations.length === 0) {
             return <h1>No destinations found</h1>;
@@ -166,12 +174,13 @@ const HomePage = () => {
         else {
             return (
                 <>
-                {filteredAndSearchedDestinations.map((destin, i) => (
+                {
+                filteredAndSearchedDestinations.map((destin, i) => (
                     <DestinationBox
                         key={i}
                         city={destin.city}
                         country={destin.country}
-                        rating={destin.rating}
+                        rating={destin.RatingCount == 0 ? 0 : destin.TotalRating / destin.RatingCount}
                         imgURL={destin.imgUrl}
                         onReadMore={() => readMore(i)}
                         isLoggedIn={!!user}
@@ -240,32 +249,34 @@ const HomePage = () => {
         closeModal();
     }
 
+    const destination = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex];
+
     return (
         <div id='container' className={openModal || openAddDestination || openEdit ? 'blur-background'  : undefined}>
             {(openModal || openAddDestination || openEdit) && <div className="overlay"></div>}
             {openModal && user &&
                 <DestinationModal
-                id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
-                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
-                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                    rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
-                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                    description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                    imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    id={destination.id}
+                    city={destination.city}
+                    country={destination.country}
+                    rating={destination.RatingCount == 0 ? 0 : destination.TotalRating / destination.RatingCount}
+                    tags={destination.category}
+                    description={destination.description}
+                    imgURL={destination.imgUrl}
                     user={user}
                     admin={isAdmin}
                     onEdit={() => editDestination()}
                     onDelete={() => deleteDestination(filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id)}
                     onClose={() => closeModal()}/>}
                 {openEdit && <EditDestination
-                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
-                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                    currentDescription={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                    currentImgUrl={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
-                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
+                    city={destination.city}
+                    country={destination.country}
+                    tags={destination.category}
+                    currentDescription={destination.description}
+                    currentImgUrl={destination.imgUrl}
+                    id={destination.id}
                     onClose={() => closeEdit()}
-                    visited={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].visited}/>
+                    visited={destination.visited}/>
                 }
                     {!!user && 
                         (<button

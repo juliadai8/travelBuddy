@@ -9,12 +9,13 @@ import WeatherDisplay from '../components/WeatherDisplay';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan, faCircleArrowLeft, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+// import ReviewRating from './ReviewRating';
 
 interface DestinationInterface {
     id: string;
     country: string;
     city: string;
-    rating: string;
+    rating: number;
     tags: string[];
     description: string;
     imgURL: string;
@@ -29,6 +30,7 @@ interface DestinationInterface {
 
 
 // Note: The button must be alignes with the rating-stars when they are added
+// Note: Currently, rating is hard coded in. Should fetch from firestore.
 const DestinationModal: React.FC<DestinationInterface> = ({
     id, 
     country, 
@@ -51,6 +53,8 @@ const DestinationModal: React.FC<DestinationInterface> = ({
     const firebasecontroller = new firebaseControl();
     const [isVisited, setIsVisited] = useState<Boolean>(false);
     const [isEditingReview, setIsEditingReview] = useState<boolean>(false);
+    const [avgRating, setAvgRating] = useState<number>(rating);
+    const [ratingChanged, setRatingChanged] = useState<boolean>(false); 
 
     useEffect(() => {
         firebasecontroller.getReviewsForDestination(id).then((reviews) => {
@@ -58,6 +62,13 @@ const DestinationModal: React.FC<DestinationInterface> = ({
         });
         setIsVisited(visited);
     }, []);
+
+    useEffect(() => {
+        firebasecontroller.getDestination(id).then((dest) => {
+            setAvgRating(dest?.RatingCount == 0 ? 0 : dest?.TotalRating / dest?.RatingCount);
+            setRatingChanged(false);
+        })
+    }, [ratingChanged]);
 
     useEffect(() => {
         if (user) {
@@ -76,11 +87,14 @@ const DestinationModal: React.FC<DestinationInterface> = ({
 
     const submitReview = () => {
         if (user && !myReviewID) {
-            firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid);
-        }
-        firebasecontroller.getReviewsForDestination(id).then((reviews) => {
-            setReviewList(JSON.parse(JSON.stringify(reviews)));
-        });
+            firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid).then(() => {
+                setRatingChanged(true);
+            }).then(() => {
+                firebasecontroller.getReviewsForDestination(id).then((reviews) => {
+                    setReviewList(JSON.parse(JSON.stringify(reviews)));
+                });
+            });
+        }    
     } 
 
     const updateReview = () => {
@@ -88,6 +102,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
             firebasecontroller.getReviewsForDestination(id).then((reviews) => {
                 setReviewList(JSON.parse(JSON.stringify(reviews)));
             });
+            setRatingChanged(true);
             setIsEditingReview(false);
         });
     }
@@ -97,6 +112,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
             firebasecontroller.getReviewsForDestination(id).then((reviews) => {
                 setReviewList(JSON.parse(JSON.stringify(reviews)));
             });
+            setRatingChanged(true);
             setIsEditingReview(false);
             setMyReviewID("");
             setComment("");
@@ -135,12 +151,12 @@ const DestinationModal: React.FC<DestinationInterface> = ({
             return (
                 <div>
                     {reviewList.filter(review => review.reviewID === myReviewID).map((review) => (
-                        <div id='myrating-container' className='addPadding not-blur'>
+                        <div key={review.reviewID} id='myrating-container' className='addPadding not-blur'>
                             Edit your review:
                             <div id="starRating" className='not-blur'>
                                 <Rating name="half-rating" defaultValue={review.rating} precision={0.5} onChange={(event, value) => setActiveStar(value as number)}/> 
                             </div>
-                            <textarea id="review-destinations" rows={1} onChange={handleCommentChange}>{review.comment}</textarea>
+                            <textarea id="review-destinations" rows={1} onChange={handleCommentChange} defaultValue={review.comment}></textarea>
                             <div >
                                 <FontAwesomeIcon id='back-review' className='not-blur' icon={faCircleArrowLeft} onClick={() => setIsEditingReview(false)}/>
                                 <FontAwesomeIcon id='update-review' className='not-blur' icon={faCircleCheck} onClick={updateReview}/>
@@ -158,7 +174,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <h3>My Review</h3>
                     <hr/>
                     {reviewList.filter(review => review.reviewID === myReviewID).map((review) => (
-                        <div style={{justifyContent: 'space-between'}}>
+                        <div key={review.reviewID} style={{justifyContent: 'space-between'}}>
                             <div id='top-of-review'>
                                 <div style={{opacity: 0.5}}>
                                     {review.email}
@@ -206,7 +222,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <WeatherDisplay country={country} city={city}/>
                 </div>
                 <div id="rating-container" className='addPadding not-blur'>
-                    {rating ? 'Rating: ' + rating : 'This destination does not have a rating yet'}
+                    <Rating name="average-rating" precision={0.25} value={avgRating} readOnly/> 
                 </div>
                 <div id='tag-container' className='addPadding not-blur'>
                     {tags.length ? 'Tags: ' + tags?.join(", ") : 'There are no tags for this destination'}
@@ -219,13 +235,13 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <div id="reviewfeed-container" className='addPadding not-blur'>
                         <h3>All Reviews</h3>
                         {reviewList.filter(review => review.comment !== "" && review.comment && review.reviewID !== myReviewID).map((review) => (
-                            <div>
+                            <div key={review.reviewID}>
                                 <hr/>
                                 <div id='singlereview-container'>
                                     <div id='top-of-review'>
                                         {review.email}
                                     </div>
-                                    <Rating name="half-rating" defaultValue={review.rating} precision={0.5} readOnly/>
+                                    <Rating name="half-rating" value={review.rating} precision={0.5} readOnly/>
                                     <div>{review.comment}</div>
                                 </div>
                             </div>
