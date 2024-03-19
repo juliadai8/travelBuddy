@@ -55,6 +55,8 @@ h2 {
     display: flex;
     justify-content: right;
     align-items: center;
+    margin-right: 16px;
+    z-index: 2;
 }
 
 .rating-container > p {

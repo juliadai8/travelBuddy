@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import firebaseControl from '@/app/firebaseControl';
+import firebaseControl from '../app/firebaseControl';
 import { User } from 'firebase/auth';
 import '../styles/HaveBeenCheckbox.css';
 
@@ -43,7 +43,8 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
         checkRender();
     }, []);
 
-    const handleCheckboxChange = async () => {
+    const handleCheckboxChange = async (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+        event.stopPropagation();
         try {
             const firebasecontroller = new firebaseControl();
             if (!isChecked) {
