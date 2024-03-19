@@ -62,7 +62,6 @@ const AddDestination: React.FC<AddDestinationInterface> = ({onClose, checkDuplic
                     setCategories(prev => [...prev, category])
                 }
                 else {
-                    const newList = categories;
                     setCategories(prev => prev.filter(cat => cat !== category));
                 }
             }
