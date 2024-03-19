@@ -24,7 +24,6 @@ const ProfilePage = () => {
     const [openAddDestination, setOpenAddDestination] = useState<boolean>(false);
     const [destinationsChanged, setDestinationsChanged] = useState<boolean>(false);
     const router = useRouter();
-    //const navigate = useNavigate();
     const [user, setUser] = useState<User>();
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [isAdmin, setAdmin] = useState<boolean>(false);
