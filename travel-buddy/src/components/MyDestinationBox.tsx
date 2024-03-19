@@ -23,8 +23,8 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({country, city, rating
 
     return (
         <div>
-            <div className='outer-box' style={!myRating ? {marginBottom: '30px'} : {}}>
-                <div className='box'>
+            <div className='outer-box'  style={!myRating ? {marginBottom: '30px'} : {}}>
+                <div className='box' id='box'>
                     <img src={imgURL} alt="Error loading image" className='inner-div' />
                     <div className='inner-div info-div'>
                         <h1>{city}</h1>
@@ -41,7 +41,7 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({country, city, rating
                 </div>
             </div>
             {myRating &&
-                <div className='review-container'>
+                <div className='review-container' id='review'>
                     <h3>Your review for {city}</h3>
                     <Rating name="half-rating" defaultValue={rating} precision={0.5} readOnly/>
                     {review && <p>{review}</p>}

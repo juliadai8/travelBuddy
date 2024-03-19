@@ -14,6 +14,8 @@ import { DocumentData } from 'firebase/firestore';
 import AddDestination from '../components/AddDestination';
 import Header from '../components/Header';
 import '../styles/MyDestinationBox.css'
+
+
 const ProfilePage = () => {
     const [tags, setTags] = useState<string[]>([]);
     const [destinationList, setDestinationList] = useState<DocumentData[]>([]);
@@ -240,8 +242,8 @@ const ProfilePage = () => {
     return (
         <div id='container' className={openModal || openAddDestination ? 'blur-background'  : undefined}>
             <Header />
-            <div className='header-padding'>
-                <p className='headline'>Your visited destinations</p>
+            <div className='header-padding' id='headline'>
+                <p className='headline' id='headline'>Your visited destinations</p>
             {(openModal || openAddDestination) && <div className="overlay"></div>}
             <div id='filter-container' className='filter-container'> 
                 <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
