@@ -1,13 +1,19 @@
-.dark-mode{
+.dark-mode {
     background-color: #101214;
     color: rgb(222,228,234);
+}
+
+.dark-mode body {
+    background-color: #101214;
+    color: rgb(222, 228, 234);
+    height: 100%;
 }
 
 .dark-mode #container {
     background-color: #101214;
 }
 
-.dark-mode #container h1 {
+.dark-mode #container h1, .dark-mode #container h3{
     color: rgb(222,228,234);
 }
 
@@ -15,11 +21,13 @@
     color: rgb(21, 37, 53);
 }
 
-.dark-mode #box button, .dark-mode #editButton, .dark-mode #navbar button, .dark-mode #search-and-add button {
+.dark-mode #box button, .dark-mode #editButton, .dark-mode #navbar button, .dark-mode #addDestinationButton,
+.dark-mode #fileUploader button {
     background-color: rgb(40,46,51);
 }
 
-.dark-mode #box button:hover, .dark-mode #editButton:hover, .dark-mode #navbar button:hover, .dark-mode #search-and-add button:hover {
+.dark-mode #box button:hover, .dark-mode #editButton:hover, .dark-mode #navbar button:hover, .dark-mode #addDestinationButton:hover,
+.dark-mode #fileUploader button:hover {
     background-color: rgb(56,65,74);
 }
 

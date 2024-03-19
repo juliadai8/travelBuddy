@@ -2,11 +2,17 @@ import AddDestination from '../components/AddDestination';
 import React from 'react';
 import { act, fireEvent, getByLabelText, getByTestId, render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'; 
+import { list } from 'firebase/storage';
+import { DocumentData } from 'firebase/firestore';
 
 
 describe('AddDestination allows', () => {
     beforeEach(() => {
-        const {getByRole} = render(<AddDestination/>);
+        const list: DocumentData[] = []
+        const {getByRole} = render(<AddDestination
+            onClose={() => {}}
+            checkDuplicates={() => false}
+            destinationList={list}/>);
     })
     it('writing in textfields', () => {
         const listTextfields: string[] = ['City:', 'Country:', 'Image url:']
@@ -75,7 +81,11 @@ describe('AddDestination allows', () => {
 describe('Clicking add new destination', () => {
     it('is not allowed when fields are empty', () => {
         const onCloseMock = jest.fn();
-        const {getByRole} = render(<AddDestination onClose={onCloseMock}/>);
+        const list: DocumentData[] = []
+        const {getByRole} = render(<AddDestination
+            onClose={onCloseMock}
+            checkDuplicates={() => false}
+            destinationList={list}/>);
         const button = screen.getByRole('button', {name: 'Add new destination'})
         act(() => {
             fireEvent.click(button);
@@ -83,12 +93,34 @@ describe('Clicking add new destination', () => {
         const message = screen.getByRole('heading', {name: 'Fill inn all fields'});
         expect(message).toBeInTheDocument();
         expect(message).toHaveTextContent('Fill inn all fields')
-        expect(onCloseMock).not.toHaveBeenCalled();
+        expect(onCloseMock).toHaveBeenCalledTimes(0);
+    })
+
+    it('is not allowed when isDuplicate method returns true', () => {
+        const onCloseMock = jest.fn();
+        const list: DocumentData[] = []
+        const {getByRole} = render(<AddDestination
+            onClose={onCloseMock}
+            checkDuplicates={() => true}
+            destinationList={list}/>);
+        const button = screen.getByRole('button', {name: 'Add new destination'})
+        act(() => {
+            fireEvent.click(button);
+        })
+        const message = screen.getByRole('heading', {name: 'This destination already exists'});
+        expect(message).toBeInTheDocument();
+        expect(message).toHaveTextContent('This destination already exists');
+        expect(onCloseMock).toHaveBeenCalledTimes(0);
     })
     
     it('is allowed when the fields are filled in', async () => {
         const onCloseMock = jest.fn();
-        const {getByRole} = render(<AddDestination onClose={onCloseMock}/>);
+        const list: DocumentData[] = []
+        const {getByRole} = render(<AddDestination
+            onClose={onCloseMock}
+            checkDuplicates={() => false}
+            destinationList={list}/>);
+
         const button = screen.getByRole('button', {name: 'Add new destination'})
         const listTextfields: string[] = ['City:', 'Country:', 'Image url:']
         listTextfields.map((text) => {

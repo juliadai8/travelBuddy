@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import firebaseControl from '@/app/firebaseControl';
+import firebaseControl from '../app/firebaseControl';
 import { User } from 'firebase/auth';
+import '../styles/HaveBeenCheckbox.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapPin } from '@fortawesome/free-solid-svg-icons'
 
 interface HaveBeenProps {
     user: User | undefined;
@@ -20,7 +24,7 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
         }
     }; */
 
-    useEffect(() => {
+    const checkRender = () => {
         const checkVisited = async () => {
             try {
                 const firebasecontroller = new firebaseControl();
@@ -30,18 +34,25 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
                 console.error("Error checking if visited:", error);
             }
         };
-            checkVisited();
+        checkVisited();
+    }
+
+    checkRender();
+    
+    useEffect(() => {
+        checkRender();
     }, []);
 
-    const handleCheckboxChange = async () => {
+    const handleCheckboxChange = async (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+        event.stopPropagation();
         try {
             const firebasecontroller = new firebaseControl();
             if (!isChecked) {
-                await firebasecontroller.setUser(user?.uid, id);
-                console.log("Destination added to user's list:", id);
+                await firebasecontroller.setUserDestination(user?.uid, id);
+                console.log("User added to destination's list:", id);
             } else {
                 await firebasecontroller.removeUserDestination(user?.uid, id);
-                console.log("Destination removed from user's list:", id);
+                console.log("User removed from destination's list:", id);
             }
             setIsChecked(!isChecked); 
         } catch (error) {
@@ -50,18 +61,9 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
     };
 
     return (
-        <div>
-        <div style={{display: "flex", flexDirection: 'row'}}>
-            <label>Visited:</label>
-            <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-            />
-        </div>      
-        </div>  
-       
-
+        <>
+            {isChecked ? <FontAwesomeIcon className="visitedIcon" icon={faMapPin} onClick={handleCheckboxChange} style={{color: "#63E6BE",}} /> : <FontAwesomeIcon className="visitedIcon" icon={faMapPin} onClick={handleCheckboxChange} style={{color: "#c0c0c0",}} />}
+        </>  
     );
 };
 
