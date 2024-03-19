@@ -111,7 +111,6 @@ const ProfilePage = () => {
                             };
                         }
                     }));
-                    //return combinedData;
                     setDestinationsChanged(false);
                     setDestinationList(combinedData);
                 });
