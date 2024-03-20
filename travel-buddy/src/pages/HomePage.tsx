@@ -158,15 +158,6 @@ const HomePage = () => {
 
 
     const cities = () => {
-        console.log(destinationList.map((destination) => {
-            return {
-                TotalRating: destination.TotalRating,
-                TotalRatingType: typeof destination.TotalRating, 
-                RatingCount: destination.RatingCount,
-                RatingCountType: typeof destination.RatingCount,
-                rating: destination.TotalRating / destination.RatingCount
-            }
-        }));
         const filteredAndSearchedDestinations = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)
         if (filteredAndSearchedDestinations.length === 0) {
             return <h1>No destinations found</h1>;
