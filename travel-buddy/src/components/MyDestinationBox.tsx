@@ -67,6 +67,8 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({
             return;
         }
         reviewDelete(destinationID, reviewID);
+        setActiveStar(2.5);
+        setComment("");
         setRatingChanged(true);
         setIsEditingReview(false);
     } 

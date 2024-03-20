@@ -173,12 +173,11 @@ const ProfilePage = () => {
         });
     }
 
-    const reviewSubmit = (destinationID: string, rating: number, comment: string | undefined) => {
+    const reviewSubmit = async (destinationID: string, rating: number, comment: string | undefined) => {
         if (user) {
             const firebasecontroller = new firebaseControl();
-            firebasecontroller.addReview(destinationID, rating, comment ? comment : '', user.email, user.uid).then(() => {
-                setDestinationsChanged(true);
-            });
+            await firebasecontroller.addReview(destinationID, rating, comment ? comment : '', user.email, user.uid);
+            setDestinationsChanged(true);
         }    
     }
 
