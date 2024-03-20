@@ -8,6 +8,7 @@ import { Rating } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan, faCircleArrowLeft, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import firebaseControl from '@/app/firebaseControl';
+import { Pause } from '@mui/icons-material';
 
 interface DestinationInterface {
     country: string;
@@ -16,7 +17,7 @@ interface DestinationInterface {
     onReadMore?: () => void;
     isLoggedIn: boolean;
     review?: string;
-    myRating?: number;
+    myRating?: any;
     averageRating: number;
     destinationID: string;
     reviewID?: string;
@@ -86,6 +87,10 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({
         setRatingChanged(true);
     }
 
+    const back = () => {
+        setIsEditingReview(false)
+    }
+
     const showReview = () => {
         if(isEditingReview) {
             return (
@@ -96,7 +101,7 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({
                     </div>
                     <textarea id="review-destinations" rows={1} onChange={handleCommentChange} defaultValue={review}></textarea>
                     <div >
-                        <FontAwesomeIcon id='back-review' className='not-blur' icon={faCircleArrowLeft} onClick={() => setIsEditingReview(false)}/>
+                        <FontAwesomeIcon id='back-review' className='not-blur' icon={faCircleArrowLeft} onClick={() => back()}/>
                         <FontAwesomeIcon id='update-review' className='not-blur' icon={faCircleCheck} onClick={() => updateReview()}/>
                         <FontAwesomeIcon id='delete-review' className='not-blur' icon={faTrashCan} onClick={deleteReviewConfirmation}/>
                     </div>
@@ -110,9 +115,7 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({
                         <h3>Your review for {city}</h3>
                         <FontAwesomeIcon id='edit-button' className='not-blur' icon={faPenToSquare} onClick={() => setIsEditingReview(true)}/>
                     </div>
-                    <div>
-                        <Rating name="half-rating" defaultValue={myRating} precision={0.5} readOnly/>
-                    </div>
+                    <Rating name="half-rating" value={myRating} precision={0.5} readOnly/>
                     {review && <p>{review}</p>}
                 </div>
             )
