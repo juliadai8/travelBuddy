@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { DocumentData } from 'firebase/firestore';
 import AddDestination from '../components/AddDestination';
 import Header from '../components/Header';
-import '../styles/MyDestinationBox.css'
+import '../styles/MyDestinationBox.css';
 
 
 const ProfilePage = () => {
@@ -76,12 +76,14 @@ const ProfilePage = () => {
                             return {
                                 rating: myReview[0].rating,
                                 comment: myReview[0].comment,
+                                reviewID: myReview[0].reviewID,
                                 ...dest
                             };
                         } else {
                             return {
                                 rating: null,
                                 comment: null,
+                                reviewID: null,
                                 ...dest
                             };
                         }
@@ -164,6 +166,31 @@ const ProfilePage = () => {
         return (destinationsOfCity.length > 0 && destinationsOfCountry.length > 0) ? true: false
     }
     
+    const reviewDelete = (destinationID: string, reviewID:string) => {
+        const firebasecontroller = new firebaseControl();
+        firebasecontroller.deleteReview(destinationID, reviewID).then(() => {
+            setDestinationsChanged(true);
+        });
+    }
+
+    const reviewSubmit = (destinationID: string, rating: number, comment: string | undefined) => {
+        if (user) {
+            const firebasecontroller = new firebaseControl();
+            firebasecontroller.addReview(destinationID, rating, comment ? comment : '', user.email, user.uid).then(() => {
+                setDestinationsChanged(true);
+            });
+        }    
+    }
+
+    const updateReview = (destinationID: string, reviewID: string | undefined, rating: number, comment: string | undefined) => {
+        if (!reviewID) {
+            return;
+        }
+        const firebasecontroller = new firebaseControl();
+        firebasecontroller.updateReview(destinationID, reviewID, rating, comment ? comment : '').then(() => {
+            setDestinationsChanged(true);
+        });
+    }
 
     const cities = () => {
         //const firebaseController = new firebaseControl() 
@@ -182,13 +209,17 @@ const ProfilePage = () => {
                         key={i}
                         city={destin.city}
                         country={destin.country}
-                        rating={destin.rating}
                         imgURL={destin.imgUrl}
                         //onReadMore={() => readMore(i)}
                         review={destin.comment}
                         myRating={destin.rating}
                         isLoggedIn={!!user}
                         averageRating={destin.RatingCount == 0 ? 0 : destin.TotalRating / destin.RatingCount}
+                        destinationID={destin.id}
+                        reviewID={destin.reviewID}
+                        reviewDelete={reviewDelete}
+                        reviewSubmit={reviewSubmit}
+                        reviewUpdate={updateReview}
                     />
                     
                 ))
@@ -243,38 +274,40 @@ const ProfilePage = () => {
         <div id='container' className={openModal || openAddDestination ? 'blur-background'  : undefined}>
             <Header />
             <div className='header-padding' id='headline'>
-                <p className='headline' id='headline'>Your visited destinations</p>
-            {(openModal || openAddDestination) && <div className="overlay"></div>}
-            <div id='filter-container' className='filter-container'> 
-                <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
-            </div>
-            {openModal && user &&
-                <DestinationModal
-                id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
-                city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
-                country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
-                rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
-                tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
-                description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
-                imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
-                user={user}
-                admin={isAdmin}
-                
-                onClose={() => closeModal()}
-                />}
-                
-           
+                <div id='header-div'>
+                    <p className='headline' id='headline'>Your visited destinations</p>
+                </div>
+                {(openModal || openAddDestination) && <div className="overlay"></div>}
+                <div id='filter-container' className='filter-container'> 
+                    <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
+                </div>
+                {openModal && user &&
+                    <DestinationModal
+                    id={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].id}
+                    city={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].city}
+                    country={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].country}
+                    rating={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].rating}
+                    tags={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].category}
+                    description={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].description}
+                    imgURL={filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)[destIndex].imgUrl}
+                    user={user}
+                    admin={isAdmin}
+                    
+                    onClose={() => closeModal()}
+                    />}
+                    
             
-            <div id='feed-container'>   
-                {cities()}
+                
+                <div id='feed-container'>   
+                    {cities()}
+                </div>
+                {openAddDestination && (
+                    <AddDestination
+                        checkDuplicates={(country, city) => isDestinationDuplicate(destinationList, country, city)}
+                        destinationList={destinationList}
+                        onClose={() => closeAddDestination()}/>
+                )}
             </div>
-            {openAddDestination && (
-                <AddDestination
-                    checkDuplicates={(country, city) => isDestinationDuplicate(destinationList, country, city)}
-                    destinationList={destinationList}
-                    onClose={() => closeAddDestination()}/>
-            )}
-        </div>
         </div>
     
     );
