@@ -9,9 +9,10 @@ import { faMapPin } from '@fortawesome/free-solid-svg-icons'
 interface HaveBeenProps {
     user: User | undefined;
     id: string;
+    extraHandling: () => void;
 }
 
-const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
+const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id, extraHandling }) => {
     const [isChecked, setIsChecked] = useState(false);
 
     /* const handleUserDestinations = async () => {
@@ -53,6 +54,9 @@ const HaveBeenCheckbox: React.FC<HaveBeenProps> = ({ user, id }) => {
             } else {
                 await firebasecontroller.removeUserDestination(user?.uid, id);
                 console.log("User removed from destination's list:", id);
+            }
+            if (isChecked) {
+                extraHandling();
             }
             setIsChecked(!isChecked); 
         } catch (error) {

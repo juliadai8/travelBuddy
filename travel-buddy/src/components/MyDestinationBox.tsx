@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan, faCircleArrowLeft, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import firebaseControl from '@/app/firebaseControl';
 import { Pause } from '@mui/icons-material';
+import HaveBeenCheckbox from './HaveBeenCheckbox';
+import { User } from 'firebase/auth';
 
 interface DestinationInterface {
     country: string;
@@ -24,6 +26,8 @@ interface DestinationInterface {
     reviewDelete: (destinationID: string, reviewID: string) => void;
     reviewSubmit: (destinationID: string, rating: number, comment: string | undefined) => void;
     reviewUpdate: (destinationID: string, reviewID: string | undefined, rating: number, comment: string | undefined) => void;
+    user?: User;
+    visitedHandling: () => void;
 }
 
 // Note: The button must be alignes with the rating-stars when they are added
@@ -40,7 +44,9 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({
     reviewID, 
     reviewDelete, 
     reviewSubmit,
-    reviewUpdate}) => {
+    reviewUpdate,
+    user,
+    visitedHandling}) => {
 
     const [isEditingReview, setIsEditingReview] = useState<boolean>(false);
     const [activeStar, setActiveStar] = useState<number>(myRating?myRating:0);
@@ -148,6 +154,9 @@ const MyDestinationBox: React.FC<DestinationInterface> = ({
                             <Rating name="half-rating" value={avgRating} precision={0.25} readOnly/>
                         </div>
                         <div className='weather-container'>
+                            <div style={{marginRight: '10px'}}>
+                                {typeof user !== "undefined" && <HaveBeenCheckbox user={user} id={destinationID} extraHandling={visitedHandling}/>}
+                            </div>
                             <WeatherDisplay country={country} city={city} />
                         </div>
                     </div>

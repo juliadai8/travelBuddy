@@ -216,7 +216,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <h1 className='not-blur'>{city}, {country}</h1>
                 </div>
                 <div id="visited-container" className='addPadding not-blur'>
-                    <HaveBeenCheckbox id={id} user={user}/>
+                    <HaveBeenCheckbox id={id} user={user} extraHandling={() => {}}/>
                 </div>
                 <div id="weather-display-container" className='addPadding not-blur'>
                     <WeatherDisplay country={country} city={city}/>

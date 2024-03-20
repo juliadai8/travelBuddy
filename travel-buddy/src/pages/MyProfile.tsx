@@ -192,6 +192,10 @@ const ProfilePage = () => {
         });
     }
 
+    const visitedReRender = () => {
+        setDestinationsChanged(true);
+    }
+
     const cities = () => {
         //const firebaseController = new firebaseControl() 
         const filteredAndSearchedDestinations = filteredDestinationsSearch(filterDestinationsByType(destinationList, tags), searchQuery)
@@ -220,6 +224,8 @@ const ProfilePage = () => {
                         reviewDelete={reviewDelete}
                         reviewSubmit={reviewSubmit}
                         reviewUpdate={updateReview}
+                        user={user}
+                        visitedHandling={visitedReRender}
                     />
                     
                 ))
