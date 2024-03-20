@@ -278,6 +278,9 @@ const ProfilePage = () => {
                     <p className='headline' id='headline'>Your visited destinations</p>
                 </div>
                 {(openModal || openAddDestination) && <div className="overlay"></div>}
+                <div id="search-div">
+                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search destinations" />
+                </div> 
                 <div id='filter-container' className='filter-container'> 
                     <FilterPanel categories={categories_dict} onFilterChange={onFilterChange} />
                 </div>

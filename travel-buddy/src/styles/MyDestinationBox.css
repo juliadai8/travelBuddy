@@ -169,3 +169,21 @@ button:active {
     display: flex;
     justify-content: center;
 }
+
+#search-div {
+    width: 100%;
+    display: flex;
+    direction: row;
+    justify-content: space-between;
+    left: auto;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+#search-div input { 
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
