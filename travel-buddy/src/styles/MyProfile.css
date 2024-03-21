@@ -10,15 +10,17 @@
     background-color: #fff;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-  }
+}
   
-  /* Hover effect */
-  .my-profile-button:hover {
-    background-color: #3498db;
-    color: #fff;
-  }
+/* Hover effect */
+.my-profile-button:hover {
+  background-color: #3498db;
+  color: #fff;
+}
+
+/* Active effect (when button is clicked) */
+.my-profile-button:active {
+  border-color: #2980b9;
+}
+
   
-  /* Active effect (when button is clicked) */
-  .my-profile-button:active {
-    border-color: #2980b9;
-  }

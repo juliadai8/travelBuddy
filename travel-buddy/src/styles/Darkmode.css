@@ -133,5 +133,11 @@
 
 
 
+.dark-mode #review{
+    background-color: rgb(53, 71, 88);
+}
+.dark-mode #headline p{
+    color: rgb(222,228,234);
+}
 
 

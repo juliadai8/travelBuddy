@@ -1,5 +1,8 @@
 import { NextPage } from 'next';
 import Layout from '../app/layout';
+import { useState, useEffect } from 'react'
+
+
 
 const AboutPage: NextPage = () => {
   return (

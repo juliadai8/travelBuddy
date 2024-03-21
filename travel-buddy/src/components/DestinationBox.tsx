@@ -38,7 +38,7 @@ const DestinationBox: React.FC<DestinationInterface> = ({country, city, rating, 
                     <WeatherDisplay country={country} city={city} />
                 </div>
                 <div className="button-container">
-                    {typeof user !== "undefined" && <HaveBeenCheckbox user={user} id={id} />}
+                    {typeof user !== "undefined" && <HaveBeenCheckbox user={user} id={id} extraHandling={() => {}}/>}
                     <button onClick={isLoggedIn ? onReadMore : () => alert('Please log in to read more')}>
                     Read More</button>
                 </div>

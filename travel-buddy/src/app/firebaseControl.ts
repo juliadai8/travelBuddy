@@ -7,13 +7,13 @@ import {
   getFirestore, collection, getDocs,
   addDoc,
   doc,
-  updateDoc,
-  deleteDoc,
   query,
   where,
+  documentId,
+  updateDoc,
+  deleteDoc,
   getDoc,
-  DocumentData,
-  
+  DocumentData
 } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -61,6 +61,18 @@ class firebaseControl {
         return destination;
     }
 
+  async getReviewForDestinationUser(userID: string | undefined, destinationID: string) {
+    const reviewsCol = collection(db, "destinations", destinationID, "reviews");
+    const reviewsSnapshot = await getDocs(reviewsCol);
+    const reviewList:DocumentData[] = reviewsSnapshot.docs.map(reviewDoc => ({
+        reviewID: reviewDoc.id,
+        ...reviewDoc.data()
+    }));
+    const filteredReviews = reviewList.filter(review => review.userID === userID);
+    return filteredReviews;
+  }
+
+
     async getReviewsForDestination(destinationID: string) {
         const reviewsCol = collection(db, "destinations", destinationID, "reviews");
         const reviewsSnapshot = await getDocs(reviewsCol);
@@ -70,6 +82,8 @@ class firebaseControl {
         }));
         return reviewList;
     }
+
+
 
     async addDestination(addCity: string, addCountry: string, addImgURL?: string, addCategory?: string[], addDescription?: string) {
         const collectionRef = collection(db, "destinations");
@@ -91,6 +105,39 @@ class firebaseControl {
             console.error(e)
         }
     }
+  async getDestinationIDsForUser(userID: string): Promise<string[]> {
+    const userDestinationsCol = collection(db, "user_destinations");
+    const q = query(userDestinationsCol, where("userID", "==", userID));
+    const querySnapshot = await getDocs(q);
+    const destinationIDs: string[] = querySnapshot.docs.map(doc => doc.data().destinationID);
+    return destinationIDs;
+  }
+  // Method to retrieve the list of destinations from the collection destinations that have the IDs from destinationIDs
+  async getVisitedDestinations(destinationIDs: Promise<string[]>): Promise<DocumentData[]> {
+    const newDestinationIDs = await destinationIDs;
+    if(newDestinationIDs.length == 0 || newDestinationIDs == null || newDestinationIDs == undefined){
+      return []
+    }
+    const collectionRef = collection(db, "destinations");
+    // Create a query to fetch documents whose IDs are in the destinationIDs array
+    const q = query(collectionRef, where(documentId(), "in", newDestinationIDs));
+    const snapshot = await getDocs(q);
+    // Map over the documents in the snapshot to get their data
+    const filteredDestinations = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return filteredDestinations;
+  }
+
+
+
+
+
+
+
+
+
 
     async editDestination(destinationID: string, updateImgURL?: string, updateCategories?: string[], updateDescription?: string) {
         const docRef = doc(db, "destinations", destinationID);

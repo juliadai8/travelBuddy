@@ -87,13 +87,20 @@ const DestinationModal: React.FC<DestinationInterface> = ({
 
     const submitReview = () => {
         if (user && !myReviewID) {
-            firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid).then(() => {
-                setRatingChanged(true);
-            }).then(() => {
-                firebasecontroller.getReviewsForDestination(id).then((reviews) => {
-                    setReviewList(JSON.parse(JSON.stringify(reviews)));
-                });
-            });
+            firebasecontroller.checkIfVisited(user.uid, id).then((check) => {
+                if (check) {
+                    firebasecontroller.addReview(id, activeStar, comment, user.email, user.uid).then(() => {
+                        setRatingChanged(true);
+                    }).then(() => {
+                        firebasecontroller.getReviewsForDestination(id).then((reviews) => {
+                            setReviewList(JSON.parse(JSON.stringify(reviews)));
+                        });
+                    });
+                } else {
+                    alert("You can not give a review on a destination you have not visited.");
+                }
+            })
+
         }    
     } 
 
@@ -109,16 +116,20 @@ const DestinationModal: React.FC<DestinationInterface> = ({
 
     const deleteReview = () => {
         firebasecontroller.deleteReview(id, myReviewID).then(() => {
-            firebasecontroller.getReviewsForDestination(id).then((reviews) => {
-                setReviewList(JSON.parse(JSON.stringify(reviews)));
-            });
-            setRatingChanged(true);
-            setIsEditingReview(false);
-            setMyReviewID("");
-            setComment("");
-            setActiveStar(2.5);
+            stateChangesWhenDeleteReview();
         });
     } 
+
+    const stateChangesWhenDeleteReview = () => {
+        firebasecontroller.getReviewsForDestination(id).then((reviews) => {
+            setReviewList(JSON.parse(JSON.stringify(reviews)));
+        });
+        setRatingChanged(true);
+        setIsEditingReview(false);
+        setMyReviewID("");
+        setComment("");
+        setActiveStar(2.5);
+    }
 
     function deleteConfirmation() {
         let text = "Are you sure you want to delete this destination?\nClick either OK or Cancel.";
@@ -216,7 +227,7 @@ const DestinationModal: React.FC<DestinationInterface> = ({
                     <h1 className='not-blur'>{city}, {country}</h1>
                 </div>
                 <div id="visited-container" className='addPadding not-blur'>
-                    <HaveBeenCheckbox id={id} user={user}/>
+                    <HaveBeenCheckbox id={id} user={user} extraHandling={() => stateChangesWhenDeleteReview()}/>
                 </div>
                 <div id="weather-display-container" className='addPadding not-blur'>
                     <WeatherDisplay country={country} city={city}/>
