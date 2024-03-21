@@ -67,6 +67,7 @@ const HomePage = () => {
         //setUserEmail(localStorage.getItem('user')?.replace(/'/g,'') ?? '');
         if (userEmail === 'theamariabruno@gmail.com' || userEmail === 'juliadai03@gmail.com'
             || userEmail === 'adrianhsolberg@gmail.com' || userEmail === 'hallvardfuttererwannebo@gmail.com'
+            || userEmail === 'sand.rasmusw@gmail.com'
         ) {
             setAdmin(true);
         } else {
