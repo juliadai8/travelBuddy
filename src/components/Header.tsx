@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import '../styles/Header.css';  
 import GoogleLoginButton from './GoogleLoginButton';
-import '../styles/myProfile.css'; 
 import '../styles/Darkmode.css';
 
 export const Header: React.FC = () => {
