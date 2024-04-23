@@ -1,3 +1,4 @@
+"use client";
 
 import Header from "../components/Header";
 import HomePage from "@/pages/HomePage";
@@ -22,6 +23,7 @@ const inter = Inter({ subsets: ["latin"] });
     <html lang="en">
       <body className={inter.className}>
         <Header />
+        <HomePage/>
         <div className="content">{children}</div>
       </body>
     </html>
